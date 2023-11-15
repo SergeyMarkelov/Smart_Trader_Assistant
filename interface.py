@@ -2462,23 +2462,7 @@ class Ui_MainWindow(object):
         Indicators.calculate_and_display_ma_6(Technical_analysis.df, self.label_MA_7)
         Indicators.calculate_and_display_ma_24(Technical_analysis.df, self.label_MA_25)
         Indicators.calculate_and_display_ma_72(Technical_analysis.df, self.label_MA_73)
-"""
-        Indicators.calculate_and_display_all_signals(self.label_Resume_Output, Indicators.calculate_and_display_macd(Technical_analysis.df, self.label_MACD_2),
-                                                     Indicators.calculate_and_display_supertrend(Technical_analysis.df, self.label_Supertrend_2),
-                                                     Indicators.calculate_and_display_rsi(Technical_analysis.df,self.label_Rsi_2),
-                                                     Indicators.calculate_and_display_parabolic_sar(Technical_analysis.df,self.label_Parabolic_SAR_2),
-                                                     Indicators.calculate_and_display_obv(Technical_analysis.df,self.label_On_balance_ind_2),
-                                                     Indicators.calculate_and_display_stoch(Technical_analysis.df,self.label_Stochastic_2),
-                                                     Indicators.calculate_and_display_enhanced_volume(Technical_analysis.df, self.label_Traders_Lion_2),
-                                                     Indicators.calculate_and_display_vwap(Technical_analysis.df, self.label_Volume_Weighted_2),
-                                                     Indicators.calculate_and_display_vap(Technical_analysis.df, self.label_Volume_price_trend_3),
-                                                     Indicators.calculate_and_display_vpt(Technical_analysis.df, self.label_Volume_price_trend_4),
-                                                     Indicators.calculate_and_display_cmf(Technical_analysis.df, self.label_Chaikin_2),
-                                                     Indicators.calculate_and_display_emv(Technical_analysis.df, self.label_Ease_of_Movement_2),
-                                                     Indicators.calculate_and_display_ma_6(Technical_analysis.df, self.label_MA_7),
-                                                     Indicators.calculate_and_display_ma_24(Technical_analysis.df, self.label_MA_25),
-                                                     Indicators.calculate_and_display_ma_72(Technical_analysis.df, self.label_MA_73))
-                                                     """
+        Indicators.calculate_and_display_all_signals(self.label_Resume_Output)
 
 
 # import res_rc

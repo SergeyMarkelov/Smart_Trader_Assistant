@@ -415,7 +415,7 @@ class Indicators:
 
         # Проходимся по всем функциям и считаем сигналы
         for signal_func in signal_funcs:
-            signal = signal_func(df)
+            signal = signal_func(df, label)
             if signal == "Buy":
                 buy_count += 1
                 print ("Buy")
@@ -442,16 +442,16 @@ class Indicators:
         if buy_signal:
             signal = "Buy"
             label.setText(signal)
-            label.setStyleSheet("color: green; font-size: 10pt;")
+            label.setStyleSheet("color: green; font-family: MS Shell Dlg 2; font-size: 14pt;")
 
         elif sell_signal:
             signal = "Sell"
             label.setText(signal)
-            label.setStyleSheet("color: red; font-size: 10pt;")
+            label.setStyleSheet("color: green; font-family: MS Shell Dlg 2; font-size: 14pt;")
         else:
             signal = "Hold"
             label.setText(signal)
-            label.setStyleSheet("color: black; font-size: 10pt;")
+            label.setStyleSheet("color: green; font-family: MS Shell Dlg 2; font-size: 14pt;")
 
         return buy_signal, sell_signal, signal
 
