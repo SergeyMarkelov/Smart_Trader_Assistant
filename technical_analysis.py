@@ -8,7 +8,7 @@ usd_jpy = yf.Ticker('SI=F')
 
 # Загрузка исторических данных
 
-df = usd_jpy.history(period='20y')  # Загружаем данные за последние 20 лет
+df = usd_jpy.history(period='100y')  # Загружаем данные за последние 100 лет
 
 
 # Периоды для ATR
@@ -418,22 +418,22 @@ class Indicators:
             signal = signal_func(df, label)
             if signal == "Buy":
                 buy_count += 1
-                print ("Buy")
+                #print ("Buy")
             elif signal == "Sell":
                 sell_count += 1
-                print("Sell")
+                #print("Sell")
             elif signal == "Oversold":
                 buy_count += 1
-                print("Oversold")
+                #print("Oversold")
             elif signal == "Overbought":
                 sell_count += 1
-                print("Overbought")
+                #print("Overbought")
             elif signal == "Below average":
                 buy_count += 1
-                print("Below average")
+                #print("Below average")
             elif signal == "Above average":
                 sell_count += 1
-                print("Above average")
+                #print("Above average")
 
         buy_signal = buy_count > sell_count
         sell_signal = sell_count > buy_count
@@ -454,6 +454,35 @@ class Indicators:
             label.setStyleSheet("color: green; font-family: MS Shell Dlg 2; font-size: 14pt;")
 
         return buy_signal, sell_signal, signal
+
+    def calculate_and_display_growth_days(df, label):
+        df['Price Change'] = df['Close'].pct_change()
+        df['Direction'] = df['Price Change'].apply(lambda x: 'Up' if x > 0 else 'Down' if x < 0 else 'No Change')
+        count_days = df.groupby('Direction').size().to_dict()
+
+        growth_days = count_days.get('Up', 0)
+        decline_days = count_days.get('Down', 0)
+
+        total_days = growth_days + decline_days
+        growth_percentage = (growth_days / total_days) * 100 if total_days > 0 else 0
+
+        label.setText(f"Days of Growth: {growth_days} ({growth_percentage:.2f}%)")
+
+    def calculate_and_display_decline_days(df, label):
+
+        df['Price Change'] = df['Close'].pct_change()
+        df['Direction'] = df['Price Change'].apply(lambda x: 'Up' if x > 0 else 'Down' if x < 0 else 'No Change')
+        count_days = df.groupby('Direction').size().to_dict()
+
+        growth_days = count_days.get('Up', 0)
+        decline_days = count_days.get('Down', 0)
+
+        total_days = growth_days + decline_days
+        decline_percentage = (decline_days / total_days) * 100 if total_days > 0 else 0
+
+        label.setText(f"Days of Decline: {decline_days} ({decline_percentage:.2f}%)")
+
+
 
 
 

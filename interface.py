@@ -9,16 +9,20 @@
 
 
 from PyQt5 import QtCore, QtGui, QtWidgets
+from PyQt5.QtGui import QPixmap
+from PyQt5.QtWidgets import QWidget, QVBoxLayout, QGraphicsScene
 
-import Technical_analysis
-from Technical_analysis import *
-from PyQt5.QtWidgets import QApplication, QMainWindow, QPushButton, QStackedWidget
+from technical_analysis import *
+from accumulation_distribution import Calculate_Dist
+
+
+
 
 
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
-        MainWindow.setObjectName("Smart Trader Assistant")
-        MainWindow.resize(1109, 904)
+        MainWindow.setObjectName("MainWindow")
+        MainWindow.resize(1102, 907)
         MainWindow.setAutoFillBackground(False)
         MainWindow.setDocumentMode(False)
         self.centralwidget = QtWidgets.QWidget(MainWindow)
@@ -30,36 +34,37 @@ class Ui_MainWindow(object):
         self.Skeleton.setObjectName("Skeleton")
         self.Background_image = QtWidgets.QLabel(self.Skeleton)
         self.Background_image.setGeometry(QtCore.QRect(0, 0, 1111, 911))
-        self.Background_image.setStyleSheet("border-image: url(:/images/pexels-suzy-hazelwood-1629236.jpg);")
+        pixmap = QPixmap("images/background.jpg")
+        self.Background_image.setPixmap(pixmap)
         self.Background_image.setText("")
         self.Background_image.setObjectName("Background_image")
         self.label = QtWidgets.QLabel(self.Skeleton)
-        self.label.setGeometry(QtCore.QRect(130, 780, 841, 91))
+        self.label.setGeometry(QtCore.QRect(140, 840, 841, 51))
         self.label.setStyleSheet("background-color: rgba(200, 200, 255, 100);\n"
-                                 "border-radius: 20px;\n"
-                                 "\n"
-                                 "")
+"border-radius: 20px;\n"
+"\n"
+"")
         self.label.setText("")
         self.label.setObjectName("label")
         self.Pager = QtWidgets.QStackedWidget(self.Skeleton)
-        self.Pager.setGeometry(QtCore.QRect(20, 20, 1071, 741))
+        self.Pager.setGeometry(QtCore.QRect(20, 20, 1071, 811))
         self.Pager.setStyleSheet("background-color: rgba(200, 200, 255, 100);\n"
-                                 "border-radius: 20px;\n"
-                                 "")
+"border-radius: 20px;\n"
+"")
         self.Pager.setObjectName("Pager")
         self.Asset_page = QtWidgets.QWidget()
         self.Asset_page.setObjectName("Asset_page")
         self.Asset_windows_title = QtWidgets.QLabel(self.Asset_page)
         self.Asset_windows_title.setGeometry(QtCore.QRect(400, 40, 251, 61))
         self.Asset_windows_title.setStyleSheet("QLabel {\n"
-                                               "    background-color: rgba(50, 50, 150, 150); \n"
-                                               "    color: white;\n"
-                                               "    border-radius: 20px; \n"
-                                               "    font-size: 16pt; \n"
-                                               "    padding: 10px; \n"
-                                               "    border: 2px solid #6495ED;\n"
-                                               "}\n"
-                                               "")
+"    background-color: rgba(50, 50, 150, 150); \n"
+"    color: white;\n"
+"    border-radius: 20px; \n"
+"    font-size: 16pt; \n"
+"    padding: 10px; \n"
+"    border: 2px solid #6495ED;\n"
+"}\n"
+"")
         self.Asset_windows_title.setObjectName("Asset_windows_title")
         self.Asset_components = QtWidgets.QFrame(self.Asset_page)
         self.Asset_components.setGeometry(QtCore.QRect(100, 120, 411, 551))
@@ -73,47 +78,47 @@ class Ui_MainWindow(object):
         self.Choose_the_asset_label.setFont(font)
         self.Choose_the_asset_label.setLayoutDirection(QtCore.Qt.LeftToRight)
         self.Choose_the_asset_label.setStyleSheet("QFrame {\n"
-                                                  "    background-color: rgba(200, 200, 255, 100);\n"
-                                                  "    color: white;\n"
-                                                  "    border-radius: 10px;\n"
-                                                  "}\n"
-                                                  "\n"
-                                                  "QLabel {\n"
-                                                  "    font-size: 14pt;\n"
-                                                  "    padding: 10px;\n"
-                                                  "}\n"
-                                                  "")
+"    background-color: rgba(200, 200, 255, 100);\n"
+"    color: white;\n"
+"    border-radius: 10px;\n"
+"}\n"
+"\n"
+"QLabel {\n"
+"    font-size: 14pt;\n"
+"    padding: 10px;\n"
+"}\n"
+"")
         self.Choose_the_asset_label.setObjectName("Choose_the_asset_label")
         self.Asset_input_window = QtWidgets.QLineEdit(self.Asset_components)
         self.Asset_input_window.setGeometry(QtCore.QRect(130, 100, 171, 31))
         self.Asset_input_window.setStyleSheet("QLineEdit {\n"
-                                              "    background-color: rgba(200, 200, 255, 255); /* Более светлый и прозрачный фон для QLineEdit */\n"
-                                              "    color: #000000;\n"
-                                              "    border-radius: 5px;\n"
-                                              "    padding: 5px; \n"
-                                              "    font-size: 12pt;\n"
-                                              "}\n"
-                                              "\n"
-                                              "QLineEdit:focus {\n"
-                                              "    border: 2px solid #6495ED; /* Граница при активации (фокусе) */\n"
-                                              "}\n"
-                                              "")
+"    background-color: rgba(200, 200, 255, 255); /* Более светлый и прозрачный фон для QLineEdit */\n"
+"    color: #000000;\n"
+"    border-radius: 5px;\n"
+"    padding: 5px; \n"
+"    font-size: 12pt;\n"
+"}\n"
+"\n"
+"QLineEdit:focus {\n"
+"    border: 2px solid #6495ED; /* Граница при активации (фокусе) */\n"
+"}\n"
+"")
         self.Asset_input_window.setObjectName("Asset_input_window")
         self.Find_asset_button = QtWidgets.QPushButton(self.Asset_components)
         self.Find_asset_button.setGeometry(QtCore.QRect(150, 160, 120, 27))
         self.Find_asset_button.setCursor(QtGui.QCursor(QtCore.Qt.PointingHandCursor))
         self.Find_asset_button.setStyleSheet("QPushButton {\n"
-                                             "    background-color: rgba(100, 100, 200, 150); /* Фон кнопки */\n"
-                                             "    color: white; /* Цвет текста кнопки */\n"
-                                             "    border: 2px solid #6495ED; /* Граница кнопки */\n"
-                                             "    border-radius: 5px; /* Округленные углы */\n"
-                                             "    font-size: 14pt; /* Размер шрифта */\n"
-                                             "}\n"
-                                             "\n"
-                                             "QPushButton:hover {\n"
-                                             "    background-color: rgba(100, 100, 200, 200); /* Измененный фон при наведении курсора */\n"
-                                             "}\n"
-                                             "")
+"    background-color: rgba(100, 100, 200, 150); /* Фон кнопки */\n"
+"    color: white; /* Цвет текста кнопки */\n"
+"    border: 2px solid #6495ED; /* Граница кнопки */\n"
+"    border-radius: 5px; /* Округленные углы */\n"
+"    font-size: 14pt; /* Размер шрифта */\n"
+"}\n"
+"\n"
+"QPushButton:hover {\n"
+"    background-color: rgba(100, 100, 200, 200); /* Измененный фон при наведении курсора */\n"
+"}\n"
+"")
         self.Find_asset_button.setObjectName("Find_asset_button")
         self.Download_the_asset_label = QtWidgets.QLabel(self.Asset_components)
         self.Download_the_asset_label.setGeometry(QtCore.QRect(110, 210, 201, 41))
@@ -122,32 +127,32 @@ class Ui_MainWindow(object):
         self.Download_the_asset_label.setFont(font)
         self.Download_the_asset_label.setLayoutDirection(QtCore.Qt.LeftToRight)
         self.Download_the_asset_label.setStyleSheet("QFrame {\n"
-                                                    "    background-color: rgba(200, 200, 255, 100);\n"
-                                                    "    color: white;\n"
-                                                    "    border-radius: 10px;\n"
-                                                    "}\n"
-                                                    "\n"
-                                                    "QLabel {\n"
-                                                    "    font-size: 14pt;\n"
-                                                    "    padding: 10px;\n"
-                                                    "}\n"
-                                                    "")
+"    background-color: rgba(200, 200, 255, 100);\n"
+"    color: white;\n"
+"    border-radius: 10px;\n"
+"}\n"
+"\n"
+"QLabel {\n"
+"    font-size: 14pt;\n"
+"    padding: 10px;\n"
+"}\n"
+"")
         self.Download_the_asset_label.setObjectName("Download_the_asset_label")
         self.Download_asset_button = QtWidgets.QPushButton(self.Asset_components)
         self.Download_asset_button.setGeometry(QtCore.QRect(140, 280, 151, 27))
         self.Download_asset_button.setCursor(QtGui.QCursor(QtCore.Qt.PointingHandCursor))
         self.Download_asset_button.setStyleSheet("QPushButton {\n"
-                                                 "    background-color: rgba(100, 100, 200, 150); /* Фон кнопки */\n"
-                                                 "    color: white; /* Цвет текста кнопки */\n"
-                                                 "    border: 2px solid #6495ED; /* Граница кнопки */\n"
-                                                 "    border-radius: 5px; /* Округленные углы */\n"
-                                                 "    font-size: 14pt; /* Размер шрифта */\n"
-                                                 "}\n"
-                                                 "\n"
-                                                 "QPushButton:hover {\n"
-                                                 "    background-color: rgba(100, 100, 200, 200); /* Измененный фон при наведении курсора */\n"
-                                                 "}\n"
-                                                 "")
+"    background-color: rgba(100, 100, 200, 150); /* Фон кнопки */\n"
+"    color: white; /* Цвет текста кнопки */\n"
+"    border: 2px solid #6495ED; /* Граница кнопки */\n"
+"    border-radius: 5px; /* Округленные углы */\n"
+"    font-size: 14pt; /* Размер шрифта */\n"
+"}\n"
+"\n"
+"QPushButton:hover {\n"
+"    background-color: rgba(100, 100, 200, 200); /* Измененный фон при наведении курсора */\n"
+"}\n"
+"")
         self.Download_asset_button.setObjectName("Download_asset_button")
         self.Quick_resume_frame = QtWidgets.QFrame(self.Asset_page)
         self.Quick_resume_frame.setGeometry(QtCore.QRect(580, 120, 411, 551))
@@ -161,16 +166,16 @@ class Ui_MainWindow(object):
         self.Quick_resume_label.setFont(font)
         self.Quick_resume_label.setLayoutDirection(QtCore.Qt.LeftToRight)
         self.Quick_resume_label.setStyleSheet("QFrame {\n"
-                                              "    background-color: rgba(200, 200, 255, 100);\n"
-                                              "    color: white;\n"
-                                              "    border-radius: 10px;\n"
-                                              "}\n"
-                                              "\n"
-                                              "QLabel {\n"
-                                              "    font-size: 14pt;\n"
-                                              "    padding: 10px;\n"
-                                              "}\n"
-                                              "")
+"    background-color: rgba(200, 200, 255, 100);\n"
+"    color: white;\n"
+"    border-radius: 10px;\n"
+"}\n"
+"\n"
+"QLabel {\n"
+"    font-size: 14pt;\n"
+"    padding: 10px;\n"
+"}\n"
+"")
         self.Quick_resume_label.setObjectName("Quick_resume_label")
         self.Quick_resume_output = QtWidgets.QLabel(self.Quick_resume_frame)
         self.Quick_resume_output.setGeometry(QtCore.QRect(50, 90, 321, 421))
@@ -180,312 +185,287 @@ class Ui_MainWindow(object):
         self.Technical_analysis_page = QtWidgets.QWidget()
         self.Technical_analysis_page.setObjectName("Technical_analysis_page")
         self.TA_title_label = QtWidgets.QLabel(self.Technical_analysis_page)
-        self.TA_title_label.setGeometry(QtCore.QRect(440, 40, 201, 61))
+        self.TA_title_label.setGeometry(QtCore.QRect(410, 40, 241, 61))
         self.TA_title_label.setStyleSheet("QLabel {\n"
-                                          "    background-color: rgba(50, 50, 150, 150); \n"
-                                          "    color: white;\n"
-                                          "    border-radius: 20px; \n"
-                                          "    font-size: 16pt; \n"
-                                          "    padding: 10px; \n"
-                                          "    border: 2px solid #6495ED;\n"
-                                          "}\n"
-                                          "")
+"    background-color: rgba(50, 50, 150, 150); \n"
+"    color: white;\n"
+"    border-radius: 20px; \n"
+"    font-size: 16pt; \n"
+"    padding: 10px; \n"
+"    border: 2px solid #6495ED;\n"
+"}\n"
+"")
+        self.TA_title_label.setAlignment(QtCore.Qt.AlignCenter)
         self.TA_title_label.setObjectName("TA_title_label")
         self.scrollArea = QtWidgets.QScrollArea(self.Technical_analysis_page)
-        self.scrollArea.setGeometry(QtCore.QRect(30, 110, 1011, 611))
+        self.scrollArea.setGeometry(QtCore.QRect(30, 110, 1011, 701))
         self.scrollArea.setWidgetResizable(True)
         self.scrollArea.setObjectName("scrollArea")
         self.scrollAreaWidgetContents = QtWidgets.QWidget()
-        self.scrollAreaWidgetContents.setGeometry(QtCore.QRect(0, 0, 1011, 611))
+        self.scrollAreaWidgetContents.setGeometry(QtCore.QRect(0, 0, 1011, 701))
         self.scrollAreaWidgetContents.setObjectName("scrollAreaWidgetContents")
         self.labeL_LIST = QtWidgets.QLabel(self.scrollAreaWidgetContents)
-        self.labeL_LIST.setGeometry(QtCore.QRect(20, 30, 171, 41))
+        self.labeL_LIST.setGeometry(QtCore.QRect(20, 20, 171, 41))
         self.labeL_LIST.setStyleSheet("QFrame {\n"
-                                      "    background-color: rgba(200, 200, 255, 100);\n"
-                                      "    color: white;\n"
-                                      "    border-radius: 10px;\n"
-                                      "}\n"
-                                      "\n"
-                                      "QLabel {\n"
-                                      "    font-size: 14pt;\n"
-                                      "    padding: 10px;\n"
-                                      "}\n"
-                                      "")
+"    background-color: rgba(200, 200, 255, 100);\n"
+"    color: white;\n"
+"    border-radius: 10px;\n"
+"}\n"
+"\n"
+"QLabel {\n"
+"    font-size: 14pt;\n"
+"    padding: 10px;\n"
+"}\n"
+"")
         self.labeL_LIST.setObjectName("labeL_LIST")
         self.label_Resume = QtWidgets.QLabel(self.scrollAreaWidgetContents)
-        self.label_Resume.setGeometry(QtCore.QRect(540, 40, 101, 41))
+        self.label_Resume.setGeometry(QtCore.QRect(600, 20, 101, 41))
         self.label_Resume.setStyleSheet("QFrame {\n"
-                                        "    background-color: rgba(200, 200, 255, 100);\n"
-                                        "    color: white;\n"
-                                        "    border-radius: 10px;\n"
-                                        "}\n"
-                                        "\n"
-                                        "QLabel {\n"
-                                        "    font-size: 14pt;\n"
-                                        "    padding: 10px;\n"
-                                        "}\n"
-                                        "")
+"    background-color: rgba(200, 200, 255, 100);\n"
+"    color: white;\n"
+"    border-radius: 10px;\n"
+"}\n"
+"\n"
+"QLabel {\n"
+"    font-size: 14pt;\n"
+"    padding: 10px;\n"
+"}\n"
+"")
         self.label_Resume.setObjectName("label_Resume")
         self.label_Resume_Output = QtWidgets.QLabel(self.scrollAreaWidgetContents)
-        self.label_Resume_Output.setGeometry(QtCore.QRect(670, 40, 161, 41))
+        self.label_Resume_Output.setGeometry(QtCore.QRect(790, 20, 161, 41))
         self.label_Resume_Output.setStyleSheet("QFrame {\n"
-                                               "    background-color: rgba(200, 200, 255, 100);\n"
-                                               "    color: white;\n"
-                                               "    border-radius: 10px;\n"
-                                               "}\n"
-                                               "\n"
-                                               "QLabel {\n"
-                                               "    font-size: 14pt;\n"
-                                               "    padding: 10px;\n"
-                                               "}\n"
-                                               "")
+"    background-color: rgba(200, 200, 255, 100);\n"
+"    color: white;\n"
+"    border-radius: 10px;\n"
+"}\n"
+"\n"
+"QLabel {\n"
+"    font-size: 14pt;\n"
+"    padding: 10px;\n"
+"}\n"
+"")
         self.label_Resume_Output.setText("")
+        self.label_Resume_Output.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
         self.label_Resume_Output.setObjectName("label_Resume_Output")
-        self.label_Resume_2 = QtWidgets.QLabel(self.scrollAreaWidgetContents)
-        self.label_Resume_2.setGeometry(QtCore.QRect(550, 230, 271, 41))
-        self.label_Resume_2.setStyleSheet("QFrame {\n"
-                                          "    background-color: rgba(200, 200, 255, 100);\n"
-                                          "    color: white;\n"
-                                          "    border-radius: 10px;\n"
-                                          "}\n"
-                                          "\n"
-                                          "QLabel {\n"
-                                          "    font-size: 14pt;\n"
-                                          "    padding: 10px;\n"
-                                          "}\n"
-                                          "")
-        self.label_Resume_2.setObjectName("label_Resume_2")
         self.layoutWidget = QtWidgets.QWidget(self.scrollAreaWidgetContents)
-        self.layoutWidget.setGeometry(QtCore.QRect(20, 79, 439, 660))
+        self.layoutWidget.setGeometry(QtCore.QRect(20, 70, 461, 619))
         self.layoutWidget.setObjectName("layoutWidget")
         self.horizontalLayout_3 = QtWidgets.QHBoxLayout(self.layoutWidget)
         self.horizontalLayout_3.setContentsMargins(0, 0, 0, 0)
+        self.horizontalLayout_3.setSpacing(6)
         self.horizontalLayout_3.setObjectName("horizontalLayout_3")
         self.verticalLayout = QtWidgets.QVBoxLayout()
         self.verticalLayout.setSpacing(0)
         self.verticalLayout.setObjectName("verticalLayout")
         self.label_MACD = QtWidgets.QLabel(self.layoutWidget)
         self.label_MACD.setStyleSheet("QFrame {\n"
-                                      "    background-color: rgba(200, 200, 255, 100);\n"
-                                      "    color: white;\n"
-                                      "    border-radius: 10px;\n"
-                                      "}\n"
-                                      "\n"
-                                      "QLabel {\n"
-                                      "    font-size: 10pt;\n"
-                                      "    padding: 10px;\n"
-                                      "}\n"
-                                      "")
+"    background-color: rgba(200, 200, 255, 100);\n"
+"    color: white;\n"
+"    border-radius: 10px;\n"
+"}\n"
+"\n"
+"QLabel {\n"
+"    font-size: 10pt;\n"
+"    padding: 10px;\n"
+"}\n"
+"")
         self.label_MACD.setObjectName("label_MACD")
         self.verticalLayout.addWidget(self.label_MACD)
         self.label_Supertrend = QtWidgets.QLabel(self.layoutWidget)
         self.label_Supertrend.setStyleSheet("QFrame {\n"
-                                            "    background-color: rgba(200, 200, 255, 100);\n"
-                                            "    color: white;\n"
-                                            "    border-radius: 10px;\n"
-                                            "}\n"
-                                            "\n"
-                                            "QLabel {\n"
-                                            "    font-size: 10pt;\n"
-                                            "    padding: 10px;\n"
-                                            "}\n"
-                                            "")
+"    background-color: rgba(200, 200, 255, 100);\n"
+"    color: white;\n"
+"    border-radius: 10px;\n"
+"}\n"
+"\n"
+"QLabel {\n"
+"    font-size: 10pt;\n"
+"    padding: 10px;\n"
+"}\n"
+"")
         self.label_Supertrend.setObjectName("label_Supertrend")
         self.verticalLayout.addWidget(self.label_Supertrend)
         self.label_Rsi = QtWidgets.QLabel(self.layoutWidget)
         self.label_Rsi.setStyleSheet("QFrame {\n"
-                                     "    background-color: rgba(200, 200, 255, 100);\n"
-                                     "    color: white;\n"
-                                     "    border-radius: 10px;\n"
-                                     "}\n"
-                                     "\n"
-                                     "QLabel {\n"
-                                     "    font-size: 10pt;\n"
-                                     "    padding: 10px;\n"
-                                     "}\n"
-                                     "")
+"    background-color: rgba(200, 200, 255, 100);\n"
+"    color: white;\n"
+"    border-radius: 10px;\n"
+"}\n"
+"\n"
+"QLabel {\n"
+"    font-size: 10pt;\n"
+"    padding: 10px;\n"
+"}\n"
+"")
         self.label_Rsi.setObjectName("label_Rsi")
         self.verticalLayout.addWidget(self.label_Rsi)
         self.label_Parabolic_SAR = QtWidgets.QLabel(self.layoutWidget)
         self.label_Parabolic_SAR.setStyleSheet("QFrame {\n"
-                                               "    background-color: rgba(200, 200, 255, 100);\n"
-                                               "    color: white;\n"
-                                               "    border-radius: 10px;\n"
-                                               "}\n"
-                                               "\n"
-                                               "QLabel {\n"
-                                               "    font-size: 10pt;\n"
-                                               "    padding: 10px;\n"
-                                               "}\n"
-                                               "")
+"    background-color: rgba(200, 200, 255, 100);\n"
+"    color: white;\n"
+"    border-radius: 10px;\n"
+"}\n"
+"\n"
+"QLabel {\n"
+"    font-size: 10pt;\n"
+"    padding: 10px;\n"
+"}\n"
+"")
         self.label_Parabolic_SAR.setObjectName("label_Parabolic_SAR")
         self.verticalLayout.addWidget(self.label_Parabolic_SAR)
         self.label_On_balance_ind = QtWidgets.QLabel(self.layoutWidget)
         self.label_On_balance_ind.setStyleSheet("QFrame {\n"
-                                                "    background-color: rgba(200, 200, 255, 100);\n"
-                                                "    color: white;\n"
-                                                "    border-radius: 10px;\n"
-                                                "}\n"
-                                                "\n"
-                                                "QLabel {\n"
-                                                "    font-size: 10pt;\n"
-                                                "    padding: 10px;\n"
-                                                "}\n"
-                                                "")
+"    background-color: rgba(200, 200, 255, 100);\n"
+"    color: white;\n"
+"    border-radius: 10px;\n"
+"}\n"
+"\n"
+"QLabel {\n"
+"    font-size: 10pt;\n"
+"    padding: 10px;\n"
+"}\n"
+"")
         self.label_On_balance_ind.setObjectName("label_On_balance_ind")
         self.verticalLayout.addWidget(self.label_On_balance_ind)
         self.label_Stochastic = QtWidgets.QLabel(self.layoutWidget)
         self.label_Stochastic.setStyleSheet("QFrame {\n"
-                                            "    background-color: rgba(200, 200, 255, 100);\n"
-                                            "    color: white;\n"
-                                            "    border-radius: 10px;\n"
-                                            "}\n"
-                                            "\n"
-                                            "QLabel {\n"
-                                            "    font-size: 10pt;\n"
-                                            "    padding: 10px;\n"
-                                            "}\n"
-                                            "")
+"    background-color: rgba(200, 200, 255, 100);\n"
+"    color: white;\n"
+"    border-radius: 10px;\n"
+"}\n"
+"\n"
+"QLabel {\n"
+"    font-size: 10pt;\n"
+"    padding: 10px;\n"
+"}\n"
+"")
         self.label_Stochastic.setObjectName("label_Stochastic")
         self.verticalLayout.addWidget(self.label_Stochastic)
         self.label_Traders_Lion = QtWidgets.QLabel(self.layoutWidget)
         self.label_Traders_Lion.setStyleSheet("QFrame {\n"
-                                              "    background-color: rgba(200, 200, 255, 100);\n"
-                                              "    color: white;\n"
-                                              "    border-radius: 10px;\n"
-                                              "}\n"
-                                              "\n"
-                                              "QLabel {\n"
-                                              "    font-size: 10pt;\n"
-                                              "    padding: 10px;\n"
-                                              "}\n"
-                                              "")
+"    background-color: rgba(200, 200, 255, 100);\n"
+"    color: white;\n"
+"    border-radius: 10px;\n"
+"}\n"
+"\n"
+"QLabel {\n"
+"    font-size: 10pt;\n"
+"    padding: 10px;\n"
+"}\n"
+"")
         self.label_Traders_Lion.setObjectName("label_Traders_Lion")
         self.verticalLayout.addWidget(self.label_Traders_Lion)
         self.label_Volume_Weighted = QtWidgets.QLabel(self.layoutWidget)
         self.label_Volume_Weighted.setStyleSheet("QFrame {\n"
-                                                 "    background-color: rgba(200, 200, 255, 100);\n"
-                                                 "    color: white;\n"
-                                                 "    border-radius: 10px;\n"
-                                                 "}\n"
-                                                 "\n"
-                                                 "QLabel {\n"
-                                                 "    font-size: 10pt;\n"
-                                                 "    padding: 10px;\n"
-                                                 "}\n"
-                                                 "")
+"    background-color: rgba(200, 200, 255, 100);\n"
+"    color: white;\n"
+"    border-radius: 10px;\n"
+"}\n"
+"\n"
+"QLabel {\n"
+"    font-size: 10pt;\n"
+"    padding: 10px;\n"
+"}\n"
+"")
         self.label_Volume_Weighted.setObjectName("label_Volume_Weighted")
         self.verticalLayout.addWidget(self.label_Volume_Weighted)
         self.label_Volume_price_trend_2 = QtWidgets.QLabel(self.layoutWidget)
         self.label_Volume_price_trend_2.setStyleSheet("QFrame {\n"
-                                                      "    background-color: rgba(200, 200, 255, 100);\n"
-                                                      "    color: white;\n"
-                                                      "    border-radius: 10px;\n"
-                                                      "}\n"
-                                                      "\n"
-                                                      "QLabel {\n"
-                                                      "    font-size: 10pt;\n"
-                                                      "    padding: 10px;\n"
-                                                      "}\n"
-                                                      "")
+"    background-color: rgba(200, 200, 255, 100);\n"
+"    color: white;\n"
+"    border-radius: 10px;\n"
+"}\n"
+"\n"
+"QLabel {\n"
+"    font-size: 10pt;\n"
+"    padding: 10px;\n"
+"}\n"
+"")
         self.label_Volume_price_trend_2.setObjectName("label_Volume_price_trend_2")
         self.verticalLayout.addWidget(self.label_Volume_price_trend_2)
-        self.label_Relative_Strength = QtWidgets.QLabel(self.layoutWidget)
-        self.label_Relative_Strength.setStyleSheet("QFrame {\n"
-                                                   "    background-color: rgba(200, 200, 255, 100);\n"
-                                                   "    color: white;\n"
-                                                   "    border-radius: 10px;\n"
-                                                   "}\n"
-                                                   "\n"
-                                                   "QLabel {\n"
-                                                   "    font-size: 10pt;\n"
-                                                   "    padding: 10px;\n"
-                                                   "}\n"
-                                                   "")
-        self.label_Relative_Strength.setObjectName("label_Relative_Strength")
-        self.verticalLayout.addWidget(self.label_Relative_Strength)
         self.label_Volume_price_trend = QtWidgets.QLabel(self.layoutWidget)
         self.label_Volume_price_trend.setStyleSheet("QFrame {\n"
-                                                    "    background-color: rgba(200, 200, 255, 100);\n"
-                                                    "    color: white;\n"
-                                                    "    border-radius: 10px;\n"
-                                                    "}\n"
-                                                    "\n"
-                                                    "QLabel {\n"
-                                                    "    font-size: 10pt;\n"
-                                                    "    padding: 10px;\n"
-                                                    "}\n"
-                                                    "")
+"    background-color: rgba(200, 200, 255, 100);\n"
+"    color: white;\n"
+"    border-radius: 10px;\n"
+"}\n"
+"\n"
+"QLabel {\n"
+"    font-size: 10pt;\n"
+"    padding: 10px;\n"
+"}\n"
+"")
         self.label_Volume_price_trend.setObjectName("label_Volume_price_trend")
         self.verticalLayout.addWidget(self.label_Volume_price_trend)
-        self.label_MA_6 = QtWidgets.QLabel(self.layoutWidget)
-        self.label_MA_6.setStyleSheet("QFrame {\n"
-                                      "    background-color: rgba(200, 200, 255, 100);\n"
-                                      "    color: white;\n"
-                                      "    border-radius: 10px;\n"
-                                      "}\n"
-                                      "\n"
-                                      "QLabel {\n"
-                                      "    font-size: 10pt;\n"
-                                      "    padding: 10px;\n"
-                                      "}\n"
-                                      "")
-        self.label_MA_6.setObjectName("label_MA_6")
-        self.verticalLayout.addWidget(self.label_MA_6)
         self.label_Chaikin = QtWidgets.QLabel(self.layoutWidget)
         self.label_Chaikin.setStyleSheet("QFrame {\n"
-                                         "    background-color: rgba(200, 200, 255, 100);\n"
-                                         "    color: white;\n"
-                                         "    border-radius: 10px;\n"
-                                         "}\n"
-                                         "\n"
-                                         "QLabel {\n"
-                                         "    font-size: 10pt;\n"
-                                         "    padding: 10px;\n"
-                                         "}\n"
-                                         "")
+"    background-color: rgba(200, 200, 255, 100);\n"
+"    color: white;\n"
+"    border-radius: 10px;\n"
+"}\n"
+"\n"
+"QLabel {\n"
+"    font-size: 10pt;\n"
+"    padding: 10px;\n"
+"}\n"
+"")
         self.label_Chaikin.setObjectName("label_Chaikin")
         self.verticalLayout.addWidget(self.label_Chaikin)
         self.label_Ease_of_Movement = QtWidgets.QLabel(self.layoutWidget)
         self.label_Ease_of_Movement.setStyleSheet("QFrame {\n"
-                                                  "    background-color: rgba(200, 200, 255, 100);\n"
-                                                  "    color: white;\n"
-                                                  "    border-radius: 10px;\n"
-                                                  "}\n"
-                                                  "\n"
-                                                  "QLabel {\n"
-                                                  "    font-size: 10pt;\n"
-                                                  "    padding: 10px;\n"
-                                                  "}\n"
-                                                  "")
+"    background-color: rgba(200, 200, 255, 100);\n"
+"    color: white;\n"
+"    border-radius: 10px;\n"
+"}\n"
+"\n"
+"QLabel {\n"
+"    font-size: 10pt;\n"
+"    padding: 10px;\n"
+"}\n"
+"")
         self.label_Ease_of_Movement.setObjectName("label_Ease_of_Movement")
         self.verticalLayout.addWidget(self.label_Ease_of_Movement)
+        self.label_MA_6 = QtWidgets.QLabel(self.layoutWidget)
+        self.label_MA_6.setStyleSheet("QFrame {\n"
+"    background-color: rgba(200, 200, 255, 100);\n"
+"    color: white;\n"
+"    border-radius: 10px;\n"
+"}\n"
+"\n"
+"QLabel {\n"
+"    font-size: 10pt;\n"
+"    padding: 10px;\n"
+"}\n"
+"")
+        self.label_MA_6.setObjectName("label_MA_6")
+        self.verticalLayout.addWidget(self.label_MA_6)
         self.label_MA_24 = QtWidgets.QLabel(self.layoutWidget)
         self.label_MA_24.setStyleSheet("QFrame {\n"
-                                       "    background-color: rgba(200, 200, 255, 100);\n"
-                                       "    color: white;\n"
-                                       "    border-radius: 10px;\n"
-                                       "}\n"
-                                       "\n"
-                                       "QLabel {\n"
-                                       "    font-size: 10pt;\n"
-                                       "    padding: 10px;\n"
-                                       "}\n"
-                                       "")
+"    background-color: rgba(200, 200, 255, 100);\n"
+"    color: white;\n"
+"    border-radius: 10px;\n"
+"}\n"
+"\n"
+"QLabel {\n"
+"    font-size: 10pt;\n"
+"    padding: 10px;\n"
+"}\n"
+"")
         self.label_MA_24.setObjectName("label_MA_24")
         self.verticalLayout.addWidget(self.label_MA_24)
         self.label_MA_72 = QtWidgets.QLabel(self.layoutWidget)
         self.label_MA_72.setStyleSheet("QFrame {\n"
-                                       "    background-color: rgba(200, 200, 255, 100);\n"
-                                       "    color: white;\n"
-                                       "    border-radius: 10px;\n"
-                                       "}\n"
-                                       "\n"
-                                       "QLabel {\n"
-                                       "    font-size: 10pt;\n"
-                                       "    padding: 10px;\n"
-                                       "}\n"
-                                       "")
+"    background-color: rgba(200, 200, 255, 100);\n"
+"    color: white;\n"
+"    border-radius: 10px;\n"
+"}\n"
+"\n"
+"QLabel {\n"
+"    font-size: 10pt;\n"
+"    padding: 10px;\n"
+"}\n"
+"")
         self.label_MA_72.setObjectName("label_MA_72")
         self.verticalLayout.addWidget(self.label_MA_72)
         self.horizontalLayout_3.addLayout(self.verticalLayout)
@@ -494,561 +474,607 @@ class Ui_MainWindow(object):
         self.verticalLayout_2.setObjectName("verticalLayout_2")
         self.label_MACD_2 = QtWidgets.QLabel(self.layoutWidget)
         self.label_MACD_2.setStyleSheet("QFrame {\n"
-                                        "    background-color: rgba(200, 200, 255, 100);\n"
-                                        "    color: white;\n"
-                                        "    border-radius: 10px;\n"
-                                        "}\n"
-                                        "\n"
-                                        "QLabel {\n"
-                                        "    font-size: 10pt;\n"
-                                        "    padding: 10px;\n"
-                                        "}\n"
-                                        "")
+"    background-color: rgba(200, 200, 255, 100);\n"
+"    color: white;\n"
+"    border-radius: 10px;\n"
+"}\n"
+"\n"
+"QLabel {\n"
+"    font-size: 10pt;\n"
+"    padding: 10px;\n"
+"}\n"
+"")
         self.label_MACD_2.setText("")
         self.label_MACD_2.setObjectName("label_MACD_2")
         self.verticalLayout_2.addWidget(self.label_MACD_2)
         self.label_Supertrend_2 = QtWidgets.QLabel(self.layoutWidget)
         self.label_Supertrend_2.setStyleSheet("QFrame {\n"
-                                              "    background-color: rgba(200, 200, 255, 100);\n"
-                                              "    color: white;\n"
-                                              "    border-radius: 10px;\n"
-                                              "}\n"
-                                              "\n"
-                                              "QLabel {\n"
-                                              "    font-size: 10pt;\n"
-                                              "    padding: 10px;\n"
-                                              "}\n"
-                                              "")
+"    background-color: rgba(200, 200, 255, 100);\n"
+"    color: white;\n"
+"    border-radius: 10px;\n"
+"}\n"
+"\n"
+"QLabel {\n"
+"    font-size: 10pt;\n"
+"    padding: 10px;\n"
+"}\n"
+"")
         self.label_Supertrend_2.setText("")
         self.label_Supertrend_2.setObjectName("label_Supertrend_2")
         self.verticalLayout_2.addWidget(self.label_Supertrend_2)
         self.label_Rsi_2 = QtWidgets.QLabel(self.layoutWidget)
         self.label_Rsi_2.setStyleSheet("QFrame {\n"
-                                       "    background-color: rgba(200, 200, 255, 100);\n"
-                                       "    color: white;\n"
-                                       "    border-radius: 10px;\n"
-                                       "}\n"
-                                       "\n"
-                                       "QLabel {\n"
-                                       "    font-size: 10pt;\n"
-                                       "    padding: 10px;\n"
-                                       "}\n"
-                                       "")
+"    background-color: rgba(200, 200, 255, 100);\n"
+"    color: white;\n"
+"    border-radius: 10px;\n"
+"}\n"
+"\n"
+"QLabel {\n"
+"    font-size: 10pt;\n"
+"    padding: 10px;\n"
+"}\n"
+"")
         self.label_Rsi_2.setText("")
         self.label_Rsi_2.setObjectName("label_Rsi_2")
         self.verticalLayout_2.addWidget(self.label_Rsi_2)
         self.label_Parabolic_SAR_2 = QtWidgets.QLabel(self.layoutWidget)
         self.label_Parabolic_SAR_2.setStyleSheet("QFrame {\n"
-                                                 "    background-color: rgba(200, 200, 255, 100);\n"
-                                                 "    color: white;\n"
-                                                 "    border-radius: 10px;\n"
-                                                 "}\n"
-                                                 "\n"
-                                                 "QLabel {\n"
-                                                 "    font-size: 10pt;\n"
-                                                 "    padding: 10px;\n"
-                                                 "}\n"
-                                                 "")
+"    background-color: rgba(200, 200, 255, 100);\n"
+"    color: white;\n"
+"    border-radius: 10px;\n"
+"}\n"
+"\n"
+"QLabel {\n"
+"    font-size: 10pt;\n"
+"    padding: 10px;\n"
+"}\n"
+"")
         self.label_Parabolic_SAR_2.setText("")
         self.label_Parabolic_SAR_2.setObjectName("label_Parabolic_SAR_2")
         self.verticalLayout_2.addWidget(self.label_Parabolic_SAR_2)
         self.label_On_balance_ind_2 = QtWidgets.QLabel(self.layoutWidget)
         self.label_On_balance_ind_2.setStyleSheet("QFrame {\n"
-                                                  "    background-color: rgba(200, 200, 255, 100);\n"
-                                                  "    color: white;\n"
-                                                  "    border-radius: 10px;\n"
-                                                  "}\n"
-                                                  "\n"
-                                                  "QLabel {\n"
-                                                  "    font-size: 10pt;\n"
-                                                  "    padding: 10px;\n"
-                                                  "}\n"
-                                                  "")
+"    background-color: rgba(200, 200, 255, 100);\n"
+"    color: white;\n"
+"    border-radius: 10px;\n"
+"}\n"
+"\n"
+"QLabel {\n"
+"    font-size: 10pt;\n"
+"    padding: 10px;\n"
+"}\n"
+"")
         self.label_On_balance_ind_2.setText("")
         self.label_On_balance_ind_2.setObjectName("label_On_balance_ind_2")
         self.verticalLayout_2.addWidget(self.label_On_balance_ind_2)
         self.label_Stochastic_2 = QtWidgets.QLabel(self.layoutWidget)
         self.label_Stochastic_2.setStyleSheet("QFrame {\n"
-                                              "    background-color: rgba(200, 200, 255, 100);\n"
-                                              "    color: white;\n"
-                                              "    border-radius: 10px;\n"
-                                              "}\n"
-                                              "\n"
-                                              "QLabel {\n"
-                                              "    font-size: 10pt;\n"
-                                              "    padding: 10px;\n"
-                                              "}\n"
-                                              "")
+"    background-color: rgba(200, 200, 255, 100);\n"
+"    color: white;\n"
+"    border-radius: 10px;\n"
+"}\n"
+"\n"
+"QLabel {\n"
+"    font-size: 10pt;\n"
+"    padding: 10px;\n"
+"}\n"
+"")
         self.label_Stochastic_2.setText("")
         self.label_Stochastic_2.setObjectName("label_Stochastic_2")
         self.verticalLayout_2.addWidget(self.label_Stochastic_2)
         self.label_Traders_Lion_2 = QtWidgets.QLabel(self.layoutWidget)
         self.label_Traders_Lion_2.setStyleSheet("QFrame {\n"
-                                                "    background-color: rgba(200, 200, 255, 100);\n"
-                                                "    color: white;\n"
-                                                "    border-radius: 10px;\n"
-                                                "}\n"
-                                                "\n"
-                                                "QLabel {\n"
-                                                "    font-size: 10pt;\n"
-                                                "    padding: 10px;\n"
-                                                "}\n"
-                                                "")
+"    background-color: rgba(200, 200, 255, 100);\n"
+"    color: white;\n"
+"    border-radius: 10px;\n"
+"}\n"
+"\n"
+"QLabel {\n"
+"    font-size: 10pt;\n"
+"    padding: 10px;\n"
+"}\n"
+"")
         self.label_Traders_Lion_2.setText("")
         self.label_Traders_Lion_2.setObjectName("label_Traders_Lion_2")
         self.verticalLayout_2.addWidget(self.label_Traders_Lion_2)
         self.label_Volume_Weighted_2 = QtWidgets.QLabel(self.layoutWidget)
         self.label_Volume_Weighted_2.setStyleSheet("QFrame {\n"
-                                                   "    background-color: rgba(200, 200, 255, 100);\n"
-                                                   "    color: white;\n"
-                                                   "    border-radius: 10px;\n"
-                                                   "}\n"
-                                                   "\n"
-                                                   "QLabel {\n"
-                                                   "    font-size: 10pt;\n"
-                                                   "    padding: 10px;\n"
-                                                   "}\n"
-                                                   "")
+"    background-color: rgba(200, 200, 255, 100);\n"
+"    color: white;\n"
+"    border-radius: 10px;\n"
+"}\n"
+"\n"
+"QLabel {\n"
+"    font-size: 10pt;\n"
+"    padding: 10px;\n"
+"}\n"
+"")
         self.label_Volume_Weighted_2.setText("")
         self.label_Volume_Weighted_2.setObjectName("label_Volume_Weighted_2")
         self.verticalLayout_2.addWidget(self.label_Volume_Weighted_2)
         self.label_Volume_price_trend_3 = QtWidgets.QLabel(self.layoutWidget)
         self.label_Volume_price_trend_3.setStyleSheet("QFrame {\n"
-                                                      "    background-color: rgba(200, 200, 255, 100);\n"
-                                                      "    color: white;\n"
-                                                      "    border-radius: 10px;\n"
-                                                      "}\n"
-                                                      "\n"
-                                                      "QLabel {\n"
-                                                      "    font-size: 10pt;\n"
-                                                      "    padding: 10px;\n"
-                                                      "}\n"
-                                                      "")
+"    background-color: rgba(200, 200, 255, 100);\n"
+"    color: white;\n"
+"    border-radius: 10px;\n"
+"}\n"
+"\n"
+"QLabel {\n"
+"    font-size: 10pt;\n"
+"    padding: 10px;\n"
+"}\n"
+"")
         self.label_Volume_price_trend_3.setText("")
         self.label_Volume_price_trend_3.setObjectName("label_Volume_price_trend_3")
         self.verticalLayout_2.addWidget(self.label_Volume_price_trend_3)
-        self.label_Relative_Strength_2 = QtWidgets.QLabel(self.layoutWidget)
-        self.label_Relative_Strength_2.setStyleSheet("QFrame {\n"
-                                                     "    background-color: rgba(200, 200, 255, 100);\n"
-                                                     "    color: white;\n"
-                                                     "    border-radius: 10px;\n"
-                                                     "}\n"
-                                                     "\n"
-                                                     "QLabel {\n"
-                                                     "    font-size: 10pt;\n"
-                                                     "    padding: 10px;\n"
-                                                     "}\n"
-                                                     "")
-        self.label_Relative_Strength_2.setText("")
-        self.label_Relative_Strength_2.setObjectName("label_Relative_Strength_2")
-        self.verticalLayout_2.addWidget(self.label_Relative_Strength_2)
-        self.label_Volume_price_trend_4 = QtWidgets.QLabel(self.layoutWidget)
-        self.label_Volume_price_trend_4.setStyleSheet("QFrame {\n"
-                                                      "    background-color: rgba(200, 200, 255, 100);\n"
-                                                      "    color: white;\n"
-                                                      "    border-radius: 10px;\n"
-                                                      "}\n"
-                                                      "\n"
-                                                      "QLabel {\n"
-                                                      "    font-size: 10pt;\n"
-                                                      "    padding: 10px;\n"
-                                                      "}\n"
-                                                      "")
-        self.label_Volume_price_trend_4.setText("")
-        self.label_Volume_price_trend_4.setObjectName("label_Volume_price_trend_4")
-        self.verticalLayout_2.addWidget(self.label_Volume_price_trend_4)
-        self.label_MA_7 = QtWidgets.QLabel(self.layoutWidget)
-        self.label_MA_7.setStyleSheet("QFrame {\n"
-                                      "    background-color: rgba(200, 200, 255, 100);\n"
-                                      "    color: white;\n"
-                                      "    border-radius: 10px;\n"
-                                      "}\n"
-                                      "\n"
-                                      "QLabel {\n"
-                                      "    font-size: 10pt;\n"
-                                      "    padding: 10px;\n"
-                                      "}\n"
-                                      "")
-        self.label_MA_7.setText("")
-        self.label_MA_7.setObjectName("label_MA_7")
-        self.verticalLayout_2.addWidget(self.label_MA_7)
+        self.label_Volume_price_trend_2_1 = QtWidgets.QLabel(self.layoutWidget)
+        self.label_Volume_price_trend_2_1.setStyleSheet("QFrame {\n"
+"    background-color: rgba(200, 200, 255, 100);\n"
+"    color: white;\n"
+"    border-radius: 10px;\n"
+"}\n"
+"\n"
+"QLabel {\n"
+"    font-size: 10pt;\n"
+"    padding: 10px;\n"
+"}\n"
+"")
+        self.label_Volume_price_trend_2_1.setText("")
+        self.label_Volume_price_trend_2_1.setObjectName("label_Volume_price_trend_2_1")
+        self.verticalLayout_2.addWidget(self.label_Volume_price_trend_2_1)
         self.label_Chaikin_2 = QtWidgets.QLabel(self.layoutWidget)
         self.label_Chaikin_2.setStyleSheet("QFrame {\n"
-                                           "    background-color: rgba(200, 200, 255, 100);\n"
-                                           "    color: white;\n"
-                                           "    border-radius: 10px;\n"
-                                           "}\n"
-                                           "\n"
-                                           "QLabel {\n"
-                                           "    font-size: 10pt;\n"
-                                           "    padding: 10px;\n"
-                                           "}\n"
-                                           "")
+"    background-color: rgba(200, 200, 255, 100);\n"
+"    color: white;\n"
+"    border-radius: 10px;\n"
+"}\n"
+"\n"
+"QLabel {\n"
+"    font-size: 10pt;\n"
+"    padding: 10px;\n"
+"}\n"
+"")
         self.label_Chaikin_2.setText("")
         self.label_Chaikin_2.setObjectName("label_Chaikin_2")
         self.verticalLayout_2.addWidget(self.label_Chaikin_2)
         self.label_Ease_of_Movement_2 = QtWidgets.QLabel(self.layoutWidget)
         self.label_Ease_of_Movement_2.setStyleSheet("QFrame {\n"
-                                                    "    background-color: rgba(200, 200, 255, 100);\n"
-                                                    "    color: white;\n"
-                                                    "    border-radius: 10px;\n"
-                                                    "}\n"
-                                                    "\n"
-                                                    "QLabel {\n"
-                                                    "    font-size: 10pt;\n"
-                                                    "    padding: 10px;\n"
-                                                    "}\n"
-                                                    "")
+"    background-color: rgba(200, 200, 255, 100);\n"
+"    color: white;\n"
+"    border-radius: 10px;\n"
+"}\n"
+"\n"
+"QLabel {\n"
+"    font-size: 10pt;\n"
+"    padding: 10px;\n"
+"}\n"
+"")
         self.label_Ease_of_Movement_2.setText("")
         self.label_Ease_of_Movement_2.setObjectName("label_Ease_of_Movement_2")
         self.verticalLayout_2.addWidget(self.label_Ease_of_Movement_2)
-        self.label_MA_25 = QtWidgets.QLabel(self.layoutWidget)
-        self.label_MA_25.setStyleSheet("QFrame {\n"
-                                       "    background-color: rgba(200, 200, 255, 100);\n"
-                                       "    color: white;\n"
-                                       "    border-radius: 10px;\n"
-                                       "}\n"
-                                       "\n"
-                                       "QLabel {\n"
-                                       "    font-size: 10pt;\n"
-                                       "    padding: 10px;\n"
-                                       "}\n"
-                                       "")
-        self.label_MA_25.setText("")
-        self.label_MA_25.setObjectName("label_MA_25")
-        self.verticalLayout_2.addWidget(self.label_MA_25)
-        self.label_MA_73 = QtWidgets.QLabel(self.layoutWidget)
-        self.label_MA_73.setStyleSheet("QFrame {\n"
-                                       "    background-color: rgba(200, 200, 255, 100);\n"
-                                       "    color: white;\n"
-                                       "    border-radius: 10px;\n"
-                                       "}\n"
-                                       "\n"
-                                       "QLabel {\n"
-                                       "    font-size: 10pt;\n"
-                                       "    padding: 10px;\n"
-                                       "}\n"
-                                       "")
-        self.label_MA_73.setText("")
-        self.label_MA_73.setObjectName("label_MA_73")
-        self.verticalLayout_2.addWidget(self.label_MA_73)
+        self.label_MA_6_2 = QtWidgets.QLabel(self.layoutWidget)
+        self.label_MA_6_2.setStyleSheet("QFrame {\n"
+"    background-color: rgba(200, 200, 255, 100);\n"
+"    color: white;\n"
+"    border-radius: 10px;\n"
+"}\n"
+"\n"
+"QLabel {\n"
+"    font-size: 10pt;\n"
+"    padding: 10px;\n"
+"}\n"
+"")
+        self.label_MA_6_2.setText("")
+        self.label_MA_6_2.setObjectName("label_MA_6_2")
+        self.verticalLayout_2.addWidget(self.label_MA_6_2)
+        self.label_MA_24_2 = QtWidgets.QLabel(self.layoutWidget)
+        self.label_MA_24_2.setStyleSheet("QFrame {\n"
+"    background-color: rgba(200, 200, 255, 100);\n"
+"    color: white;\n"
+"    border-radius: 10px;\n"
+"}\n"
+"\n"
+"QLabel {\n"
+"    font-size: 10pt;\n"
+"    padding: 10px;\n"
+"}\n"
+"")
+        self.label_MA_24_2.setText("")
+        self.label_MA_24_2.setObjectName("label_MA_24_2")
+        self.verticalLayout_2.addWidget(self.label_MA_24_2)
+        self.label_MA_72_2 = QtWidgets.QLabel(self.layoutWidget)
+        self.label_MA_72_2.setStyleSheet("QFrame {\n"
+"    background-color: rgba(200, 200, 255, 100);\n"
+"    color: white;\n"
+"    border-radius: 10px;\n"
+"}\n"
+"\n"
+"QLabel {\n"
+"    font-size: 10pt;\n"
+"    padding: 10px;\n"
+"}\n"
+"")
+        self.label_MA_72_2.setText("")
+        self.label_MA_72_2.setObjectName("label_MA_72_2")
+        self.verticalLayout_2.addWidget(self.label_MA_72_2)
         self.horizontalLayout_3.addLayout(self.verticalLayout_2)
         self.layoutWidget1 = QtWidgets.QWidget(self.scrollAreaWidgetContents)
-        self.layoutWidget1.setGeometry(QtCore.QRect(550, 300, 281, 327))
+        self.layoutWidget1.setGeometry(QtCore.QRect(600, 70, 351, 521))
         self.layoutWidget1.setObjectName("layoutWidget1")
-        self.horizontalLayout_4 = QtWidgets.QHBoxLayout(self.layoutWidget1)
-        self.horizontalLayout_4.setContentsMargins(0, 0, 0, 0)
+        self.verticalLayout_ATR_and_Perfomance = QtWidgets.QVBoxLayout(self.layoutWidget1)
+        self.verticalLayout_ATR_and_Perfomance.setContentsMargins(0, 0, 0, 0)
+        self.verticalLayout_ATR_and_Perfomance.setObjectName("verticalLayout_ATR_and_Perfomance")
+        self.label_Trend_Perfomance_title = QtWidgets.QLabel(self.layoutWidget1)
+        self.label_Trend_Perfomance_title.setStyleSheet("QFrame {\n"
+"    background-color: rgba(200, 200, 255, 100);\n"
+"    color: white;\n"
+"    border-radius: 10px;\n"
+"}\n"
+"\n"
+"QLabel {\n"
+"    font-size: 14pt;\n"
+"    padding: 10px;\n"
+"}\n"
+"")
+        self.label_Trend_Perfomance_title.setObjectName("label_Trend_Perfomance_title")
+        self.verticalLayout_ATR_and_Perfomance.addWidget(self.label_Trend_Perfomance_title)
+        self.label_Grow_Duration = QtWidgets.QLabel(self.layoutWidget1)
+        self.label_Grow_Duration.setStyleSheet("QFrame {\n"
+"    background-color: rgba(200, 200, 255, 100);\n"
+"    color: white;\n"
+"    border-radius: 10px;\n"
+"}\n"
+"\n"
+"QLabel {\n"
+"    font-size: 10pt;\n"
+"    padding: 10px;\n"
+"}\n"
+"")
+        self.label_Grow_Duration.setText("")
+        self.label_Grow_Duration.setObjectName("label_Grow_Duration")
+        self.verticalLayout_ATR_and_Perfomance.addWidget(self.label_Grow_Duration)
+        self.label_Decline_Duration_ = QtWidgets.QLabel(self.layoutWidget1)
+        self.label_Decline_Duration_.setStyleSheet("QFrame {\n"
+"    background-color: rgba(200, 200, 255, 100);\n"
+"    color: white;\n"
+"    border-radius: 10px;\n"
+"}\n"
+"\n"
+"QLabel {\n"
+"    font-size: 10pt;\n"
+"    padding: 10px;\n"
+"}\n"
+"")
+        self.label_Decline_Duration_.setText("")
+        self.label_Decline_Duration_.setObjectName("label_Decline_Duration_")
+        self.verticalLayout_ATR_and_Perfomance.addWidget(self.label_Decline_Duration_)
+        self.label_ATR_title = QtWidgets.QLabel(self.layoutWidget1)
+        self.label_ATR_title.setStyleSheet("QFrame {\n"
+"    background-color: rgba(200, 200, 255, 100);\n"
+"    color: white;\n"
+"    border-radius: 10px;\n"
+"}\n"
+"\n"
+"QLabel {\n"
+"    font-size: 14pt;\n"
+"    padding: 10px;\n"
+"}\n"
+"")
+        self.label_ATR_title.setObjectName("label_ATR_title")
+        self.verticalLayout_ATR_and_Perfomance.addWidget(self.label_ATR_title)
+        self.horizontalLayout_4 = QtWidgets.QHBoxLayout()
         self.horizontalLayout_4.setObjectName("horizontalLayout_4")
         self.verticalLayout_6 = QtWidgets.QVBoxLayout()
         self.verticalLayout_6.setObjectName("verticalLayout_6")
-        self.label_Ease_of_Movement_3 = QtWidgets.QLabel(self.layoutWidget1)
-        self.label_Ease_of_Movement_3.setStyleSheet("QFrame {\n"
-                                                    "    background-color: rgba(200, 200, 255, 100);\n"
-                                                    "    color: white;\n"
-                                                    "    border-radius: 10px;\n"
-                                                    "}\n"
-                                                    "\n"
-                                                    "QLabel {\n"
-                                                    "    font-size: 10pt;\n"
-                                                    "    padding: 10px;\n"
-                                                    "}\n"
-                                                    "")
-        self.label_Ease_of_Movement_3.setObjectName("label_Ease_of_Movement_3")
-        self.verticalLayout_6.addWidget(self.label_Ease_of_Movement_3)
-        self.label_Ease_of_Movement_4 = QtWidgets.QLabel(self.layoutWidget1)
-        self.label_Ease_of_Movement_4.setStyleSheet("QFrame {\n"
-                                                    "    background-color: rgba(200, 200, 255, 100);\n"
-                                                    "    color: white;\n"
-                                                    "    border-radius: 10px;\n"
-                                                    "}\n"
-                                                    "\n"
-                                                    "QLabel {\n"
-                                                    "    font-size: 10pt;\n"
-                                                    "    padding: 10px;\n"
-                                                    "}\n"
-                                                    "")
-        self.label_Ease_of_Movement_4.setObjectName("label_Ease_of_Movement_4")
-        self.verticalLayout_6.addWidget(self.label_Ease_of_Movement_4)
-        self.label_Ease_of_Movement_5 = QtWidgets.QLabel(self.layoutWidget1)
-        self.label_Ease_of_Movement_5.setStyleSheet("QFrame {\n"
-                                                    "    background-color: rgba(200, 200, 255, 100);\n"
-                                                    "    color: white;\n"
-                                                    "    border-radius: 10px;\n"
-                                                    "}\n"
-                                                    "\n"
-                                                    "QLabel {\n"
-                                                    "    font-size: 10pt;\n"
-                                                    "    padding: 10px;\n"
-                                                    "}\n"
-                                                    "")
-        self.label_Ease_of_Movement_5.setObjectName("label_Ease_of_Movement_5")
-        self.verticalLayout_6.addWidget(self.label_Ease_of_Movement_5)
-        self.label_Ease_of_Movement_9 = QtWidgets.QLabel(self.layoutWidget1)
-        self.label_Ease_of_Movement_9.setStyleSheet("QFrame {\n"
-                                                    "    background-color: rgba(200, 200, 255, 100);\n"
-                                                    "    color: white;\n"
-                                                    "    border-radius: 10px;\n"
-                                                    "}\n"
-                                                    "\n"
-                                                    "QLabel {\n"
-                                                    "    font-size: 10pt;\n"
-                                                    "    padding: 10px;\n"
-                                                    "}\n"
-                                                    "")
-        self.label_Ease_of_Movement_9.setObjectName("label_Ease_of_Movement_9")
-        self.verticalLayout_6.addWidget(self.label_Ease_of_Movement_9)
-        self.label_Ease_of_Movement_8 = QtWidgets.QLabel(self.layoutWidget1)
-        self.label_Ease_of_Movement_8.setStyleSheet("QFrame {\n"
-                                                    "    background-color: rgba(200, 200, 255, 100);\n"
-                                                    "    color: white;\n"
-                                                    "    border-radius: 10px;\n"
-                                                    "}\n"
-                                                    "\n"
-                                                    "QLabel {\n"
-                                                    "    font-size: 10pt;\n"
-                                                    "    padding: 10px;\n"
-                                                    "}\n"
-                                                    "")
-        self.label_Ease_of_Movement_8.setObjectName("label_Ease_of_Movement_8")
-        self.verticalLayout_6.addWidget(self.label_Ease_of_Movement_8)
-        self.label_Ease_of_Movement_7 = QtWidgets.QLabel(self.layoutWidget1)
-        self.label_Ease_of_Movement_7.setStyleSheet("QFrame {\n"
-                                                    "    background-color: rgba(200, 200, 255, 100);\n"
-                                                    "    color: white;\n"
-                                                    "    border-radius: 10px;\n"
-                                                    "}\n"
-                                                    "\n"
-                                                    "QLabel {\n"
-                                                    "    font-size: 10pt;\n"
-                                                    "    padding: 10px;\n"
-                                                    "}\n"
-                                                    "")
-        self.label_Ease_of_Movement_7.setObjectName("label_Ease_of_Movement_7")
-        self.verticalLayout_6.addWidget(self.label_Ease_of_Movement_7)
-        self.label_Ease_of_Movement_6 = QtWidgets.QLabel(self.layoutWidget1)
-        self.label_Ease_of_Movement_6.setStyleSheet("QFrame {\n"
-                                                    "    background-color: rgba(200, 200, 255, 100);\n"
-                                                    "    color: white;\n"
-                                                    "    border-radius: 10px;\n"
-                                                    "}\n"
-                                                    "\n"
-                                                    "QLabel {\n"
-                                                    "    font-size: 10pt;\n"
-                                                    "    padding: 10px;\n"
-                                                    "}\n"
-                                                    "")
-        self.label_Ease_of_Movement_6.setObjectName("label_Ease_of_Movement_6")
-        self.verticalLayout_6.addWidget(self.label_Ease_of_Movement_6)
+        self.label_ATR_1_week_1 = QtWidgets.QLabel(self.layoutWidget1)
+        self.label_ATR_1_week_1.setStyleSheet("QFrame {\n"
+"    background-color: rgba(200, 200, 255, 100);\n"
+"    color: white;\n"
+"    border-radius: 10px;\n"
+"}\n"
+"\n"
+"QLabel {\n"
+"    font-size: 10pt;\n"
+"    padding: 10px;\n"
+"}\n"
+"")
+        self.label_ATR_1_week_1.setObjectName("label_ATR_1_week_1")
+        self.verticalLayout_6.addWidget(self.label_ATR_1_week_1)
+        self.label_ATR_1_month_1 = QtWidgets.QLabel(self.layoutWidget1)
+        self.label_ATR_1_month_1.setStyleSheet("QFrame {\n"
+"    background-color: rgba(200, 200, 255, 100);\n"
+"    color: white;\n"
+"    border-radius: 10px;\n"
+"}\n"
+"\n"
+"QLabel {\n"
+"    font-size: 10pt;\n"
+"    padding: 10px;\n"
+"}\n"
+"")
+        self.label_ATR_1_month_1.setObjectName("label_ATR_1_month_1")
+        self.verticalLayout_6.addWidget(self.label_ATR_1_month_1)
+        self.label_ATR_3_months_1 = QtWidgets.QLabel(self.layoutWidget1)
+        self.label_ATR_3_months_1.setStyleSheet("QFrame {\n"
+"    background-color: rgba(200, 200, 255, 100);\n"
+"    color: white;\n"
+"    border-radius: 10px;\n"
+"}\n"
+"\n"
+"QLabel {\n"
+"    font-size: 10pt;\n"
+"    padding: 10px;\n"
+"}\n"
+"")
+        self.label_ATR_3_months_1.setObjectName("label_ATR_3_months_1")
+        self.verticalLayout_6.addWidget(self.label_ATR_3_months_1)
+        self.label_ATR_1_year_1 = QtWidgets.QLabel(self.layoutWidget1)
+        self.label_ATR_1_year_1.setStyleSheet("QFrame {\n"
+"    background-color: rgba(200, 200, 255, 100);\n"
+"    color: white;\n"
+"    border-radius: 10px;\n"
+"}\n"
+"\n"
+"QLabel {\n"
+"    font-size: 10pt;\n"
+"    padding: 10px;\n"
+"}\n"
+"")
+        self.label_ATR_1_year_1.setObjectName("label_ATR_1_year_1")
+        self.verticalLayout_6.addWidget(self.label_ATR_1_year_1)
+        self.label_ATR_2_years_1 = QtWidgets.QLabel(self.layoutWidget1)
+        self.label_ATR_2_years_1.setStyleSheet("QFrame {\n"
+"    background-color: rgba(200, 200, 255, 100);\n"
+"    color: white;\n"
+"    border-radius: 10px;\n"
+"}\n"
+"\n"
+"QLabel {\n"
+"    font-size: 10pt;\n"
+"    padding: 10px;\n"
+"}\n"
+"")
+        self.label_ATR_2_years_1.setObjectName("label_ATR_2_years_1")
+        self.verticalLayout_6.addWidget(self.label_ATR_2_years_1)
+        self.label_ATR_5_years_1 = QtWidgets.QLabel(self.layoutWidget1)
+        self.label_ATR_5_years_1.setStyleSheet("QFrame {\n"
+"    background-color: rgba(200, 200, 255, 100);\n"
+"    color: white;\n"
+"    border-radius: 10px;\n"
+"}\n"
+"\n"
+"QLabel {\n"
+"    font-size: 10pt;\n"
+"    padding: 10px;\n"
+"}\n"
+"")
+        self.label_ATR_5_years_1.setObjectName("label_ATR_5_years_1")
+        self.verticalLayout_6.addWidget(self.label_ATR_5_years_1)
+        self.label_ATR_10_years_1 = QtWidgets.QLabel(self.layoutWidget1)
+        self.label_ATR_10_years_1.setStyleSheet("QFrame {\n"
+"    background-color: rgba(200, 200, 255, 100);\n"
+"    color: white;\n"
+"    border-radius: 10px;\n"
+"}\n"
+"\n"
+"QLabel {\n"
+"    font-size: 10pt;\n"
+"    padding: 10px;\n"
+"}\n"
+"")
+        self.label_ATR_10_years_1.setObjectName("label_ATR_10_years_1")
+        self.verticalLayout_6.addWidget(self.label_ATR_10_years_1)
         self.horizontalLayout_4.addLayout(self.verticalLayout_6)
         self.verticalLayout_7 = QtWidgets.QVBoxLayout()
         self.verticalLayout_7.setObjectName("verticalLayout_7")
-        self.label_Ease_of_Movement_10 = QtWidgets.QLabel(self.layoutWidget1)
-        self.label_Ease_of_Movement_10.setStyleSheet("QFrame {\n"
-                                                     "    background-color: rgba(200, 200, 255, 100);\n"
-                                                     "    color: white;\n"
-                                                     "    border-radius: 10px;\n"
-                                                     "}\n"
-                                                     "\n"
-                                                     "QLabel {\n"
-                                                     "    font-size: 10pt;\n"
-                                                     "    padding: 10px;\n"
-                                                     "}\n"
-                                                     "")
-        self.label_Ease_of_Movement_10.setObjectName("label_Ease_of_Movement_10")
-        self.verticalLayout_7.addWidget(self.label_Ease_of_Movement_10)
-        self.label_Ease_of_Movement_11 = QtWidgets.QLabel(self.layoutWidget1)
-        self.label_Ease_of_Movement_11.setStyleSheet("QFrame {\n"
-                                                     "    background-color: rgba(200, 200, 255, 100);\n"
-                                                     "    color: white;\n"
-                                                     "    border-radius: 10px;\n"
-                                                     "}\n"
-                                                     "\n"
-                                                     "QLabel {\n"
-                                                     "    font-size: 10pt;\n"
-                                                     "    padding: 10px;\n"
-                                                     "}\n"
-                                                     "")
-        self.label_Ease_of_Movement_11.setObjectName("label_Ease_of_Movement_11")
-        self.verticalLayout_7.addWidget(self.label_Ease_of_Movement_11)
-        self.label_Ease_of_Movement_12 = QtWidgets.QLabel(self.layoutWidget1)
-        self.label_Ease_of_Movement_12.setStyleSheet("QFrame {\n"
-                                                     "    background-color: rgba(200, 200, 255, 100);\n"
-                                                     "    color: white;\n"
-                                                     "    border-radius: 10px;\n"
-                                                     "}\n"
-                                                     "\n"
-                                                     "QLabel {\n"
-                                                     "    font-size: 10pt;\n"
-                                                     "    padding: 10px;\n"
-                                                     "}\n"
-                                                     "")
-        self.label_Ease_of_Movement_12.setObjectName("label_Ease_of_Movement_12")
-        self.verticalLayout_7.addWidget(self.label_Ease_of_Movement_12)
-        self.label_Ease_of_Movement_13 = QtWidgets.QLabel(self.layoutWidget1)
-        self.label_Ease_of_Movement_13.setStyleSheet("QFrame {\n"
-                                                     "    background-color: rgba(200, 200, 255, 100);\n"
-                                                     "    color: white;\n"
-                                                     "    border-radius: 10px;\n"
-                                                     "}\n"
-                                                     "\n"
-                                                     "QLabel {\n"
-                                                     "    font-size: 10pt;\n"
-                                                     "    padding: 10px;\n"
-                                                     "}\n"
-                                                     "")
-        self.label_Ease_of_Movement_13.setObjectName("label_Ease_of_Movement_13")
-        self.verticalLayout_7.addWidget(self.label_Ease_of_Movement_13)
-        self.label_Ease_of_Movement_14 = QtWidgets.QLabel(self.layoutWidget1)
-        self.label_Ease_of_Movement_14.setStyleSheet("QFrame {\n"
-                                                     "    background-color: rgba(200, 200, 255, 100);\n"
-                                                     "    color: white;\n"
-                                                     "    border-radius: 10px;\n"
-                                                     "}\n"
-                                                     "\n"
-                                                     "QLabel {\n"
-                                                     "    font-size: 10pt;\n"
-                                                     "    padding: 10px;\n"
-                                                     "}\n"
-                                                     "")
-        self.label_Ease_of_Movement_14.setObjectName("label_Ease_of_Movement_14")
-        self.verticalLayout_7.addWidget(self.label_Ease_of_Movement_14)
-        self.label_Ease_of_Movement_15 = QtWidgets.QLabel(self.layoutWidget1)
-        self.label_Ease_of_Movement_15.setStyleSheet("QFrame {\n"
-                                                     "    background-color: rgba(200, 200, 255, 100);\n"
-                                                     "    color: white;\n"
-                                                     "    border-radius: 10px;\n"
-                                                     "}\n"
-                                                     "\n"
-                                                     "QLabel {\n"
-                                                     "    font-size: 10pt;\n"
-                                                     "    padding: 10px;\n"
-                                                     "}\n"
-                                                     "")
-        self.label_Ease_of_Movement_15.setObjectName("label_Ease_of_Movement_15")
-        self.verticalLayout_7.addWidget(self.label_Ease_of_Movement_15)
-        self.label_Ease_of_Movement_16 = QtWidgets.QLabel(self.layoutWidget1)
-        self.label_Ease_of_Movement_16.setStyleSheet("QFrame {\n"
-                                                     "    background-color: rgba(200, 200, 255, 100);\n"
-                                                     "    color: white;\n"
-                                                     "    border-radius: 10px;\n"
-                                                     "}\n"
-                                                     "\n"
-                                                     "QLabel {\n"
-                                                     "    font-size: 10pt;\n"
-                                                     "    padding: 10px;\n"
-                                                     "}\n"
-                                                     "")
-        self.label_Ease_of_Movement_16.setObjectName("label_Ease_of_Movement_16")
-        self.verticalLayout_7.addWidget(self.label_Ease_of_Movement_16)
+        self.label_ATR_1_week_2 = QtWidgets.QLabel(self.layoutWidget1)
+        self.label_ATR_1_week_2.setStyleSheet("QFrame {\n"
+"    background-color: rgba(200, 200, 255, 100);\n"
+"    color: white;\n"
+"    border-radius: 10px;\n"
+"}\n"
+"\n"
+"QLabel {\n"
+"    font-size: 10pt;\n"
+"    padding: 10px;\n"
+"}\n"
+"")
+        self.label_ATR_1_week_2.setObjectName("label_ATR_1_week_2")
+        self.verticalLayout_7.addWidget(self.label_ATR_1_week_2)
+        self.label_ATR_1_month_2 = QtWidgets.QLabel(self.layoutWidget1)
+        self.label_ATR_1_month_2.setStyleSheet("QFrame {\n"
+"    background-color: rgba(200, 200, 255, 100);\n"
+"    color: white;\n"
+"    border-radius: 10px;\n"
+"}\n"
+"\n"
+"QLabel {\n"
+"    font-size: 10pt;\n"
+"    padding: 10px;\n"
+"}\n"
+"")
+        self.label_ATR_1_month_2.setObjectName("label_ATR_1_month_2")
+        self.verticalLayout_7.addWidget(self.label_ATR_1_month_2)
+        self.label_ATR_3_months_2 = QtWidgets.QLabel(self.layoutWidget1)
+        self.label_ATR_3_months_2.setStyleSheet("QFrame {\n"
+"    background-color: rgba(200, 200, 255, 100);\n"
+"    color: white;\n"
+"    border-radius: 10px;\n"
+"}\n"
+"\n"
+"QLabel {\n"
+"    font-size: 10pt;\n"
+"    padding: 10px;\n"
+"}\n"
+"")
+        self.label_ATR_3_months_2.setObjectName("label_ATR_3_months_2")
+        self.verticalLayout_7.addWidget(self.label_ATR_3_months_2)
+        self.label_ATR_1_year_2 = QtWidgets.QLabel(self.layoutWidget1)
+        self.label_ATR_1_year_2.setStyleSheet("QFrame {\n"
+"    background-color: rgba(200, 200, 255, 100);\n"
+"    color: white;\n"
+"    border-radius: 10px;\n"
+"}\n"
+"\n"
+"QLabel {\n"
+"    font-size: 10pt;\n"
+"    padding: 10px;\n"
+"}\n"
+"")
+        self.label_ATR_1_year_2.setObjectName("label_ATR_1_year_2")
+        self.verticalLayout_7.addWidget(self.label_ATR_1_year_2)
+        self.label_ATR_2_years_2 = QtWidgets.QLabel(self.layoutWidget1)
+        self.label_ATR_2_years_2.setStyleSheet("QFrame {\n"
+"    background-color: rgba(200, 200, 255, 100);\n"
+"    color: white;\n"
+"    border-radius: 10px;\n"
+"}\n"
+"\n"
+"QLabel {\n"
+"    font-size: 10pt;\n"
+"    padding: 10px;\n"
+"}\n"
+"")
+        self.label_ATR_2_years_2.setObjectName("label_ATR_2_years_2")
+        self.verticalLayout_7.addWidget(self.label_ATR_2_years_2)
+        self.label_ATR_5_years_2 = QtWidgets.QLabel(self.layoutWidget1)
+        self.label_ATR_5_years_2.setStyleSheet("QFrame {\n"
+"    background-color: rgba(200, 200, 255, 100);\n"
+"    color: white;\n"
+"    border-radius: 10px;\n"
+"}\n"
+"\n"
+"QLabel {\n"
+"    font-size: 10pt;\n"
+"    padding: 10px;\n"
+"}\n"
+"")
+        self.label_ATR_5_years_2.setObjectName("label_ATR_5_years_2")
+        self.verticalLayout_7.addWidget(self.label_ATR_5_years_2)
+        self.label_ATR_10_years_2 = QtWidgets.QLabel(self.layoutWidget1)
+        self.label_ATR_10_years_2.setStyleSheet("QFrame {\n"
+"    background-color: rgba(200, 200, 255, 100);\n"
+"    color: white;\n"
+"    border-radius: 10px;\n"
+"}\n"
+"\n"
+"QLabel {\n"
+"    font-size: 10pt;\n"
+"    padding: 10px;\n"
+"}\n"
+"")
+        self.label_ATR_10_years_2.setObjectName("label_ATR_10_years_2")
+        self.verticalLayout_7.addWidget(self.label_ATR_10_years_2)
         self.horizontalLayout_4.addLayout(self.verticalLayout_7)
         self.verticalLayout_8 = QtWidgets.QVBoxLayout()
         self.verticalLayout_8.setObjectName("verticalLayout_8")
-        self.label_Ease_of_Movement_17 = QtWidgets.QLabel(self.layoutWidget1)
-        self.label_Ease_of_Movement_17.setStyleSheet("QFrame {\n"
-                                                     "    background-color: rgba(200, 200, 255, 100);\n"
-                                                     "    color: white;\n"
-                                                     "    border-radius: 10px;\n"
-                                                     "}\n"
-                                                     "\n"
-                                                     "QLabel {\n"
-                                                     "    font-size: 10pt;\n"
-                                                     "    padding: 10px;\n"
-                                                     "}\n"
-                                                     "")
-        self.label_Ease_of_Movement_17.setText("")
-        self.label_Ease_of_Movement_17.setObjectName("label_Ease_of_Movement_17")
-        self.verticalLayout_8.addWidget(self.label_Ease_of_Movement_17)
-        self.label_Ease_of_Movement_18 = QtWidgets.QLabel(self.layoutWidget1)
-        self.label_Ease_of_Movement_18.setStyleSheet("QFrame {\n"
-                                                     "    background-color: rgba(200, 200, 255, 100);\n"
-                                                     "    color: white;\n"
-                                                     "    border-radius: 10px;\n"
-                                                     "}\n"
-                                                     "\n"
-                                                     "QLabel {\n"
-                                                     "    font-size: 10pt;\n"
-                                                     "    padding: 10px;\n"
-                                                     "}\n"
-                                                     "")
-        self.label_Ease_of_Movement_18.setText("")
-        self.label_Ease_of_Movement_18.setObjectName("label_Ease_of_Movement_18")
-        self.verticalLayout_8.addWidget(self.label_Ease_of_Movement_18)
-        self.label_Ease_of_Movement_19 = QtWidgets.QLabel(self.layoutWidget1)
-        self.label_Ease_of_Movement_19.setStyleSheet("QFrame {\n"
-                                                     "    background-color: rgba(200, 200, 255, 100);\n"
-                                                     "    color: white;\n"
-                                                     "    border-radius: 10px;\n"
-                                                     "}\n"
-                                                     "\n"
-                                                     "QLabel {\n"
-                                                     "    font-size: 10pt;\n"
-                                                     "    padding: 10px;\n"
-                                                     "}\n"
-                                                     "")
-        self.label_Ease_of_Movement_19.setText("")
-        self.label_Ease_of_Movement_19.setObjectName("label_Ease_of_Movement_19")
-        self.verticalLayout_8.addWidget(self.label_Ease_of_Movement_19)
-        self.label_Ease_of_Movement_20 = QtWidgets.QLabel(self.layoutWidget1)
-        self.label_Ease_of_Movement_20.setStyleSheet("QFrame {\n"
-                                                     "    background-color: rgba(200, 200, 255, 100);\n"
-                                                     "    color: white;\n"
-                                                     "    border-radius: 10px;\n"
-                                                     "}\n"
-                                                     "\n"
-                                                     "QLabel {\n"
-                                                     "    font-size: 10pt;\n"
-                                                     "    padding: 10px;\n"
-                                                     "}\n"
-                                                     "")
-        self.label_Ease_of_Movement_20.setText("")
-        self.label_Ease_of_Movement_20.setObjectName("label_Ease_of_Movement_20")
-        self.verticalLayout_8.addWidget(self.label_Ease_of_Movement_20)
-        self.label_Ease_of_Movement_21 = QtWidgets.QLabel(self.layoutWidget1)
-        self.label_Ease_of_Movement_21.setStyleSheet("QFrame {\n"
-                                                     "    background-color: rgba(200, 200, 255, 100);\n"
-                                                     "    color: white;\n"
-                                                     "    border-radius: 10px;\n"
-                                                     "}\n"
-                                                     "\n"
-                                                     "QLabel {\n"
-                                                     "    font-size: 10pt;\n"
-                                                     "    padding: 10px;\n"
-                                                     "}\n"
-                                                     "")
-        self.label_Ease_of_Movement_21.setText("")
-        self.label_Ease_of_Movement_21.setObjectName("label_Ease_of_Movement_21")
-        self.verticalLayout_8.addWidget(self.label_Ease_of_Movement_21)
-        self.label_Ease_of_Movement_22 = QtWidgets.QLabel(self.layoutWidget1)
-        self.label_Ease_of_Movement_22.setStyleSheet("QFrame {\n"
-                                                     "    background-color: rgba(200, 200, 255, 100);\n"
-                                                     "    color: white;\n"
-                                                     "    border-radius: 10px;\n"
-                                                     "}\n"
-                                                     "\n"
-                                                     "QLabel {\n"
-                                                     "    font-size: 10pt;\n"
-                                                     "    padding: 10px;\n"
-                                                     "}\n"
-                                                     "")
-        self.label_Ease_of_Movement_22.setText("")
-        self.label_Ease_of_Movement_22.setObjectName("label_Ease_of_Movement_22")
-        self.verticalLayout_8.addWidget(self.label_Ease_of_Movement_22)
-        self.label_Ease_of_Movement_23 = QtWidgets.QLabel(self.layoutWidget1)
-        self.label_Ease_of_Movement_23.setStyleSheet("QFrame {\n"
-                                                     "    background-color: rgba(200, 200, 255, 100);\n"
-                                                     "    color: white;\n"
-                                                     "    border-radius: 10px;\n"
-                                                     "}\n"
-                                                     "\n"
-                                                     "QLabel {\n"
-                                                     "    font-size: 10pt;\n"
-                                                     "    padding: 10px;\n"
-                                                     "}\n"
-                                                     "")
-        self.label_Ease_of_Movement_23.setText("")
-        self.label_Ease_of_Movement_23.setObjectName("label_Ease_of_Movement_23")
-        self.verticalLayout_8.addWidget(self.label_Ease_of_Movement_23)
+        self.label_ATR_1_week_3 = QtWidgets.QLabel(self.layoutWidget1)
+        self.label_ATR_1_week_3.setStyleSheet("QFrame {\n"
+"    background-color: rgba(200, 200, 255, 100);\n"
+"    color: white;\n"
+"    border-radius: 10px;\n"
+"}\n"
+"\n"
+"QLabel {\n"
+"    font-size: 10pt;\n"
+"    padding: 10px;\n"
+"}\n"
+"")
+        self.label_ATR_1_week_3.setText("")
+        self.label_ATR_1_week_3.setObjectName("label_ATR_1_week_3")
+        self.verticalLayout_8.addWidget(self.label_ATR_1_week_3)
+        self.label_ATR_1_month_3 = QtWidgets.QLabel(self.layoutWidget1)
+        self.label_ATR_1_month_3.setStyleSheet("QFrame {\n"
+"    background-color: rgba(200, 200, 255, 100);\n"
+"    color: white;\n"
+"    border-radius: 10px;\n"
+"}\n"
+"\n"
+"QLabel {\n"
+"    font-size: 10pt;\n"
+"    padding: 10px;\n"
+"}\n"
+"")
+        self.label_ATR_1_month_3.setText("")
+        self.label_ATR_1_month_3.setObjectName("label_ATR_1_month_3")
+        self.verticalLayout_8.addWidget(self.label_ATR_1_month_3)
+        self.label_ATR_3_months_3 = QtWidgets.QLabel(self.layoutWidget1)
+        self.label_ATR_3_months_3.setStyleSheet("QFrame {\n"
+"    background-color: rgba(200, 200, 255, 100);\n"
+"    color: white;\n"
+"    border-radius: 10px;\n"
+"}\n"
+"\n"
+"QLabel {\n"
+"    font-size: 10pt;\n"
+"    padding: 10px;\n"
+"}\n"
+"")
+        self.label_ATR_3_months_3.setText("")
+        self.label_ATR_3_months_3.setObjectName("label_ATR_3_months_3")
+        self.verticalLayout_8.addWidget(self.label_ATR_3_months_3)
+        self.label_ATR_1_year_3 = QtWidgets.QLabel(self.layoutWidget1)
+        self.label_ATR_1_year_3.setStyleSheet("QFrame {\n"
+"    background-color: rgba(200, 200, 255, 100);\n"
+"    color: white;\n"
+"    border-radius: 10px;\n"
+"}\n"
+"\n"
+"QLabel {\n"
+"    font-size: 10pt;\n"
+"    padding: 10px;\n"
+"}\n"
+"")
+        self.label_ATR_1_year_3.setText("")
+        self.label_ATR_1_year_3.setObjectName("label_ATR_1_year_3")
+        self.verticalLayout_8.addWidget(self.label_ATR_1_year_3)
+        self.label_ATR_2_years_3 = QtWidgets.QLabel(self.layoutWidget1)
+        self.label_ATR_2_years_3.setStyleSheet("QFrame {\n"
+"    background-color: rgba(200, 200, 255, 100);\n"
+"    color: white;\n"
+"    border-radius: 10px;\n"
+"}\n"
+"\n"
+"QLabel {\n"
+"    font-size: 10pt;\n"
+"    padding: 10px;\n"
+"}\n"
+"")
+        self.label_ATR_2_years_3.setText("")
+        self.label_ATR_2_years_3.setObjectName("label_ATR_2_years_3")
+        self.verticalLayout_8.addWidget(self.label_ATR_2_years_3)
+        self.label_ATR_5_years_3 = QtWidgets.QLabel(self.layoutWidget1)
+        self.label_ATR_5_years_3.setStyleSheet("QFrame {\n"
+"    background-color: rgba(200, 200, 255, 100);\n"
+"    color: white;\n"
+"    border-radius: 10px;\n"
+"}\n"
+"\n"
+"QLabel {\n"
+"    font-size: 10pt;\n"
+"    padding: 10px;\n"
+"}\n"
+"")
+        self.label_ATR_5_years_3.setText("")
+        self.label_ATR_5_years_3.setObjectName("label_ATR_5_years_3")
+        self.verticalLayout_8.addWidget(self.label_ATR_5_years_3)
+        self.label_ATR_10_years_3 = QtWidgets.QLabel(self.layoutWidget1)
+        self.label_ATR_10_years_3.setStyleSheet("QFrame {\n"
+"    background-color: rgba(200, 200, 255, 100);\n"
+"    color: white;\n"
+"    border-radius: 10px;\n"
+"}\n"
+"\n"
+"QLabel {\n"
+"    font-size: 10pt;\n"
+"    padding: 10px;\n"
+"}\n"
+"")
+        self.label_ATR_10_years_3.setText("")
+        self.label_ATR_10_years_3.setObjectName("label_ATR_10_years_3")
+        self.verticalLayout_8.addWidget(self.label_ATR_10_years_3)
         self.horizontalLayout_4.addLayout(self.verticalLayout_8)
+        self.verticalLayout_ATR_and_Perfomance.addLayout(self.horizontalLayout_4)
         self.scrollArea.setWidget(self.scrollAreaWidgetContents)
         self.Pager.addWidget(self.Technical_analysis_page)
         self.A_D_page = QtWidgets.QWidget()
@@ -1056,1063 +1082,150 @@ class Ui_MainWindow(object):
         self.TA_title_label_2 = QtWidgets.QLabel(self.A_D_page)
         self.TA_title_label_2.setGeometry(QtCore.QRect(390, 40, 271, 61))
         self.TA_title_label_2.setStyleSheet("QLabel {\n"
-                                            "    background-color: rgba(50, 50, 150, 150); \n"
-                                            "    color: white;\n"
-                                            "    border-radius: 20px; \n"
-                                            "    font-size: 16pt; \n"
-                                            "    padding: 10px; \n"
-                                            "    border: 2px solid #6495ED;\n"
-                                            "}\n"
-                                            "")
+"    background-color: rgba(50, 50, 150, 150); \n"
+"    color: white;\n"
+"    border-radius: 20px; \n"
+"    font-size: 16pt; \n"
+"    padding: 10px; \n"
+"    border: 2px solid #6495ED;\n"
+"}\n"
+"")
         self.TA_title_label_2.setObjectName("TA_title_label_2")
         self.scrollArea_2 = QtWidgets.QScrollArea(self.A_D_page)
-        self.scrollArea_2.setGeometry(QtCore.QRect(30, 110, 1011, 611))
+        self.scrollArea_2.setGeometry(QtCore.QRect(30, 110, 1011, 691))
         self.scrollArea_2.setWidgetResizable(True)
         self.scrollArea_2.setObjectName("scrollArea_2")
         self.scrollAreaWidgetContents_3 = QtWidgets.QWidget()
-        self.scrollAreaWidgetContents_3.setGeometry(QtCore.QRect(0, 0, 1011, 611))
+        self.scrollAreaWidgetContents_3.setGeometry(QtCore.QRect(0, 0, 1011, 691))
         self.scrollAreaWidgetContents_3.setObjectName("scrollAreaWidgetContents_3")
-        self.graphicsView = QtWidgets.QGraphicsView(self.scrollAreaWidgetContents_3)
-        self.graphicsView.setGeometry(QtCore.QRect(220, 10, 761, 581))
-        self.graphicsView.setObjectName("graphicsView")
         self.layoutWidget2 = QtWidgets.QWidget(self.scrollAreaWidgetContents_3)
-        self.layoutWidget2.setGeometry(QtCore.QRect(20, 10, 188, 591))
+        self.layoutWidget2.setGeometry(QtCore.QRect(10, 20, 201, 661))
         self.layoutWidget2.setObjectName("layoutWidget2")
-        self.horizontalLayout_2 = QtWidgets.QHBoxLayout(self.layoutWidget2)
-        self.horizontalLayout_2.setContentsMargins(0, 0, 0, 0)
-        self.horizontalLayout_2.setSpacing(0)
-        self.horizontalLayout_2.setObjectName("horizontalLayout_2")
-        self.verticalLayout_3 = QtWidgets.QVBoxLayout()
-        self.verticalLayout_3.setSpacing(0)
+        self.verticalLayout_3 = QtWidgets.QVBoxLayout(self.layoutWidget2)
+        self.verticalLayout_3.setContentsMargins(0, 0, 0, 0)
         self.verticalLayout_3.setObjectName("verticalLayout_3")
-        self.label_17 = QtWidgets.QLabel(self.layoutWidget2)
-        self.label_17.setStyleSheet("QLabel {\n"
-                                    "    background-color: rgba(200, 150, 255, 150); \n"
-                                    "    color: #000000;\n"
-                                    "    border: 1px solid #6495ED; /* Граница с тонкой линией */\n"
-                                    "    padding: 5px; /* Отступы вокруг текста */\n"
-                                    "    font-size: 8pt; /* Размер шрифта */\n"
-                                    "    border-radius:0px; /* Закругленные углы */\n"
-                                    "\n"
-                                    "}\n"
-                                    "")
-        self.label_17.setObjectName("label_17")
-        self.verticalLayout_3.addWidget(self.label_17)
-        self.label_18 = QtWidgets.QLabel(self.layoutWidget2)
-        self.label_18.setStyleSheet("QLabel {\n"
-                                    "    background-color: rgba(200, 150, 255, 150); \n"
-                                    "    color: #000000;\n"
-                                    "    border: 1px solid #6495ED; /* Граница с тонкой линией */\n"
-                                    "    padding: 5px; /* Отступы вокруг текста */\n"
-                                    "    font-size: 8pt; /* Размер шрифта */\n"
-                                    "    border-radius:0px; /* Закругленные углы */\n"
-                                    "\n"
-                                    "}\n"
-                                    "")
-        self.label_18.setObjectName("label_18")
-        self.verticalLayout_3.addWidget(self.label_18)
-        self.label_19 = QtWidgets.QLabel(self.layoutWidget2)
-        self.label_19.setStyleSheet("QLabel {\n"
-                                    "    background-color: rgba(200, 150, 255, 150); \n"
-                                    "    color: #000000;\n"
-                                    "    border: 1px solid #6495ED; /* Граница с тонкой линией */\n"
-                                    "    padding: 5px; /* Отступы вокруг текста */\n"
-                                    "    font-size: 8pt; /* Размер шрифта */\n"
-                                    "    border-radius:0px; /* Закругленные углы */\n"
-                                    "\n"
-                                    "}\n"
-                                    "")
-        self.label_19.setObjectName("label_19")
-        self.verticalLayout_3.addWidget(self.label_19)
-        self.label_40 = QtWidgets.QLabel(self.layoutWidget2)
-        self.label_40.setStyleSheet("QLabel {\n"
-                                    "    background-color: rgba(200, 150, 255, 150); \n"
-                                    "    color: #000000;\n"
-                                    "    border: 1px solid #6495ED; /* Граница с тонкой линией */\n"
-                                    "    padding: 5px; /* Отступы вокруг текста */\n"
-                                    "    font-size: 8pt; /* Размер шрифта */\n"
-                                    "    border-radius:0px; /* Закругленные углы */\n"
-                                    "\n"
-                                    "}\n"
-                                    "")
-        self.label_40.setObjectName("label_40")
-        self.verticalLayout_3.addWidget(self.label_40)
-        self.label_20 = QtWidgets.QLabel(self.layoutWidget2)
-        self.label_20.setStyleSheet("QLabel {\n"
-                                    "    background-color: rgba(200, 150, 255, 150); \n"
-                                    "    color: #000000;\n"
-                                    "    border: 1px solid #6495ED; /* Граница с тонкой линией */\n"
-                                    "    padding: 5px; /* Отступы вокруг текста */\n"
-                                    "    font-size: 8pt; /* Размер шрифта */\n"
-                                    "    border-radius:0px; /* Закругленные углы */\n"
-                                    "\n"
-                                    "}\n"
-                                    "")
-        self.label_20.setObjectName("label_20")
-        self.verticalLayout_3.addWidget(self.label_20)
-        self.label_21 = QtWidgets.QLabel(self.layoutWidget2)
-        self.label_21.setStyleSheet("QLabel {\n"
-                                    "    background-color: rgba(200, 150, 255, 150); \n"
-                                    "    color: #000000;\n"
-                                    "    border: 1px solid #6495ED; /* Граница с тонкой линией */\n"
-                                    "    padding: 5px; /* Отступы вокруг текста */\n"
-                                    "    font-size: 8pt; /* Размер шрифта */\n"
-                                    "    border-radius:0px; /* Закругленные углы */\n"
-                                    "\n"
-                                    "}\n"
-                                    "")
-        self.label_21.setObjectName("label_21")
-        self.verticalLayout_3.addWidget(self.label_21)
-        self.label_22 = QtWidgets.QLabel(self.layoutWidget2)
-        self.label_22.setStyleSheet("QLabel {\n"
-                                    "    background-color: rgba(200, 150, 255, 150); \n"
-                                    "    color: #000000;\n"
-                                    "    border: 1px solid #6495ED; /* Граница с тонкой линией */\n"
-                                    "    padding: 5px; /* Отступы вокруг текста */\n"
-                                    "    font-size: 8pt; /* Размер шрифта */\n"
-                                    "    border-radius:0px; /* Закругленные углы */\n"
-                                    "\n"
-                                    "}\n"
-                                    "")
-        self.label_22.setObjectName("label_22")
-        self.verticalLayout_3.addWidget(self.label_22)
-        self.label_23 = QtWidgets.QLabel(self.layoutWidget2)
-        self.label_23.setStyleSheet("QLabel {\n"
-                                    "    background-color: rgba(200, 150, 255, 150); \n"
-                                    "    color: #000000;\n"
-                                    "    border: 1px solid #6495ED; /* Граница с тонкой линией */\n"
-                                    "    padding: 5px; /* Отступы вокруг текста */\n"
-                                    "    font-size: 8pt; /* Размер шрифта */\n"
-                                    "    border-radius:0px; /* Закругленные углы */\n"
-                                    "\n"
-                                    "}\n"
-                                    "")
-        self.label_23.setObjectName("label_23")
-        self.verticalLayout_3.addWidget(self.label_23)
-        self.label_24 = QtWidgets.QLabel(self.layoutWidget2)
-        self.label_24.setStyleSheet("QLabel {\n"
-                                    "    background-color: rgba(200, 150, 255, 150); \n"
-                                    "    color: #000000;\n"
-                                    "    border: 1px solid #6495ED; /* Граница с тонкой линией */\n"
-                                    "    padding: 5px; /* Отступы вокруг текста */\n"
-                                    "    font-size: 8pt; /* Размер шрифта */\n"
-                                    "    border-radius:0px; /* Закругленные углы */\n"
-                                    "\n"
-                                    "}\n"
-                                    "")
-        self.label_24.setObjectName("label_24")
-        self.verticalLayout_3.addWidget(self.label_24)
-        self.label_25 = QtWidgets.QLabel(self.layoutWidget2)
-        self.label_25.setStyleSheet("QLabel {\n"
-                                    "    background-color: rgba(200, 150, 255, 150); \n"
-                                    "    color: #000000;\n"
-                                    "    border: 1px solid #6495ED; /* Граница с тонкой линией */\n"
-                                    "    padding: 5px; /* Отступы вокруг текста */\n"
-                                    "    font-size: 8pt; /* Размер шрифта */\n"
-                                    "    border-radius:0px; /* Закругленные углы */\n"
-                                    "\n"
-                                    "}\n"
-                                    "")
-        self.label_25.setObjectName("label_25")
-        self.verticalLayout_3.addWidget(self.label_25)
-        self.label_26 = QtWidgets.QLabel(self.layoutWidget2)
-        self.label_26.setStyleSheet("QLabel {\n"
-                                    "    background-color: rgba(200, 150, 255, 150); \n"
-                                    "    color: #000000;\n"
-                                    "    border: 1px solid #6495ED; /* Граница с тонкой линией */\n"
-                                    "    padding: 5px; /* Отступы вокруг текста */\n"
-                                    "    font-size: 8pt; /* Размер шрифта */\n"
-                                    "    border-radius:0px; /* Закругленные углы */\n"
-                                    "\n"
-                                    "}\n"
-                                    "")
-        self.label_26.setObjectName("label_26")
-        self.verticalLayout_3.addWidget(self.label_26)
-        self.label_27 = QtWidgets.QLabel(self.layoutWidget2)
-        self.label_27.setStyleSheet("QLabel {\n"
-                                    "    background-color: rgba(200, 150, 255, 150); \n"
-                                    "    color: #000000;\n"
-                                    "    border: 1px solid #6495ED; /* Граница с тонкой линией */\n"
-                                    "    padding: 5px; /* Отступы вокруг текста */\n"
-                                    "    font-size: 8pt; /* Размер шрифта */\n"
-                                    "    border-radius:0px; /* Закругленные углы */\n"
-                                    "\n"
-                                    "}\n"
-                                    "")
-        self.label_27.setObjectName("label_27")
-        self.verticalLayout_3.addWidget(self.label_27)
-        self.label_28 = QtWidgets.QLabel(self.layoutWidget2)
-        self.label_28.setStyleSheet("QLabel {\n"
-                                    "    background-color: rgba(200, 150, 255, 150); \n"
-                                    "    color: #000000;\n"
-                                    "    border: 1px solid #6495ED; /* Граница с тонкой линией */\n"
-                                    "    padding: 5px; /* Отступы вокруг текста */\n"
-                                    "    font-size: 8pt; /* Размер шрифта */\n"
-                                    "    border-radius:0px; /* Закругленные углы */\n"
-                                    "\n"
-                                    "}\n"
-                                    "")
-        self.label_28.setObjectName("label_28")
-        self.verticalLayout_3.addWidget(self.label_28)
-        self.label_29 = QtWidgets.QLabel(self.layoutWidget2)
-        self.label_29.setStyleSheet("QLabel {\n"
-                                    "    background-color: rgba(200, 150, 255, 150); \n"
-                                    "    color: #000000;\n"
-                                    "    border: 1px solid #6495ED; /* Граница с тонкой линией */\n"
-                                    "    padding: 5px; /* Отступы вокруг текста */\n"
-                                    "    font-size: 8pt; /* Размер шрифта */\n"
-                                    "    border-radius:0px; /* Закругленные углы */\n"
-                                    "\n"
-                                    "}\n"
-                                    "")
-        self.label_29.setObjectName("label_29")
-        self.verticalLayout_3.addWidget(self.label_29)
-        self.label_30 = QtWidgets.QLabel(self.layoutWidget2)
-        self.label_30.setStyleSheet("QLabel {\n"
-                                    "    background-color: rgba(200, 150, 255, 150); \n"
-                                    "    color: #000000;\n"
-                                    "    border: 1px solid #6495ED; /* Граница с тонкой линией */\n"
-                                    "    padding: 5px; /* Отступы вокруг текста */\n"
-                                    "    font-size: 8pt; /* Размер шрифта */\n"
-                                    "    border-radius:0px; /* Закругленные углы */\n"
-                                    "\n"
-                                    "}\n"
-                                    "")
-        self.label_30.setObjectName("label_30")
-        self.verticalLayout_3.addWidget(self.label_30)
-        self.label_31 = QtWidgets.QLabel(self.layoutWidget2)
-        self.label_31.setStyleSheet("QLabel {\n"
-                                    "    background-color: rgba(200, 150, 255, 150); \n"
-                                    "    color: #000000;\n"
-                                    "    border: 1px solid #6495ED; /* Граница с тонкой линией */\n"
-                                    "    padding: 5px; /* Отступы вокруг текста */\n"
-                                    "    font-size: 8pt; /* Размер шрифта */\n"
-                                    "    border-radius:0px; /* Закругленные углы */\n"
-                                    "\n"
-                                    "}\n"
-                                    "")
-        self.label_31.setObjectName("label_31")
-        self.verticalLayout_3.addWidget(self.label_31)
-        self.label_32 = QtWidgets.QLabel(self.layoutWidget2)
-        self.label_32.setStyleSheet("QLabel {\n"
-                                    "    background-color: rgba(200, 150, 255, 150); \n"
-                                    "    color: #000000;\n"
-                                    "    border: 1px solid #6495ED; /* Граница с тонкой линией */\n"
-                                    "    padding: 5px; /* Отступы вокруг текста */\n"
-                                    "    font-size: 8pt; /* Размер шрифта */\n"
-                                    "    border-radius:0px; /* Закругленные углы */\n"
-                                    "\n"
-                                    "}\n"
-                                    "")
-        self.label_32.setObjectName("label_32")
-        self.verticalLayout_3.addWidget(self.label_32)
-        self.label_33 = QtWidgets.QLabel(self.layoutWidget2)
-        self.label_33.setStyleSheet("QLabel {\n"
-                                    "    background-color: rgba(200, 150, 255, 150); \n"
-                                    "    color: #000000;\n"
-                                    "    border: 1px solid #6495ED; /* Граница с тонкой линией */\n"
-                                    "    padding: 5px; /* Отступы вокруг текста */\n"
-                                    "    font-size: 8pt; /* Размер шрифта */\n"
-                                    "    border-radius:0px; /* Закругленные углы */\n"
-                                    "\n"
-                                    "}\n"
-                                    "")
-        self.label_33.setObjectName("label_33")
-        self.verticalLayout_3.addWidget(self.label_33)
-        self.label_34 = QtWidgets.QLabel(self.layoutWidget2)
-        self.label_34.setStyleSheet("QLabel {\n"
-                                    "    background-color: rgba(200, 150, 255, 150); \n"
-                                    "    color: #000000;\n"
-                                    "    border: 1px solid #6495ED; /* Граница с тонкой линией */\n"
-                                    "    padding: 5px; /* Отступы вокруг текста */\n"
-                                    "    font-size: 8pt; /* Размер шрифта */\n"
-                                    "    border-radius:0px; /* Закругленные углы */\n"
-                                    "\n"
-                                    "}\n"
-                                    "")
-        self.label_34.setObjectName("label_34")
-        self.verticalLayout_3.addWidget(self.label_34)
-        self.label_35 = QtWidgets.QLabel(self.layoutWidget2)
-        self.label_35.setStyleSheet("QLabel {\n"
-                                    "    background-color: rgba(200, 150, 255, 150); \n"
-                                    "    color: #000000;\n"
-                                    "    border: 1px solid #6495ED; /* Граница с тонкой линией */\n"
-                                    "    padding: 5px; /* Отступы вокруг текста */\n"
-                                    "    font-size: 8pt; /* Размер шрифта */\n"
-                                    "    border-radius:0px; /* Закругленные углы */\n"
-                                    "\n"
-                                    "}\n"
-                                    "")
-        self.label_35.setObjectName("label_35")
-        self.verticalLayout_3.addWidget(self.label_35)
-        self.label_36 = QtWidgets.QLabel(self.layoutWidget2)
-        self.label_36.setStyleSheet("QLabel {\n"
-                                    "    background-color: rgba(200, 150, 255, 150); \n"
-                                    "    color: #000000;\n"
-                                    "    border: 1px solid #6495ED; /* Граница с тонкой линией */\n"
-                                    "    padding: 5px; /* Отступы вокруг текста */\n"
-                                    "    font-size: 8pt; /* Размер шрифта */\n"
-                                    "    border-radius:0px; /* Закругленные углы */\n"
-                                    "\n"
-                                    "}\n"
-                                    "")
-        self.label_36.setObjectName("label_36")
-        self.verticalLayout_3.addWidget(self.label_36)
-        self.label_38 = QtWidgets.QLabel(self.layoutWidget2)
-        self.label_38.setStyleSheet("QLabel {\n"
-                                    "    background-color: rgba(200, 150, 255, 150); \n"
-                                    "    color: #000000;\n"
-                                    "    border: 1px solid #6495ED; /* Граница с тонкой линией */\n"
-                                    "    padding: 5px; /* Отступы вокруг текста */\n"
-                                    "    font-size: 8pt; /* Размер шрифта */\n"
-                                    "    border-radius:0px; /* Закругленные углы */\n"
-                                    "\n"
-                                    "}\n"
-                                    "")
-        self.label_38.setObjectName("label_38")
-        self.verticalLayout_3.addWidget(self.label_38)
-        self.label_39 = QtWidgets.QLabel(self.layoutWidget2)
-        self.label_39.setStyleSheet("QLabel {\n"
-                                    "    background-color: rgba(200, 150, 255, 150); \n"
-                                    "    color: #000000;\n"
-                                    "    border: 1px solid #6495ED; /* Граница с тонкой линией */\n"
-                                    "    padding: 5px; /* Отступы вокруг текста */\n"
-                                    "    font-size: 8pt; /* Размер шрифта */\n"
-                                    "    border-radius:0px; /* Закругленные углы */\n"
-                                    "\n"
-                                    "}\n"
-                                    "")
-        self.label_39.setObjectName("label_39")
-        self.verticalLayout_3.addWidget(self.label_39)
-        self.horizontalLayout_2.addLayout(self.verticalLayout_3)
-        self.verticalLayout_4 = QtWidgets.QVBoxLayout()
-        self.verticalLayout_4.setSpacing(0)
+        self.label_Ranges_open_to_open = QtWidgets.QLabel(self.layoutWidget2)
+        self.label_Ranges_open_to_open.setStyleSheet("QLabel {\n"
+"    background-color: rgba(200, 150, 255, 150); \n"
+"    color: #000000;\n"
+"    border: 1px solid #6495ED; /* Граница с тонкой линией */\n"
+"    padding: 5px; /* Отступы вокруг текста */\n"
+"    font-size: 8pt; /* Размер шрифта */\n"
+"    border-radius:0px; /* Закругленные углы */\n"
+"\n"
+"}\n"
+"")
+        self.label_Ranges_open_to_open.setObjectName("label_Ranges_open_to_open")
+        self.verticalLayout_3.addWidget(self.label_Ranges_open_to_open)
+        self.label_Ranges_hight_to_low = QtWidgets.QLabel(self.layoutWidget2)
+        self.label_Ranges_hight_to_low.setStyleSheet("QLabel {\n"
+"    background-color: rgba(200, 150, 255, 150); \n"
+"    color: #000000;\n"
+"    border: 1px solid #6495ED; /* Граница с тонкой линией */\n"
+"    padding: 5px; /* Отступы вокруг текста */\n"
+"    font-size: 8pt; /* Размер шрифта */\n"
+"    border-radius:0px; /* Закругленные углы */\n"
+"\n"
+"}\n"
+"")
+        self.label_Ranges_hight_to_low.setObjectName("label_Ranges_hight_to_low")
+        self.verticalLayout_3.addWidget(self.label_Ranges_hight_to_low)
+        self.layoutWidget3 = QtWidgets.QWidget(self.scrollAreaWidgetContents_3)
+        self.layoutWidget3.setGeometry(QtCore.QRect(230, 20, 751, 661))
+        self.layoutWidget3.setObjectName("layoutWidget3")
+        self.verticalLayout_4 = QtWidgets.QVBoxLayout(self.layoutWidget3)
+        self.verticalLayout_4.setContentsMargins(0, 0, 0, 0)
         self.verticalLayout_4.setObjectName("verticalLayout_4")
-        self.label_37 = QtWidgets.QLabel(self.layoutWidget2)
-        self.label_37.setStyleSheet("QLabel {\n"
-                                    "    background-color: rgba(200, 150, 255, 150); \n"
-                                    "    color: #000000;\n"
-                                    "    border: 1px solid #6495ED; /* Граница с тонкой линией */\n"
-                                    "    padding: 5px; /* Отступы вокруг текста */\n"
-                                    "    font-size: 8pt; /* Размер шрифта */\n"
-                                    "    border-radius:0px; /* Закругленные углы */\n"
-                                    "\n"
-                                    "}\n"
-                                    "")
-        self.label_37.setObjectName("label_37")
-        self.verticalLayout_4.addWidget(self.label_37)
-        self.label_41 = QtWidgets.QLabel(self.layoutWidget2)
-        self.label_41.setStyleSheet("QLabel {\n"
-                                    "    background-color: rgba(200, 150, 255, 150); \n"
-                                    "    color: #000000;\n"
-                                    "    border: 1px solid #6495ED; /* Граница с тонкой линией */\n"
-                                    "    padding: 5px; /* Отступы вокруг текста */\n"
-                                    "    font-size: 8pt; /* Размер шрифта */\n"
-                                    "    border-radius:0px; /* Закругленные углы */\n"
-                                    "\n"
-                                    "}\n"
-                                    "")
-        self.label_41.setObjectName("label_41")
-        self.verticalLayout_4.addWidget(self.label_41)
-        self.label_42 = QtWidgets.QLabel(self.layoutWidget2)
-        self.label_42.setStyleSheet("QLabel {\n"
-                                    "    background-color: rgba(200, 150, 255, 150); \n"
-                                    "    color: #000000;\n"
-                                    "    border: 1px solid #6495ED; /* Граница с тонкой линией */\n"
-                                    "    padding: 5px; /* Отступы вокруг текста */\n"
-                                    "    font-size: 8pt; /* Размер шрифта */\n"
-                                    "    border-radius:0px; /* Закругленные углы */\n"
-                                    "\n"
-                                    "}\n"
-                                    "")
-        self.label_42.setObjectName("label_42")
-        self.verticalLayout_4.addWidget(self.label_42)
-        self.label_43 = QtWidgets.QLabel(self.layoutWidget2)
-        self.label_43.setStyleSheet("QLabel {\n"
-                                    "    background-color: rgba(200, 150, 255, 150); \n"
-                                    "    color: #000000;\n"
-                                    "    border: 1px solid #6495ED; /* Граница с тонкой линией */\n"
-                                    "    padding: 5px; /* Отступы вокруг текста */\n"
-                                    "    font-size: 8pt; /* Размер шрифта */\n"
-                                    "    border-radius:0px; /* Закругленные углы */\n"
-                                    "\n"
-                                    "}\n"
-                                    "")
-        self.label_43.setObjectName("label_43")
-        self.verticalLayout_4.addWidget(self.label_43)
-        self.label_44 = QtWidgets.QLabel(self.layoutWidget2)
-        self.label_44.setStyleSheet("QLabel {\n"
-                                    "    background-color: rgba(200, 150, 255, 150); \n"
-                                    "    color: #000000;\n"
-                                    "    border: 1px solid #6495ED; /* Граница с тонкой линией */\n"
-                                    "    padding: 5px; /* Отступы вокруг текста */\n"
-                                    "    font-size: 8pt; /* Размер шрифта */\n"
-                                    "    border-radius:0px; /* Закругленные углы */\n"
-                                    "\n"
-                                    "}\n"
-                                    "")
-        self.label_44.setObjectName("label_44")
-        self.verticalLayout_4.addWidget(self.label_44)
-        self.label_45 = QtWidgets.QLabel(self.layoutWidget2)
-        self.label_45.setStyleSheet("QLabel {\n"
-                                    "    background-color: rgba(200, 150, 255, 150); \n"
-                                    "    color: #000000;\n"
-                                    "    border: 1px solid #6495ED; /* Граница с тонкой линией */\n"
-                                    "    padding: 5px; /* Отступы вокруг текста */\n"
-                                    "    font-size: 8pt; /* Размер шрифта */\n"
-                                    "    border-radius:0px; /* Закругленные углы */\n"
-                                    "\n"
-                                    "}\n"
-                                    "")
-        self.label_45.setObjectName("label_45")
-        self.verticalLayout_4.addWidget(self.label_45)
-        self.label_46 = QtWidgets.QLabel(self.layoutWidget2)
-        self.label_46.setStyleSheet("QLabel {\n"
-                                    "    background-color: rgba(200, 150, 255, 150); \n"
-                                    "    color: #000000;\n"
-                                    "    border: 1px solid #6495ED; /* Граница с тонкой линией */\n"
-                                    "    padding: 5px; /* Отступы вокруг текста */\n"
-                                    "    font-size: 8pt; /* Размер шрифта */\n"
-                                    "    border-radius:0px; /* Закругленные углы */\n"
-                                    "\n"
-                                    "}\n"
-                                    "")
-        self.label_46.setObjectName("label_46")
-        self.verticalLayout_4.addWidget(self.label_46)
-        self.label_47 = QtWidgets.QLabel(self.layoutWidget2)
-        self.label_47.setStyleSheet("QLabel {\n"
-                                    "    background-color: rgba(200, 150, 255, 150); \n"
-                                    "    color: #000000;\n"
-                                    "    border: 1px solid #6495ED; /* Граница с тонкой линией */\n"
-                                    "    padding: 5px; /* Отступы вокруг текста */\n"
-                                    "    font-size: 8pt; /* Размер шрифта */\n"
-                                    "    border-radius:0px; /* Закругленные углы */\n"
-                                    "\n"
-                                    "}\n"
-                                    "")
-        self.label_47.setObjectName("label_47")
-        self.verticalLayout_4.addWidget(self.label_47)
-        self.label_48 = QtWidgets.QLabel(self.layoutWidget2)
-        self.label_48.setStyleSheet("QLabel {\n"
-                                    "    background-color: rgba(200, 150, 255, 150); \n"
-                                    "    color: #000000;\n"
-                                    "    border: 1px solid #6495ED; /* Граница с тонкой линией */\n"
-                                    "    padding: 5px; /* Отступы вокруг текста */\n"
-                                    "    font-size: 8pt; /* Размер шрифта */\n"
-                                    "    border-radius:0px; /* Закругленные углы */\n"
-                                    "\n"
-                                    "}\n"
-                                    "")
-        self.label_48.setObjectName("label_48")
-        self.verticalLayout_4.addWidget(self.label_48)
-        self.label_49 = QtWidgets.QLabel(self.layoutWidget2)
-        self.label_49.setStyleSheet("QLabel {\n"
-                                    "    background-color: rgba(200, 150, 255, 150); \n"
-                                    "    color: #000000;\n"
-                                    "    border: 1px solid #6495ED; /* Граница с тонкой линией */\n"
-                                    "    padding: 5px; /* Отступы вокруг текста */\n"
-                                    "    font-size: 8pt; /* Размер шрифта */\n"
-                                    "    border-radius:0px; /* Закругленные углы */\n"
-                                    "\n"
-                                    "}\n"
-                                    "")
-        self.label_49.setObjectName("label_49")
-        self.verticalLayout_4.addWidget(self.label_49)
-        self.label_50 = QtWidgets.QLabel(self.layoutWidget2)
-        self.label_50.setStyleSheet("QLabel {\n"
-                                    "    background-color: rgba(200, 150, 255, 150); \n"
-                                    "    color: #000000;\n"
-                                    "    border: 1px solid #6495ED; /* Граница с тонкой линией */\n"
-                                    "    padding: 5px; /* Отступы вокруг текста */\n"
-                                    "    font-size: 8pt; /* Размер шрифта */\n"
-                                    "    border-radius:0px; /* Закругленные углы */\n"
-                                    "\n"
-                                    "}\n"
-                                    "")
-        self.label_50.setObjectName("label_50")
-        self.verticalLayout_4.addWidget(self.label_50)
-        self.label_51 = QtWidgets.QLabel(self.layoutWidget2)
-        self.label_51.setStyleSheet("QLabel {\n"
-                                    "    background-color: rgba(200, 150, 255, 150); \n"
-                                    "    color: #000000;\n"
-                                    "    border: 1px solid #6495ED; /* Граница с тонкой линией */\n"
-                                    "    padding: 5px; /* Отступы вокруг текста */\n"
-                                    "    font-size: 8pt; /* Размер шрифта */\n"
-                                    "    border-radius:0px; /* Закругленные углы */\n"
-                                    "\n"
-                                    "}\n"
-                                    "")
-        self.label_51.setObjectName("label_51")
-        self.verticalLayout_4.addWidget(self.label_51)
-        self.label_52 = QtWidgets.QLabel(self.layoutWidget2)
-        self.label_52.setStyleSheet("QLabel {\n"
-                                    "    background-color: rgba(200, 150, 255, 150); \n"
-                                    "    color: #000000;\n"
-                                    "    border: 1px solid #6495ED; /* Граница с тонкой линией */\n"
-                                    "    padding: 5px; /* Отступы вокруг текста */\n"
-                                    "    font-size: 8pt; /* Размер шрифта */\n"
-                                    "    border-radius:0px; /* Закругленные углы */\n"
-                                    "\n"
-                                    "}\n"
-                                    "")
-        self.label_52.setObjectName("label_52")
-        self.verticalLayout_4.addWidget(self.label_52)
-        self.label_53 = QtWidgets.QLabel(self.layoutWidget2)
-        self.label_53.setStyleSheet("QLabel {\n"
-                                    "    background-color: rgba(200, 150, 255, 150); \n"
-                                    "    color: #000000;\n"
-                                    "    border: 1px solid #6495ED; /* Граница с тонкой линией */\n"
-                                    "    padding: 5px; /* Отступы вокруг текста */\n"
-                                    "    font-size: 8pt; /* Размер шрифта */\n"
-                                    "    border-radius:0px; /* Закругленные углы */\n"
-                                    "\n"
-                                    "}\n"
-                                    "")
-        self.label_53.setObjectName("label_53")
-        self.verticalLayout_4.addWidget(self.label_53)
-        self.label_54 = QtWidgets.QLabel(self.layoutWidget2)
-        self.label_54.setStyleSheet("QLabel {\n"
-                                    "    background-color: rgba(200, 150, 255, 150); \n"
-                                    "    color: #000000;\n"
-                                    "    border: 1px solid #6495ED; /* Граница с тонкой линией */\n"
-                                    "    padding: 5px; /* Отступы вокруг текста */\n"
-                                    "    font-size: 8pt; /* Размер шрифта */\n"
-                                    "    border-radius:0px; /* Закругленные углы */\n"
-                                    "\n"
-                                    "}\n"
-                                    "")
-        self.label_54.setObjectName("label_54")
-        self.verticalLayout_4.addWidget(self.label_54)
-        self.label_55 = QtWidgets.QLabel(self.layoutWidget2)
-        self.label_55.setStyleSheet("QLabel {\n"
-                                    "    background-color: rgba(200, 150, 255, 150); \n"
-                                    "    color: #000000;\n"
-                                    "    border: 1px solid #6495ED; /* Граница с тонкой линией */\n"
-                                    "    padding: 5px; /* Отступы вокруг текста */\n"
-                                    "    font-size: 8pt; /* Размер шрифта */\n"
-                                    "    border-radius:0px; /* Закругленные углы */\n"
-                                    "\n"
-                                    "}\n"
-                                    "")
-        self.label_55.setObjectName("label_55")
-        self.verticalLayout_4.addWidget(self.label_55)
-        self.label_56 = QtWidgets.QLabel(self.layoutWidget2)
-        self.label_56.setStyleSheet("QLabel {\n"
-                                    "    background-color: rgba(200, 150, 255, 150); \n"
-                                    "    color: #000000;\n"
-                                    "    border: 1px solid #6495ED; /* Граница с тонкой линией */\n"
-                                    "    padding: 5px; /* Отступы вокруг текста */\n"
-                                    "    font-size: 8pt; /* Размер шрифта */\n"
-                                    "    border-radius:0px; /* Закругленные углы */\n"
-                                    "\n"
-                                    "}\n"
-                                    "")
-        self.label_56.setObjectName("label_56")
-        self.verticalLayout_4.addWidget(self.label_56)
-        self.label_57 = QtWidgets.QLabel(self.layoutWidget2)
-        self.label_57.setStyleSheet("QLabel {\n"
-                                    "    background-color: rgba(200, 150, 255, 150); \n"
-                                    "    color: #000000;\n"
-                                    "    border: 1px solid #6495ED; /* Граница с тонкой линией */\n"
-                                    "    padding: 5px; /* Отступы вокруг текста */\n"
-                                    "    font-size: 8pt; /* Размер шрифта */\n"
-                                    "    border-radius:0px; /* Закругленные углы */\n"
-                                    "\n"
-                                    "}\n"
-                                    "")
-        self.label_57.setObjectName("label_57")
-        self.verticalLayout_4.addWidget(self.label_57)
-        self.label_58 = QtWidgets.QLabel(self.layoutWidget2)
-        self.label_58.setStyleSheet("QLabel {\n"
-                                    "    background-color: rgba(200, 150, 255, 150); \n"
-                                    "    color: #000000;\n"
-                                    "    border: 1px solid #6495ED; /* Граница с тонкой линией */\n"
-                                    "    padding: 5px; /* Отступы вокруг текста */\n"
-                                    "    font-size: 8pt; /* Размер шрифта */\n"
-                                    "    border-radius:0px; /* Закругленные углы */\n"
-                                    "\n"
-                                    "}\n"
-                                    "")
-        self.label_58.setObjectName("label_58")
-        self.verticalLayout_4.addWidget(self.label_58)
-        self.label_59 = QtWidgets.QLabel(self.layoutWidget2)
-        self.label_59.setStyleSheet("QLabel {\n"
-                                    "    background-color: rgba(200, 150, 255, 150); \n"
-                                    "    color: #000000;\n"
-                                    "    border: 1px solid #6495ED; /* Граница с тонкой линией */\n"
-                                    "    padding: 5px; /* Отступы вокруг текста */\n"
-                                    "    font-size: 8pt; /* Размер шрифта */\n"
-                                    "    border-radius:0px; /* Закругленные углы */\n"
-                                    "\n"
-                                    "}\n"
-                                    "")
-        self.label_59.setObjectName("label_59")
-        self.verticalLayout_4.addWidget(self.label_59)
-        self.label_60 = QtWidgets.QLabel(self.layoutWidget2)
-        self.label_60.setStyleSheet("QLabel {\n"
-                                    "    background-color: rgba(200, 150, 255, 150); \n"
-                                    "    color: #000000;\n"
-                                    "    border: 1px solid #6495ED; /* Граница с тонкой линией */\n"
-                                    "    padding: 5px; /* Отступы вокруг текста */\n"
-                                    "    font-size: 8pt; /* Размер шрифта */\n"
-                                    "    border-radius:0px; /* Закругленные углы */\n"
-                                    "\n"
-                                    "}\n"
-                                    "")
-        self.label_60.setObjectName("label_60")
-        self.verticalLayout_4.addWidget(self.label_60)
-        self.label_61 = QtWidgets.QLabel(self.layoutWidget2)
-        self.label_61.setStyleSheet("QLabel {\n"
-                                    "    background-color: rgba(200, 150, 255, 150); \n"
-                                    "    color: #000000;\n"
-                                    "    border: 1px solid #6495ED; /* Граница с тонкой линией */\n"
-                                    "    padding: 5px; /* Отступы вокруг текста */\n"
-                                    "    font-size: 8pt; /* Размер шрифта */\n"
-                                    "    border-radius:0px; /* Закругленные углы */\n"
-                                    "\n"
-                                    "}\n"
-                                    "")
-        self.label_61.setObjectName("label_61")
-        self.verticalLayout_4.addWidget(self.label_61)
-        self.label_62 = QtWidgets.QLabel(self.layoutWidget2)
-        self.label_62.setStyleSheet("QLabel {\n"
-                                    "    background-color: rgba(200, 150, 255, 150); \n"
-                                    "    color: #000000;\n"
-                                    "    border: 1px solid #6495ED; /* Граница с тонкой линией */\n"
-                                    "    padding: 5px; /* Отступы вокруг текста */\n"
-                                    "    font-size: 8pt; /* Размер шрифта */\n"
-                                    "    border-radius:0px; /* Закругленные углы */\n"
-                                    "\n"
-                                    "}\n"
-                                    "")
-        self.label_62.setObjectName("label_62")
-        self.verticalLayout_4.addWidget(self.label_62)
-        self.horizontalLayout_2.addLayout(self.verticalLayout_4)
-        self.verticalLayout_5 = QtWidgets.QVBoxLayout()
-        self.verticalLayout_5.setSpacing(0)
-        self.verticalLayout_5.setObjectName("verticalLayout_5")
-        self.label_63 = QtWidgets.QLabel(self.layoutWidget2)
-        self.label_63.setStyleSheet("QLabel {\n"
-                                    "    background-color: rgba(200, 150, 255, 150); \n"
-                                    "    color: #000000;\n"
-                                    "    border: 1px solid #6495ED; /* Граница с тонкой линией */\n"
-                                    "    padding: 5px; /* Отступы вокруг текста */\n"
-                                    "    font-size: 8pt; /* Размер шрифта */\n"
-                                    "    border-radius:0px; /* Закругленные углы */\n"
-                                    "\n"
-                                    "}\n"
-                                    "")
-        self.label_63.setObjectName("label_63")
-        self.verticalLayout_5.addWidget(self.label_63)
-        self.label_64 = QtWidgets.QLabel(self.layoutWidget2)
-        self.label_64.setStyleSheet("QLabel {\n"
-                                    "    background-color: rgba(200, 150, 255, 150); \n"
-                                    "    color: #000000;\n"
-                                    "    border: 1px solid #6495ED; /* Граница с тонкой линией */\n"
-                                    "    padding: 5px; /* Отступы вокруг текста */\n"
-                                    "    font-size: 8pt; /* Размер шрифта */\n"
-                                    "    border-radius:0px; /* Закругленные углы */\n"
-                                    "\n"
-                                    "}\n"
-                                    "")
-        self.label_64.setObjectName("label_64")
-        self.verticalLayout_5.addWidget(self.label_64)
-        self.label_65 = QtWidgets.QLabel(self.layoutWidget2)
-        self.label_65.setStyleSheet("QLabel {\n"
-                                    "    background-color: rgba(200, 150, 255, 150); \n"
-                                    "    color: #000000;\n"
-                                    "    border: 1px solid #6495ED; /* Граница с тонкой линией */\n"
-                                    "    padding: 5px; /* Отступы вокруг текста */\n"
-                                    "    font-size: 8pt; /* Размер шрифта */\n"
-                                    "    border-radius:0px; /* Закругленные углы */\n"
-                                    "\n"
-                                    "}\n"
-                                    "")
-        self.label_65.setObjectName("label_65")
-        self.verticalLayout_5.addWidget(self.label_65)
-        self.label_66 = QtWidgets.QLabel(self.layoutWidget2)
-        self.label_66.setStyleSheet("QLabel {\n"
-                                    "    background-color: rgba(200, 150, 255, 150); \n"
-                                    "    color: #000000;\n"
-                                    "    border: 1px solid #6495ED; /* Граница с тонкой линией */\n"
-                                    "    padding: 5px; /* Отступы вокруг текста */\n"
-                                    "    font-size: 8pt; /* Размер шрифта */\n"
-                                    "    border-radius:0px; /* Закругленные углы */\n"
-                                    "\n"
-                                    "}\n"
-                                    "")
-        self.label_66.setObjectName("label_66")
-        self.verticalLayout_5.addWidget(self.label_66)
-        self.label_67 = QtWidgets.QLabel(self.layoutWidget2)
-        self.label_67.setStyleSheet("QLabel {\n"
-                                    "    background-color: rgba(200, 150, 255, 150); \n"
-                                    "    color: #000000;\n"
-                                    "    border: 1px solid #6495ED; /* Граница с тонкой линией */\n"
-                                    "    padding: 5px; /* Отступы вокруг текста */\n"
-                                    "    font-size: 8pt; /* Размер шрифта */\n"
-                                    "    border-radius:0px; /* Закругленные углы */\n"
-                                    "\n"
-                                    "}\n"
-                                    "")
-        self.label_67.setObjectName("label_67")
-        self.verticalLayout_5.addWidget(self.label_67)
-        self.label_68 = QtWidgets.QLabel(self.layoutWidget2)
-        self.label_68.setStyleSheet("QLabel {\n"
-                                    "    background-color: rgba(200, 150, 255, 150); \n"
-                                    "    color: #000000;\n"
-                                    "    border: 1px solid #6495ED; /* Граница с тонкой линией */\n"
-                                    "    padding: 5px; /* Отступы вокруг текста */\n"
-                                    "    font-size: 8pt; /* Размер шрифта */\n"
-                                    "    border-radius:0px; /* Закругленные углы */\n"
-                                    "\n"
-                                    "}\n"
-                                    "")
-        self.label_68.setObjectName("label_68")
-        self.verticalLayout_5.addWidget(self.label_68)
-        self.label_69 = QtWidgets.QLabel(self.layoutWidget2)
-        self.label_69.setStyleSheet("QLabel {\n"
-                                    "    background-color: rgba(200, 150, 255, 150); \n"
-                                    "    color: #000000;\n"
-                                    "    border: 1px solid #6495ED; /* Граница с тонкой линией */\n"
-                                    "    padding: 5px; /* Отступы вокруг текста */\n"
-                                    "    font-size: 8pt; /* Размер шрифта */\n"
-                                    "    border-radius:0px; /* Закругленные углы */\n"
-                                    "\n"
-                                    "}\n"
-                                    "")
-        self.label_69.setObjectName("label_69")
-        self.verticalLayout_5.addWidget(self.label_69)
-        self.label_70 = QtWidgets.QLabel(self.layoutWidget2)
-        self.label_70.setStyleSheet("QLabel {\n"
-                                    "    background-color: rgba(200, 150, 255, 150); \n"
-                                    "    color: #000000;\n"
-                                    "    border: 1px solid #6495ED; /* Граница с тонкой линией */\n"
-                                    "    padding: 5px; /* Отступы вокруг текста */\n"
-                                    "    font-size: 8pt; /* Размер шрифта */\n"
-                                    "    border-radius:0px; /* Закругленные углы */\n"
-                                    "\n"
-                                    "}\n"
-                                    "")
-        self.label_70.setObjectName("label_70")
-        self.verticalLayout_5.addWidget(self.label_70)
-        self.label_71 = QtWidgets.QLabel(self.layoutWidget2)
-        self.label_71.setStyleSheet("QLabel {\n"
-                                    "    background-color: rgba(200, 150, 255, 150); \n"
-                                    "    color: #000000;\n"
-                                    "    border: 1px solid #6495ED; /* Граница с тонкой линией */\n"
-                                    "    padding: 5px; /* Отступы вокруг текста */\n"
-                                    "    font-size: 8pt; /* Размер шрифта */\n"
-                                    "    border-radius:0px; /* Закругленные углы */\n"
-                                    "\n"
-                                    "}\n"
-                                    "")
-        self.label_71.setObjectName("label_71")
-        self.verticalLayout_5.addWidget(self.label_71)
-        self.label_72 = QtWidgets.QLabel(self.layoutWidget2)
-        self.label_72.setStyleSheet("QLabel {\n"
-                                    "    background-color: rgba(200, 150, 255, 150); \n"
-                                    "    color: #000000;\n"
-                                    "    border: 1px solid #6495ED; /* Граница с тонкой линией */\n"
-                                    "    padding: 5px; /* Отступы вокруг текста */\n"
-                                    "    font-size: 8pt; /* Размер шрифта */\n"
-                                    "    border-radius:0px; /* Закругленные углы */\n"
-                                    "\n"
-                                    "}\n"
-                                    "")
-        self.label_72.setObjectName("label_72")
-        self.verticalLayout_5.addWidget(self.label_72)
-        self.label_73 = QtWidgets.QLabel(self.layoutWidget2)
-        self.label_73.setStyleSheet("QLabel {\n"
-                                    "    background-color: rgba(200, 150, 255, 150); \n"
-                                    "    color: #000000;\n"
-                                    "    border: 1px solid #6495ED; /* Граница с тонкой линией */\n"
-                                    "    padding: 5px; /* Отступы вокруг текста */\n"
-                                    "    font-size: 8pt; /* Размер шрифта */\n"
-                                    "    border-radius:0px; /* Закругленные углы */\n"
-                                    "\n"
-                                    "}\n"
-                                    "")
-        self.label_73.setObjectName("label_73")
-        self.verticalLayout_5.addWidget(self.label_73)
-        self.label_74 = QtWidgets.QLabel(self.layoutWidget2)
-        self.label_74.setStyleSheet("QLabel {\n"
-                                    "    background-color: rgba(200, 150, 255, 150); \n"
-                                    "    color: #000000;\n"
-                                    "    border: 1px solid #6495ED; /* Граница с тонкой линией */\n"
-                                    "    padding: 5px; /* Отступы вокруг текста */\n"
-                                    "    font-size: 8pt; /* Размер шрифта */\n"
-                                    "    border-radius:0px; /* Закругленные углы */\n"
-                                    "\n"
-                                    "}\n"
-                                    "")
-        self.label_74.setObjectName("label_74")
-        self.verticalLayout_5.addWidget(self.label_74)
-        self.label_75 = QtWidgets.QLabel(self.layoutWidget2)
-        self.label_75.setStyleSheet("QLabel {\n"
-                                    "    background-color: rgba(200, 150, 255, 150); \n"
-                                    "    color: #000000;\n"
-                                    "    border: 1px solid #6495ED; /* Граница с тонкой линией */\n"
-                                    "    padding: 5px; /* Отступы вокруг текста */\n"
-                                    "    font-size: 8pt; /* Размер шрифта */\n"
-                                    "    border-radius:0px; /* Закругленные углы */\n"
-                                    "\n"
-                                    "}\n"
-                                    "")
-        self.label_75.setObjectName("label_75")
-        self.verticalLayout_5.addWidget(self.label_75)
-        self.label_76 = QtWidgets.QLabel(self.layoutWidget2)
-        self.label_76.setStyleSheet("QLabel {\n"
-                                    "    background-color: rgba(200, 150, 255, 150); \n"
-                                    "    color: #000000;\n"
-                                    "    border: 1px solid #6495ED; /* Граница с тонкой линией */\n"
-                                    "    padding: 5px; /* Отступы вокруг текста */\n"
-                                    "    font-size: 8pt; /* Размер шрифта */\n"
-                                    "    border-radius:0px; /* Закругленные углы */\n"
-                                    "\n"
-                                    "}\n"
-                                    "")
-        self.label_76.setObjectName("label_76")
-        self.verticalLayout_5.addWidget(self.label_76)
-        self.label_77 = QtWidgets.QLabel(self.layoutWidget2)
-        self.label_77.setStyleSheet("QLabel {\n"
-                                    "    background-color: rgba(200, 150, 255, 150); \n"
-                                    "    color: #000000;\n"
-                                    "    border: 1px solid #6495ED; /* Граница с тонкой линией */\n"
-                                    "    padding: 5px; /* Отступы вокруг текста */\n"
-                                    "    font-size: 8pt; /* Размер шрифта */\n"
-                                    "    border-radius:0px; /* Закругленные углы */\n"
-                                    "\n"
-                                    "}\n"
-                                    "")
-        self.label_77.setObjectName("label_77")
-        self.verticalLayout_5.addWidget(self.label_77)
-        self.label_78 = QtWidgets.QLabel(self.layoutWidget2)
-        self.label_78.setStyleSheet("QLabel {\n"
-                                    "    background-color: rgba(200, 150, 255, 150); \n"
-                                    "    color: #000000;\n"
-                                    "    border: 1px solid #6495ED; /* Граница с тонкой линией */\n"
-                                    "    padding: 5px; /* Отступы вокруг текста */\n"
-                                    "    font-size: 8pt; /* Размер шрифта */\n"
-                                    "    border-radius:0px; /* Закругленные углы */\n"
-                                    "\n"
-                                    "}\n"
-                                    "")
-        self.label_78.setObjectName("label_78")
-        self.verticalLayout_5.addWidget(self.label_78)
-        self.label_79 = QtWidgets.QLabel(self.layoutWidget2)
-        self.label_79.setStyleSheet("QLabel {\n"
-                                    "    background-color: rgba(200, 150, 255, 150); \n"
-                                    "    color: #000000;\n"
-                                    "    border: 1px solid #6495ED; /* Граница с тонкой линией */\n"
-                                    "    padding: 5px; /* Отступы вокруг текста */\n"
-                                    "    font-size: 8pt; /* Размер шрифта */\n"
-                                    "    border-radius:0px; /* Закругленные углы */\n"
-                                    "\n"
-                                    "}\n"
-                                    "")
-        self.label_79.setObjectName("label_79")
-        self.verticalLayout_5.addWidget(self.label_79)
-        self.label_80 = QtWidgets.QLabel(self.layoutWidget2)
-        self.label_80.setStyleSheet("QLabel {\n"
-                                    "    background-color: rgba(200, 150, 255, 150); \n"
-                                    "    color: #000000;\n"
-                                    "    border: 1px solid #6495ED; /* Граница с тонкой линией */\n"
-                                    "    padding: 5px; /* Отступы вокруг текста */\n"
-                                    "    font-size: 8pt; /* Размер шрифта */\n"
-                                    "    border-radius:0px; /* Закругленные углы */\n"
-                                    "\n"
-                                    "}\n"
-                                    "")
-        self.label_80.setObjectName("label_80")
-        self.verticalLayout_5.addWidget(self.label_80)
-        self.label_81 = QtWidgets.QLabel(self.layoutWidget2)
-        self.label_81.setStyleSheet("QLabel {\n"
-                                    "    background-color: rgba(200, 150, 255, 150); \n"
-                                    "    color: #000000;\n"
-                                    "    border: 1px solid #6495ED; /* Граница с тонкой линией */\n"
-                                    "    padding: 5px; /* Отступы вокруг текста */\n"
-                                    "    font-size: 8pt; /* Размер шрифта */\n"
-                                    "    border-radius:0px; /* Закругленные углы */\n"
-                                    "\n"
-                                    "}\n"
-                                    "")
-        self.label_81.setObjectName("label_81")
-        self.verticalLayout_5.addWidget(self.label_81)
-        self.label_82 = QtWidgets.QLabel(self.layoutWidget2)
-        self.label_82.setStyleSheet("QLabel {\n"
-                                    "    background-color: rgba(200, 150, 255, 150); \n"
-                                    "    color: #000000;\n"
-                                    "    border: 1px solid #6495ED; /* Граница с тонкой линией */\n"
-                                    "    padding: 5px; /* Отступы вокруг текста */\n"
-                                    "    font-size: 8pt; /* Размер шрифта */\n"
-                                    "    border-radius:0px; /* Закругленные углы */\n"
-                                    "\n"
-                                    "}\n"
-                                    "")
-        self.label_82.setObjectName("label_82")
-        self.verticalLayout_5.addWidget(self.label_82)
-        self.label_83 = QtWidgets.QLabel(self.layoutWidget2)
-        self.label_83.setStyleSheet("QLabel {\n"
-                                    "    background-color: rgba(200, 150, 255, 150); \n"
-                                    "    color: #000000;\n"
-                                    "    border: 1px solid #6495ED; /* Граница с тонкой линией */\n"
-                                    "    padding: 5px; /* Отступы вокруг текста */\n"
-                                    "    font-size: 8pt; /* Размер шрифта */\n"
-                                    "    border-radius:0px; /* Закругленные углы */\n"
-                                    "\n"
-                                    "}\n"
-                                    "")
-        self.label_83.setObjectName("label_83")
-        self.verticalLayout_5.addWidget(self.label_83)
-        self.label_84 = QtWidgets.QLabel(self.layoutWidget2)
-        self.label_84.setStyleSheet("QLabel {\n"
-                                    "    background-color: rgba(200, 150, 255, 150); \n"
-                                    "    color: #000000;\n"
-                                    "    border: 1px solid #6495ED; /* Граница с тонкой линией */\n"
-                                    "    padding: 5px; /* Отступы вокруг текста */\n"
-                                    "    font-size: 8pt; /* Размер шрифта */\n"
-                                    "    border-radius:0px; /* Закругленные углы */\n"
-                                    "\n"
-                                    "}\n"
-                                    "")
-        self.label_84.setObjectName("label_84")
-        self.verticalLayout_5.addWidget(self.label_84)
-        self.label_85 = QtWidgets.QLabel(self.layoutWidget2)
-        self.label_85.setStyleSheet("QLabel {\n"
-                                    "    background-color: rgba(200, 150, 255, 150); \n"
-                                    "    color: #000000;\n"
-                                    "    border: 1px solid #6495ED; /* Граница с тонкой линией */\n"
-                                    "    padding: 5px; /* Отступы вокруг текста */\n"
-                                    "    font-size: 8pt; /* Размер шрифта */\n"
-                                    "    border-radius:0px; /* Закругленные углы */\n"
-                                    "\n"
-                                    "}\n"
-                                    "")
-        self.label_85.setObjectName("label_85")
-        self.verticalLayout_5.addWidget(self.label_85)
-        self.horizontalLayout_2.addLayout(self.verticalLayout_5)
+        self.graphicsView_open_to_open = QtWidgets.QGraphicsView(self.layoutWidget3)
+        self.graphicsView_open_to_open.setObjectName("graphicsView_open_to_open")
+        self.verticalLayout_4.addWidget(self.graphicsView_open_to_open)
+        self.graphicsView_hight_to_low = QtWidgets.QGraphicsView(self.layoutWidget3)
+        self.graphicsView_hight_to_low.setObjectName("graphicsView_hight_to_low")
+        self.verticalLayout_4.addWidget(self.graphicsView_hight_to_low)
         self.scrollArea_2.setWidget(self.scrollAreaWidgetContents_3)
         self.Pager.addWidget(self.A_D_page)
         self.Watch_List_page = QtWidgets.QWidget()
         self.Watch_List_page.setObjectName("Watch_List_page")
-        self.tableWidget = QtWidgets.QTableWidget(self.Watch_List_page)
-        self.tableWidget.setGeometry(QtCore.QRect(40, 40, 611, 541))
-        self.tableWidget.setObjectName("tableWidget")
-        self.tableWidget.setColumnCount(0)
-        self.tableWidget.setRowCount(0)
-        self.label_2 = QtWidgets.QLabel(self.Watch_List_page)
-        self.label_2.setGeometry(QtCore.QRect(670, 40, 371, 541))
-        self.label_2.setText("")
-        self.label_2.setObjectName("label_2")
-        self.layoutWidget3 = QtWidgets.QWidget(self.Watch_List_page)
-        self.layoutWidget3.setGeometry(QtCore.QRect(50, 590, 281, 38))
-        self.layoutWidget3.setObjectName("layoutWidget3")
-        self.horizontalLayout_5 = QtWidgets.QHBoxLayout(self.layoutWidget3)
-        self.horizontalLayout_5.setContentsMargins(0, 0, 0, 0)
-        self.horizontalLayout_5.setObjectName("horizontalLayout_5")
-        self.Asset_input_window_2 = QtWidgets.QLineEdit(self.layoutWidget3)
+        self.layoutWidget4 = QtWidgets.QWidget(self.Watch_List_page)
+        self.layoutWidget4.setGeometry(QtCore.QRect(40, 620, 489, 101))
+        self.layoutWidget4.setObjectName("layoutWidget4")
+        self.layout_find = QtWidgets.QHBoxLayout(self.layoutWidget4)
+        self.layout_find.setContentsMargins(0, 0, 0, 0)
+        self.layout_find.setObjectName("layout_find")
+        self.Asset_input_window_2 = QtWidgets.QLineEdit(self.layoutWidget4)
+        self.Asset_input_window_2.setEnabled(True)
         self.Asset_input_window_2.setStyleSheet("QLineEdit {\n"
-                                                "    background-color: rgba(200, 200, 255, 255); /* Более светлый и прозрачный фон для QLineEdit */\n"
-                                                "    color: #000000;\n"
-                                                "    border-radius: 5px;\n"
-                                                "    padding: 5px; \n"
-                                                "    font-size: 12pt;\n"
-                                                "}\n"
-                                                "\n"
-                                                "QLineEdit:focus {\n"
-                                                "    border: 2px solid #6495ED; /* Граница при активации (фокусе) */\n"
-                                                "}\n"
-                                                "")
+"    background-color: rgba(200, 200, 255, 255); /* Более светлый и прозрачный фон для QLineEdit */\n"
+"    color: #000000;\n"
+"    border-radius: 5px;\n"
+"    padding: 5px; \n"
+"    font-size: 12pt;\n"
+"}\n"
+"\n"
+"QLineEdit:focus {\n"
+"    border: 2px solid #6495ED; /* Граница при активации (фокусе) */\n"
+"}\n"
+"")
         self.Asset_input_window_2.setObjectName("Asset_input_window_2")
-        self.horizontalLayout_5.addWidget(self.Asset_input_window_2)
-        self.Find_asset_button_3 = QtWidgets.QPushButton(self.layoutWidget3)
+        self.layout_find.addWidget(self.Asset_input_window_2)
+        self.Find_asset_button_3 = QtWidgets.QPushButton(self.layoutWidget4)
         self.Find_asset_button_3.setCursor(QtGui.QCursor(QtCore.Qt.PointingHandCursor))
         self.Find_asset_button_3.setStyleSheet("QPushButton {\n"
-                                               "    background-color: rgba(100, 100, 200, 150); /* Фон кнопки */\n"
-                                               "    color: white; /* Цвет текста кнопки */\n"
-                                               "    border: 2px solid #6495ED; /* Граница кнопки */\n"
-                                               "    border-radius: 5px; /* Округленные углы */\n"
-                                               "    font-size: 14pt; /* Размер шрифта */\n"
-                                               "}\n"
-                                               "\n"
-                                               "QPushButton:hover {\n"
-                                               "    background-color: rgba(100, 100, 200, 200); /* Измененный фон при наведении курсора */\n"
-                                               "}\n"
-                                               "")
+"    background-color: rgba(100, 100, 200, 150); /* Фон кнопки */\n"
+"    color: white; /* Цвет текста кнопки */\n"
+"    border: 2px solid #6495ED; /* Граница кнопки */\n"
+"    border-radius: 5px; /* Округленные углы */\n"
+"    font-size: 14pt; /* Размер шрифта */\n"
+"}\n"
+"\n"
+"QPushButton:hover {\n"
+"    background-color: rgba(100, 100, 200, 200); /* Измененный фон при наведении курсора */\n"
+"}\n"
+"")
         self.Find_asset_button_3.setObjectName("Find_asset_button_3")
-        self.horizontalLayout_5.addWidget(self.Find_asset_button_3)
-        self.Find_asset_button_4 = QtWidgets.QPushButton(self.layoutWidget3)
-        self.Find_asset_button_4.setCursor(QtGui.QCursor(QtCore.Qt.PointingHandCursor))
-        self.Find_asset_button_4.setStyleSheet("QPushButton {\n"
-                                               "    background-color: rgba(100, 100, 200, 150); /* Фон кнопки */\n"
-                                               "    color: white; /* Цвет текста кнопки */\n"
-                                               "    border: 2px solid #6495ED; /* Граница кнопки */\n"
-                                               "    border-radius: 5px; /* Округленные углы */\n"
-                                               "    font-size: 14pt; /* Размер шрифта */\n"
-                                               "}\n"
-                                               "\n"
-                                               "QPushButton:hover {\n"
-                                               "    background-color: rgba(100, 100, 200, 200); /* Измененный фон при наведении курсора */\n"
-                                               "}\n"
-                                               "")
-        self.Find_asset_button_4.setObjectName("Find_asset_button_4")
-        self.horizontalLayout_5.addWidget(self.Find_asset_button_4)
-        self.layoutWidget4 = QtWidgets.QWidget(self.Watch_List_page)
-        self.layoutWidget4.setGeometry(QtCore.QRect(50, 630, 172, 83))
-        self.layoutWidget4.setObjectName("layoutWidget4")
-        self.verticalLayout_9 = QtWidgets.QVBoxLayout(self.layoutWidget4)
-        self.verticalLayout_9.setContentsMargins(0, 0, 0, 0)
-        self.verticalLayout_9.setObjectName("verticalLayout_9")
-        self.Choose_the_asset_label_2 = QtWidgets.QLabel(self.layoutWidget4)
-        font = QtGui.QFont()
-        font.setPointSize(14)
-        self.Choose_the_asset_label_2.setFont(font)
-        self.Choose_the_asset_label_2.setLayoutDirection(QtCore.Qt.LeftToRight)
-        self.Choose_the_asset_label_2.setStyleSheet("QFrame {\n"
-                                                    "    background-color: rgba(200, 200, 255, 100);\n"
-                                                    "    color: white;\n"
-                                                    "    border-radius: 10px;\n"
-                                                    "}\n"
-                                                    "\n"
-                                                    "QLabel {\n"
-                                                    "    font-size: 14pt;\n"
-                                                    "    padding: 10px;\n"
-                                                    "}\n"
-                                                    "")
-        self.Choose_the_asset_label_2.setObjectName("Choose_the_asset_label_2")
-        self.verticalLayout_9.addWidget(self.Choose_the_asset_label_2)
-        self.Find_asset_button_2 = QtWidgets.QPushButton(self.layoutWidget4)
-        self.Find_asset_button_2.setCursor(QtGui.QCursor(QtCore.Qt.PointingHandCursor))
-        self.Find_asset_button_2.setStyleSheet("QPushButton {\n"
-                                               "    background-color: rgba(100, 100, 200, 150); /* Фон кнопки */\n"
-                                               "    color: white; /* Цвет текста кнопки */\n"
-                                               "    border: 2px solid #6495ED; /* Граница кнопки */\n"
-                                               "    border-radius: 5px; /* Округленные углы */\n"
-                                               "    font-size: 14pt; /* Размер шрифта */\n"
-                                               "}\n"
-                                               "\n"
-                                               "QPushButton:hover {\n"
-                                               "    background-color: rgba(100, 100, 200, 200); /* Измененный фон при наведении курсора */\n"
-                                               "}\n"
-                                               "")
-        self.Find_asset_button_2.setObjectName("Find_asset_button_2")
-        self.verticalLayout_9.addWidget(self.Find_asset_button_2)
+        self.layout_find.addWidget(self.Find_asset_button_3)
+        self.listWidget = QtWidgets.QListWidget(self.Watch_List_page)
+        self.listWidget.setGeometry(QtCore.QRect(40, 120, 1011, 501))
+        self.listWidget.setObjectName("listWidget")
+        self.TA_title_label_3 = QtWidgets.QLabel(self.Watch_List_page)
+        self.TA_title_label_3.setGeometry(QtCore.QRect(390, 40, 271, 61))
+        self.TA_title_label_3.setStyleSheet("QLabel {\n"
+"    background-color: rgba(50, 50, 150, 150); \n"
+"    color: white;\n"
+"    border-radius: 20px; \n"
+"    font-size: 16pt; \n"
+"    padding: 10px; \n"
+"    border: 2px solid #6495ED;\n"
+"}\n"
+"")
+        self.TA_title_label_3.setObjectName("TA_title_label_3")
+        self.label_2 = QtWidgets.QLabel(self.Watch_List_page)
+        self.label_2.setGeometry(QtCore.QRect(560, 650, 511, 61))
+        self.label_2.setStyleSheet("QLabel {\n"
+"    background-color: rgba(50, 50, 150, 150); \n"
+"    color: white;\n"
+"    border-radius: 20px; \n"
+"    font-size: 14pt; \n"
+"    padding: 10px; \n"
+"    border: 2px solid #6495ED;\n"
+"}")
+        self.label_2.setObjectName("label_2")
         self.Pager.addWidget(self.Watch_List_page)
         self.About_page = QtWidgets.QWidget()
         self.About_page.setObjectName("About_page")
         self.label_3 = QtWidgets.QLabel(self.About_page)
         self.label_3.setGeometry(QtCore.QRect(40, 40, 1001, 661))
         self.label_3.setStyleSheet("QFrame {\n"
-                                   "    background-color: rgba(200, 200, 255, 100);\n"
-                                   "    color: white;\n"
-                                   "    border-radius: 20px;\n"
-                                   "}\n"
-                                   "\n"
-                                   "QLabel {\n"
-                                   "    font-size: 14pt;\n"
-                                   "    padding: 10px;\n"
-                                   "}\n"
-                                   "")
+"    background-color: rgba(200, 200, 255, 100);\n"
+"    color: white;\n"
+"    border-radius: 20px;\n"
+"}\n"
+"\n"
+"QLabel {\n"
+"    font-size: 14pt;\n"
+"    padding: 10px;\n"
+"}\n"
+"")
         self.label_3.setObjectName("label_3")
         self.Pager.addWidget(self.About_page)
         self.Contactpage = QtWidgets.QWidget()
@@ -2120,124 +1233,124 @@ class Ui_MainWindow(object):
         self.label_4 = QtWidgets.QLabel(self.Contactpage)
         self.label_4.setGeometry(QtCore.QRect(40, 40, 1001, 661))
         self.label_4.setStyleSheet("QFrame {\n"
-                                   "    background-color: rgba(200, 200, 255, 100);\n"
-                                   "    color: white;\n"
-                                   "    border-radius: 20px;\n"
-                                   "}\n"
-                                   "\n"
-                                   "QLabel {\n"
-                                   "    font-size: 14pt;\n"
-                                   "    padding: 10px;\n"
-                                   "}\n"
-                                   "")
+"    background-color: rgba(200, 200, 255, 100);\n"
+"    color: white;\n"
+"    border-radius: 20px;\n"
+"}\n"
+"\n"
+"QLabel {\n"
+"    font-size: 14pt;\n"
+"    padding: 10px;\n"
+"}\n"
+"")
         self.label_4.setObjectName("label_4")
         self.Pager.addWidget(self.Contactpage)
         self.layoutWidget5 = QtWidgets.QWidget(self.Skeleton)
-        self.layoutWidget5.setGeometry(QtCore.QRect(140, 800, 818, 51))
+        self.layoutWidget5.setGeometry(QtCore.QRect(150, 840, 818, 51))
         self.layoutWidget5.setObjectName("layoutWidget5")
         self.horizontalLayout = QtWidgets.QHBoxLayout(self.layoutWidget5)
         self.horizontalLayout.setContentsMargins(0, 0, 0, 0)
         self.horizontalLayout.setObjectName("horizontalLayout")
-        self.pushButton_4 = QtWidgets.QPushButton(self.layoutWidget5)
-        self.pushButton_4.setCursor(QtGui.QCursor(QtCore.Qt.PointingHandCursor))
-        self.pushButton_4.setStyleSheet("QPushButton {\n"
-                                        "    background-color: rgba(100, 100, 200, 150); /* Фон кнопки */\n"
-                                        "    color: white; /* Цвет текста кнопки */\n"
-                                        "    border: 2px solid #6495ED; /* Граница кнопки */\n"
-                                        "    border-radius: 5px; /* Округленные углы */\n"
-                                        "    font-size: 14pt; /* Размер шрифта */\n"
-                                        "}\n"
-                                        "\n"
-                                        "QPushButton:hover {\n"
-                                        "    background-color: rgba(100, 100, 200, 200); /* Измененный фон при наведении курсора */\n"
-                                        "}\n"
-                                        "")
-        self.pushButton_4.setObjectName("pushButton_4")
-        self.horizontalLayout.addWidget(self.pushButton_4)
-        self.pushButton_3 = QtWidgets.QPushButton(self.layoutWidget5)
-        self.pushButton_3.setCursor(QtGui.QCursor(QtCore.Qt.PointingHandCursor))
-        self.pushButton_3.setStyleSheet("QPushButton {\n"
-                                        "    background-color: rgba(100, 100, 200, 150); /* Фон кнопки */\n"
-                                        "    color: white; /* Цвет текста кнопки */\n"
-                                        "    border: 2px solid #6495ED; /* Граница кнопки */\n"
-                                        "    border-radius: 5px; /* Округленные углы */\n"
-                                        "    font-size: 14pt; /* Размер шрифта */\n"
-                                        "}\n"
-                                        "\n"
-                                        "QPushButton:hover {\n"
-                                        "    background-color: rgba(100, 100, 200, 200); /* Измененный фон при наведении курсора */\n"
-                                        "}\n"
-                                        "")
-        self.pushButton_3.setObjectName("pushButton_3")
-        self.horizontalLayout.addWidget(self.pushButton_3)
-        self.pushButton_2 = QtWidgets.QPushButton(self.layoutWidget5)
-        self.pushButton_2.setCursor(QtGui.QCursor(QtCore.Qt.PointingHandCursor))
-        self.pushButton_2.setStyleSheet("QPushButton {\n"
-                                        "    background-color: rgba(100, 100, 200, 150); /* Фон кнопки */\n"
-                                        "    color: white; /* Цвет текста кнопки */\n"
-                                        "    border: 2px solid #6495ED; /* Граница кнопки */\n"
-                                        "    border-radius: 5px; /* Округленные углы */\n"
-                                        "    font-size: 14pt; /* Размер шрифта */\n"
-                                        "}\n"
-                                        "\n"
-                                        "QPushButton:hover {\n"
-                                        "    background-color: rgba(100, 100, 200, 200); /* Измененный фон при наведении курсора */\n"
-                                        "}\n"
-                                        "")
-        self.pushButton_2.setObjectName("pushButton_2")
-        self.horizontalLayout.addWidget(self.pushButton_2)
-        self.pushButton = QtWidgets.QPushButton(self.layoutWidget5)
-        self.pushButton.setCursor(QtGui.QCursor(QtCore.Qt.PointingHandCursor))
-        self.pushButton.setStyleSheet("QPushButton {\n"
-                                      "    background-color: rgba(100, 100, 200, 150); /* Фон кнопки */\n"
-                                      "    color: white; /* Цвет текста кнопки */\n"
-                                      "    border: 2px solid #6495ED; /* Граница кнопки */\n"
-                                      "    border-radius: 5px; /* Округленные углы */\n"
-                                      "    font-size: 14pt; /* Размер шрифта */\n"
-                                      "}\n"
-                                      "\n"
-                                      "QPushButton:hover {\n"
-                                      "    background-color: rgba(100, 100, 200, 200); /* Измененный фон при наведении курсора */\n"
-                                      "}\n"
-                                      "")
-        self.pushButton.setObjectName("pushButton")
-        self.horizontalLayout.addWidget(self.pushButton)
-        self.pushButton_6 = QtWidgets.QPushButton(self.layoutWidget5)
-        self.pushButton_6.setCursor(QtGui.QCursor(QtCore.Qt.PointingHandCursor))
-        self.pushButton_6.setStyleSheet("QPushButton {\n"
-                                        "    background-color: rgba(100, 100, 200, 150); /* Фон кнопки */\n"
-                                        "    color: white; /* Цвет текста кнопки */\n"
-                                        "    border: 2px solid #6495ED; /* Граница кнопки */\n"
-                                        "    border-radius: 5px; /* Округленные углы */\n"
-                                        "    font-size: 14pt; /* Размер шрифта */\n"
-                                        "}\n"
-                                        "\n"
-                                        "QPushButton:hover {\n"
-                                        "    background-color: rgba(100, 100, 200, 200); /* Измененный фон при наведении курсора */\n"
-                                        "}\n"
-                                        "")
-        self.pushButton_6.setObjectName("pushButton_6")
-        self.horizontalLayout.addWidget(self.pushButton_6)
-        self.pushButton_5 = QtWidgets.QPushButton(self.layoutWidget5)
-        self.pushButton_5.setCursor(QtGui.QCursor(QtCore.Qt.PointingHandCursor))
-        self.pushButton_5.setStyleSheet("QPushButton {\n"
-                                        "    background-color: rgba(100, 100, 200, 150); /* Фон кнопки */\n"
-                                        "    color: white; /* Цвет текста кнопки */\n"
-                                        "    border: 2px solid #6495ED; /* Граница кнопки */\n"
-                                        "    border-radius: 5px; /* Округленные углы */\n"
-                                        "    font-size: 14pt; /* Размер шрифта */\n"
-                                        "}\n"
-                                        "\n"
-                                        "QPushButton:hover {\n"
-                                        "    background-color: rgba(100, 100, 200, 200); /* Измененный фон при наведении курсора */\n"
-                                        "}\n"
-                                        "")
-        self.pushButton_5.setObjectName("pushButton_5")
-        self.horizontalLayout.addWidget(self.pushButton_5)
+        self.pushButton_Asset = QtWidgets.QPushButton(self.layoutWidget5)
+        self.pushButton_Asset.setCursor(QtGui.QCursor(QtCore.Qt.PointingHandCursor))
+        self.pushButton_Asset.setStyleSheet("QPushButton {\n"
+"    background-color: rgba(100, 100, 200, 150); /* Фон кнопки */\n"
+"    color: white; /* Цвет текста кнопки */\n"
+"    border: 2px solid #6495ED; /* Граница кнопки */\n"
+"    border-radius: 5px; /* Округленные углы */\n"
+"    font-size: 14pt; /* Размер шрифта */\n"
+"}\n"
+"\n"
+"QPushButton:hover {\n"
+"    background-color: rgba(100, 100, 200, 200); /* Измененный фон при наведении курсора */\n"
+"}\n"
+"")
+        self.pushButton_Asset.setObjectName("pushButton_Asset")
+        self.horizontalLayout.addWidget(self.pushButton_Asset)
+        self.pushButton_TechAnalysis = QtWidgets.QPushButton(self.layoutWidget5)
+        self.pushButton_TechAnalysis.setCursor(QtGui.QCursor(QtCore.Qt.PointingHandCursor))
+        self.pushButton_TechAnalysis.setStyleSheet("QPushButton {\n"
+"    background-color: rgba(100, 100, 200, 150); /* Фон кнопки */\n"
+"    color: white; /* Цвет текста кнопки */\n"
+"    border: 2px solid #6495ED; /* Граница кнопки */\n"
+"    border-radius: 5px; /* Округленные углы */\n"
+"    font-size: 14pt; /* Размер шрифта */\n"
+"}\n"
+"\n"
+"QPushButton:hover {\n"
+"    background-color: rgba(100, 100, 200, 200); /* Измененный фон при наведении курсора */\n"
+"}\n"
+"")
+        self.pushButton_TechAnalysis.setObjectName("pushButton_TechAnalysis")
+        self.horizontalLayout.addWidget(self.pushButton_TechAnalysis)
+        self.pushButton_A_D = QtWidgets.QPushButton(self.layoutWidget5)
+        self.pushButton_A_D.setCursor(QtGui.QCursor(QtCore.Qt.PointingHandCursor))
+        self.pushButton_A_D.setStyleSheet("QPushButton {\n"
+"    background-color: rgba(100, 100, 200, 150); /* Фон кнопки */\n"
+"    color: white; /* Цвет текста кнопки */\n"
+"    border: 2px solid #6495ED; /* Граница кнопки */\n"
+"    border-radius: 5px; /* Округленные углы */\n"
+"    font-size: 14pt; /* Размер шрифта */\n"
+"}\n"
+"\n"
+"QPushButton:hover {\n"
+"    background-color: rgba(100, 100, 200, 200); /* Измененный фон при наведении курсора */\n"
+"}\n"
+"")
+        self.pushButton_A_D.setObjectName("pushButton_A_D")
+        self.horizontalLayout.addWidget(self.pushButton_A_D)
+        self.pushButton_Watch_List = QtWidgets.QPushButton(self.layoutWidget5)
+        self.pushButton_Watch_List.setCursor(QtGui.QCursor(QtCore.Qt.PointingHandCursor))
+        self.pushButton_Watch_List.setStyleSheet("QPushButton {\n"
+"    background-color: rgba(100, 100, 200, 150); /* Фон кнопки */\n"
+"    color: white; /* Цвет текста кнопки */\n"
+"    border: 2px solid #6495ED; /* Граница кнопки */\n"
+"    border-radius: 5px; /* Округленные углы */\n"
+"    font-size: 14pt; /* Размер шрифта */\n"
+"}\n"
+"\n"
+"QPushButton:hover {\n"
+"    background-color: rgba(100, 100, 200, 200); /* Измененный фон при наведении курсора */\n"
+"}\n"
+"")
+        self.pushButton_Watch_List.setObjectName("pushButton_Watch_List")
+        self.horizontalLayout.addWidget(self.pushButton_Watch_List)
+        self.pushButton_About = QtWidgets.QPushButton(self.layoutWidget5)
+        self.pushButton_About.setCursor(QtGui.QCursor(QtCore.Qt.PointingHandCursor))
+        self.pushButton_About.setStyleSheet("QPushButton {\n"
+"    background-color: rgba(100, 100, 200, 150); /* Фон кнопки */\n"
+"    color: white; /* Цвет текста кнопки */\n"
+"    border: 2px solid #6495ED; /* Граница кнопки */\n"
+"    border-radius: 5px; /* Округленные углы */\n"
+"    font-size: 14pt; /* Размер шрифта */\n"
+"}\n"
+"\n"
+"QPushButton:hover {\n"
+"    background-color: rgba(100, 100, 200, 200); /* Измененный фон при наведении курсора */\n"
+"}\n"
+"")
+        self.pushButton_About.setObjectName("pushButton_About")
+        self.horizontalLayout.addWidget(self.pushButton_About)
+        self.pushButton_Contact = QtWidgets.QPushButton(self.layoutWidget5)
+        self.pushButton_Contact.setCursor(QtGui.QCursor(QtCore.Qt.PointingHandCursor))
+        self.pushButton_Contact.setStyleSheet("QPushButton {\n"
+"    background-color: rgba(100, 100, 200, 150); /* Фон кнопки */\n"
+"    color: white; /* Цвет текста кнопки */\n"
+"    border: 2px solid #6495ED; /* Граница кнопки */\n"
+"    border-radius: 5px; /* Округленные углы */\n"
+"    font-size: 14pt; /* Размер шрифта */\n"
+"}\n"
+"\n"
+"QPushButton:hover {\n"
+"    background-color: rgba(100, 100, 200, 200); /* Измененный фон при наведении курсора */\n"
+"}\n"
+"")
+        self.pushButton_Contact.setObjectName("pushButton_Contact")
+        self.horizontalLayout.addWidget(self.pushButton_Contact)
         MainWindow.setCentralWidget(self.centralwidget)
 
         self.retranslateUi(MainWindow)
-        self.Pager.setCurrentIndex(2)
+        self.Pager.setCurrentIndex(3)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
     def retranslateUi(self, MainWindow):
@@ -2252,7 +1365,6 @@ class Ui_MainWindow(object):
         self.TA_title_label.setText(_translate("MainWindow", "Technical Analysis "))
         self.labeL_LIST.setText(_translate("MainWindow", "List of indicators:"))
         self.label_Resume.setText(_translate("MainWindow", "Resume:"))
-        self.label_Resume_2.setText(_translate("MainWindow", "Average Average Daily ATR"))
         self.label_MACD.setText(_translate("MainWindow", "Moving Average Convergence Divergence (MACD)"))
         self.label_Supertrend.setText(_translate("MainWindow", "Supertrend"))
         self.label_Rsi.setText(_translate("MainWindow", "Relative Strength Index (RSI)"))
@@ -2262,215 +1374,147 @@ class Ui_MainWindow(object):
         self.label_Traders_Lion.setText(_translate("MainWindow", "Trader\'s Lion Enhanced Volume"))
         self.label_Volume_Weighted.setText(_translate("MainWindow", "Volume-Weighted Average Price"))
         self.label_Volume_price_trend_2.setText(_translate("MainWindow", "Volume at Price"))
-        self.label_Relative_Strength.setText(_translate("MainWindow", "Relative Strength"))
         self.label_Volume_price_trend.setText(_translate("MainWindow", "Volume Price Trend Indicator"))
-        self.label_MA_6.setText(_translate("MainWindow", "Moving Average (6 days)"))
         self.label_Chaikin.setText(_translate("MainWindow", "Chaikin Money Flow Indicator"))
         self.label_Ease_of_Movement.setText(_translate("MainWindow", "Ease of Movement"))
+        self.label_MA_6.setText(_translate("MainWindow", "Moving Average (6 days)"))
         self.label_MA_24.setText(_translate("MainWindow", "Moving Average (24 days)"))
         self.label_MA_72.setText(_translate("MainWindow", "Moving Average (72 days)"))
-        self.label_Ease_of_Movement_3.setText(_translate("MainWindow", "1 Week"))
-        self.label_Ease_of_Movement_4.setText(_translate("MainWindow", "1 Month"))
-        self.label_Ease_of_Movement_5.setText(_translate("MainWindow", "3 Months"))
-        self.label_Ease_of_Movement_9.setText(_translate("MainWindow", "1 Year"))
-        self.label_Ease_of_Movement_8.setText(_translate("MainWindow", "2 Years"))
-        self.label_Ease_of_Movement_7.setText(_translate("MainWindow", "5 years"))
-        self.label_Ease_of_Movement_6.setText(_translate("MainWindow", "10 years"))
-        self.label_Ease_of_Movement_10.setText(_translate("MainWindow", "6 days"))
-        self.label_Ease_of_Movement_11.setText(_translate("MainWindow", "24 days"))
-        self.label_Ease_of_Movement_12.setText(_translate("MainWindow", "72 days"))
-        self.label_Ease_of_Movement_13.setText(_translate("MainWindow", "288 days"))
-        self.label_Ease_of_Movement_14.setText(_translate("MainWindow", "576 days"))
-        self.label_Ease_of_Movement_15.setText(_translate("MainWindow", "1440 days"))
-        self.label_Ease_of_Movement_16.setText(_translate("MainWindow", "2880 days"))
+        self.label_Trend_Perfomance_title.setText(_translate("MainWindow", "Performance Trend Summary:"))
+        self.label_ATR_title.setText(_translate("MainWindow", "Average Average Daily ATR:"))
+        self.label_ATR_1_week_1.setText(_translate("MainWindow", "1 Week"))
+        self.label_ATR_1_month_1.setText(_translate("MainWindow", "1 Month"))
+        self.label_ATR_3_months_1.setText(_translate("MainWindow", "3 Months"))
+        self.label_ATR_1_year_1.setText(_translate("MainWindow", "1 Year"))
+        self.label_ATR_2_years_1.setText(_translate("MainWindow", "2 Years"))
+        self.label_ATR_5_years_1.setText(_translate("MainWindow", "5 years"))
+        self.label_ATR_10_years_1.setText(_translate("MainWindow", "10 years"))
+        self.label_ATR_1_week_2.setText(_translate("MainWindow", "6 days"))
+        self.label_ATR_1_month_2.setText(_translate("MainWindow", "24 days"))
+        self.label_ATR_3_months_2.setText(_translate("MainWindow", "72 days"))
+        self.label_ATR_1_year_2.setText(_translate("MainWindow", "288 days"))
+        self.label_ATR_2_years_2.setText(_translate("MainWindow", "576 days"))
+        self.label_ATR_5_years_2.setText(_translate("MainWindow", "1440 days"))
+        self.label_ATR_10_years_2.setText(_translate("MainWindow", "2880 days"))
         self.TA_title_label_2.setText(_translate("MainWindow", "Accumulation/Distribution"))
-        self.label_17.setText(_translate("MainWindow", "Ranges"))
-        self.label_18.setText(_translate("MainWindow", "Ranges"))
-        self.label_19.setText(_translate("MainWindow", "Ranges"))
-        self.label_40.setText(_translate("MainWindow", "Ranges"))
-        self.label_20.setText(_translate("MainWindow", "Ranges"))
-        self.label_21.setText(_translate("MainWindow", "Ranges"))
-        self.label_22.setText(_translate("MainWindow", "Ranges"))
-        self.label_23.setText(_translate("MainWindow", "Ranges"))
-        self.label_24.setText(_translate("MainWindow", "Ranges"))
-        self.label_25.setText(_translate("MainWindow", "Ranges"))
-        self.label_26.setText(_translate("MainWindow", "Ranges"))
-        self.label_27.setText(_translate("MainWindow", "Ranges"))
-        self.label_28.setText(_translate("MainWindow", "Ranges"))
-        self.label_29.setText(_translate("MainWindow", "Ranges"))
-        self.label_30.setText(_translate("MainWindow", "Ranges"))
-        self.label_31.setText(_translate("MainWindow", "Ranges"))
-        self.label_32.setText(_translate("MainWindow", "Ranges"))
-        self.label_33.setText(_translate("MainWindow", "Ranges"))
-        self.label_34.setText(_translate("MainWindow", "Ranges"))
-        self.label_35.setText(_translate("MainWindow", "Ranges"))
-        self.label_36.setText(_translate("MainWindow", "Ranges"))
-        self.label_38.setText(_translate("MainWindow", "Ranges"))
-        self.label_39.setText(_translate("MainWindow", "Ranges"))
-        self.label_37.setText(_translate("MainWindow", "Ranges"))
-        self.label_41.setText(_translate("MainWindow", "Ranges"))
-        self.label_42.setText(_translate("MainWindow", "Ranges"))
-        self.label_43.setText(_translate("MainWindow", "Ranges"))
-        self.label_44.setText(_translate("MainWindow", "Ranges"))
-        self.label_45.setText(_translate("MainWindow", "Ranges"))
-        self.label_46.setText(_translate("MainWindow", "Ranges"))
-        self.label_47.setText(_translate("MainWindow", "Ranges"))
-        self.label_48.setText(_translate("MainWindow", "Ranges"))
-        self.label_49.setText(_translate("MainWindow", "Ranges"))
-        self.label_50.setText(_translate("MainWindow", "Ranges"))
-        self.label_51.setText(_translate("MainWindow", "Ranges"))
-        self.label_52.setText(_translate("MainWindow", "Ranges"))
-        self.label_53.setText(_translate("MainWindow", "Ranges"))
-        self.label_54.setText(_translate("MainWindow", "Ranges"))
-        self.label_55.setText(_translate("MainWindow", "Ranges"))
-        self.label_56.setText(_translate("MainWindow", "Ranges"))
-        self.label_57.setText(_translate("MainWindow", "Ranges"))
-        self.label_58.setText(_translate("MainWindow", "Ranges"))
-        self.label_59.setText(_translate("MainWindow", "Ranges"))
-        self.label_60.setText(_translate("MainWindow", "Ranges"))
-        self.label_61.setText(_translate("MainWindow", "Ranges"))
-        self.label_62.setText(_translate("MainWindow", "Ranges"))
-        self.label_63.setText(_translate("MainWindow", "Ranges"))
-        self.label_64.setText(_translate("MainWindow", "Ranges"))
-        self.label_65.setText(_translate("MainWindow", "Ranges"))
-        self.label_66.setText(_translate("MainWindow", "Ranges"))
-        self.label_67.setText(_translate("MainWindow", "Ranges"))
-        self.label_68.setText(_translate("MainWindow", "Ranges"))
-        self.label_69.setText(_translate("MainWindow", "Ranges"))
-        self.label_70.setText(_translate("MainWindow", "Ranges"))
-        self.label_71.setText(_translate("MainWindow", "Ranges"))
-        self.label_72.setText(_translate("MainWindow", "Ranges"))
-        self.label_73.setText(_translate("MainWindow", "Ranges"))
-        self.label_74.setText(_translate("MainWindow", "Ranges"))
-        self.label_75.setText(_translate("MainWindow", "Ranges"))
-        self.label_76.setText(_translate("MainWindow", "Ranges"))
-        self.label_77.setText(_translate("MainWindow", "Ranges"))
-        self.label_78.setText(_translate("MainWindow", "Ranges"))
-        self.label_79.setText(_translate("MainWindow", "Ranges"))
-        self.label_80.setText(_translate("MainWindow", "Ranges"))
-        self.label_81.setText(_translate("MainWindow", "Ranges"))
-        self.label_82.setText(_translate("MainWindow", "Ranges"))
-        self.label_83.setText(_translate("MainWindow", "Ranges"))
-        self.label_84.setText(_translate("MainWindow", "Ranges"))
-        self.label_85.setText(_translate("MainWindow", "Ranges"))
-        self.Find_asset_button_3.setText(_translate("MainWindow", "Add"))
-        self.Find_asset_button_4.setText(_translate("MainWindow", "Delete"))
-        self.Choose_the_asset_label_2.setText(_translate("MainWindow", "Choose the asset"))
-        self.Find_asset_button_2.setText(_translate("MainWindow", "Find"))
-        self.label_3.setText(_translate("MainWindow",
-                                        "\"Smart Trader Assistant\" is an innovative application built on the PyQt5 framework, with the goal of\n"
-                                        "providing investors and traders with advanced asset analysis tools in the international financial markets.\n"
-                                        "This application offers not only an intuitive and aesthetically pleasing user interface but also advanced\n"
-                                        "technical analysis features and tools for investment portfolio management.\n"
-                                        "\n"
-                                        "The key features of \"Smart Trader Assistant\" include:\n"
-                                        "\n"
-                                        "Comprehensive Analysis: The application enables the use of advanced technical analysis and statistical \n"
-                                        "tools, assisting investors in making more informed investment decisions.\n"
-                                        "Watch List: With portfolio management functionality, users can track their investments, add new assets,\n"
-                                        " remove them, or modify parameters.\n"
-                                        "User-Friendly: The application is designed with intuitiveness and ease of use in mind, allowing users to\n"
-                                        " quickly start utilizing its features.\n"
-                                        "\n"
-                                        "\"Smart Trader Assistant\" is not just a market analysis tool but also a platform that can aid investors in\n"
-                                        " managing their investment portfolios. With a flexible approach to financial data analysis and a user-\n"
-                                        "friendly interface, this application supports investors in making more informed investment decisions in\n"
-                                        " the international financial markets.\n"
-                                        " \n"
-                                        " \n"
-                                        " \n"
-                                        " \n"
-                                        ""))
-        self.label_4.setText(
-            _translate("MainWindow", "The program was created as part of a graduation project for non-commercial use.\n"
-                                     "Email: sergey.markelov.gd@gmail.com\n"
-                                     "LinkedIn: https://www.linkedin.com/in/sergey-markelov-gd/ \n"
-                                     " \n"
-                                     " \n"
-                                     " \n"
-                                     "\n"
-                                     " \n"
-                                     " \n"
-                                     " \n"
-                                     " \n"
-                                     "\n"
-                                     " \n"
-                                     " \n"
-                                     " \\n \n"
-                                     " \n"
-                                     " \n"
-                                     "n\n"
-                                     " \n"
-                                     " \n"
-                                     " \n"
-                                     " \n"
-                                     ""))
-# buttons functions
+        self.label_Ranges_open_to_open.setText(_translate("MainWindow", "Ranges"))
+        self.label_Ranges_hight_to_low.setText(_translate("MainWindow", "Ranges"))
+        self.Find_asset_button_3.setText(_translate("MainWindow", "  Add   "))
+        self.TA_title_label_3.setText(_translate("MainWindow", "          Watch List"))
+        self.label_2.setText(_translate("MainWindow", "<html><head/><body><p align=\"center\"><span style=\" font-size:10pt;\">Recommend tracking approximately 10-20 different, <br/>independent assets to minimize risk and optimize returns</span></p></body></html>"))
+        self.label_3.setText(_translate("MainWindow", "\"Smart Trader Assistant\" is an innovative application built on the PyQt5 framework, with the goal of\n"
+"providing investors and traders with advanced asset analysis tools in the international financial markets.\n"
+"This application offers not only an intuitive and aesthetically pleasing user interface but also advanced\n"
+"technical analysis features and tools for investment portfolio management.\n"
+"\n"
+"The key features of \"Smart Trader Assistant\" include:\n"
+"\n"
+"Comprehensive Analysis: The application enables the use of advanced technical analysis and statistical \n"
+"tools, assisting investors in making more informed investment decisions.\n"
+"Watch List: With portfolio management functionality, users can track their investments, add new assets,\n"
+" remove them, or modify parameters.\n"
+"User-Friendly: The application is designed with intuitiveness and ease of use in mind, allowing users to\n"
+" quickly start utilizing its features.\n"
+"\n"
+"\"Smart Trader Assistant\" is not just a market analysis tool but also a platform that can aid investors in\n"
+" managing their investment portfolios. With a flexible approach to financial data analysis and a user-\n"
+"friendly interface, this application supports investors in making more informed investment decisions in\n"
+" the international financial markets.\n"
+" \n"
+" \n"
+" \n"
+" \n"
+""))
+        self.label_4.setText(_translate("MainWindow", "<html><head/><body><p>The program was created as part of a graduation project for non-commercial use.</p><p>Email: sergey.markelov.gd@gmail.com</p><p>LinkedIn: https://www.linkedin.com/in/sergey-markelov-gd/ </p><p/><p/></body></html>"))
+        self.pushButton_Asset.setText(_translate("MainWindow", "Asset"))
+        self.pushButton_TechAnalysis.setText(_translate("MainWindow", "Technical Analysis"))
+        self.pushButton_A_D.setText(_translate("MainWindow", "A/D"))
+        self.pushButton_Watch_List.setText(_translate("MainWindow", "Watch List"))
+        self.pushButton_About.setText(_translate("MainWindow", "About"))
+        self.pushButton_Contact.setText(_translate("MainWindow", "Contact"))
 
-        self.pushButton_4.clicked.connect(lambda: self.Pager.setCurrentIndex(0))
-        self.pushButton_3.clicked.connect(lambda: self.Pager.setCurrentIndex(1))
-        self.pushButton_2.clicked.connect(lambda: self.Pager.setCurrentIndex(2))
-        self.pushButton.clicked.connect(lambda: self.Pager.setCurrentIndex(3))
-        self.pushButton_6.clicked.connect(lambda: self.Pager.setCurrentIndex(4))
-        self.pushButton_5.clicked.connect(lambda: self.Pager.setCurrentIndex(5))
+        # buttons functions
 
+        self.pushButton_Asset.clicked.connect(lambda: self.Pager.setCurrentIndex(0))
+        self.pushButton_TechAnalysis.clicked.connect(lambda: self.Pager.setCurrentIndex(1))
+        self.pushButton_A_D.clicked.connect(lambda: self.Pager.setCurrentIndex(2))
+        self.pushButton_Watch_List.clicked.connect(lambda: self.Pager.setCurrentIndex(3))
+        self.pushButton_About.clicked.connect(lambda: self.Pager.setCurrentIndex(4))
+        self.pushButton_Contact.clicked.connect(lambda: self.Pager.setCurrentIndex(5))
 
         # buttons name
 
-        self.pushButton_4.setText("Asset")
-        self.pushButton_3.setText("Technical Analysis")
-        self.pushButton_2.setText("A/D")
-        self.pushButton.setText("Watch List")
-        self.pushButton_6.setText("About")
-        self.pushButton_5.setText("Contact")
+        self.pushButton_Asset.setText("Asset")
+        self.pushButton_TechAnalysis.setText("Technical Analysis")
+        self.pushButton_A_D.setText("A/D")
+        self.pushButton_Watch_List.setText("Watch List")
+        self.pushButton_About.setText("About")
+        self.pushButton_Contact.setText("Contact")
 
-        #ATR
+        # ATR
 
-        ATR_label1_calc = ATRCalculator(Technical_analysis.df, self.label_Ease_of_Movement_17)
+        import technical_analysis
+        ATR_label1_calc = ATRCalculator(technical_analysis.df, self.label_ATR_1_week_3)
         ATR_label1_calc.calculate_atr(6)
 
-        ATR_label1_calc = ATRCalculator(Technical_analysis.df, self.label_Ease_of_Movement_18)
+        ATR_label1_calc = ATRCalculator(technical_analysis.df, self.label_ATR_1_month_3)
         ATR_label1_calc.calculate_atr(24)
 
-        ATR_label1_calc = ATRCalculator(Technical_analysis.df, self.label_Ease_of_Movement_19)
+        ATR_label1_calc = ATRCalculator(technical_analysis.df, self.label_ATR_3_months_3)
         ATR_label1_calc.calculate_atr(72)
 
-        ATR_label1_calc = ATRCalculator(Technical_analysis.df, self.label_Ease_of_Movement_20)
+        ATR_label1_calc = ATRCalculator(technical_analysis.df, self.label_ATR_1_year_3)
         ATR_label1_calc.calculate_atr(288)
 
-        ATR_label1_calc = ATRCalculator(Technical_analysis.df, self.label_Ease_of_Movement_21)
+        ATR_label1_calc = ATRCalculator(technical_analysis.df, self.label_ATR_2_years_3)
         ATR_label1_calc.calculate_atr(576)
 
-        ATR_label1_calc = ATRCalculator(Technical_analysis.df, self.label_Ease_of_Movement_22)
+        ATR_label1_calc = ATRCalculator(technical_analysis.df, self.label_ATR_5_years_3)
         ATR_label1_calc.calculate_atr(1440)
 
-        ATR_label1_calc = ATRCalculator(Technical_analysis.df, self.label_Ease_of_Movement_23)
+        ATR_label1_calc = ATRCalculator(technical_analysis.df, self.label_ATR_10_years_3)
         ATR_label1_calc.calculate_atr(2880)
 
-        Indicators.calculate_and_display_macd(Technical_analysis.df, self.label_MACD_2)
-        Indicators.calculate_and_display_supertrend(Technical_analysis.df, self.label_Supertrend_2)
-        Indicators.calculate_and_display_rsi(Technical_analysis.df,self.label_Rsi_2)
-        Indicators.calculate_and_display_parabolic_sar(Technical_analysis.df,self.label_Parabolic_SAR_2)
-        Indicators.calculate_and_display_obv(Technical_analysis.df,self.label_On_balance_ind_2)
-        Indicators.calculate_and_display_stoch(Technical_analysis.df,self.label_Stochastic_2)
-        Indicators.calculate_and_display_enhanced_volume(Technical_analysis.df, self.label_Traders_Lion_2)
-        Indicators.calculate_and_display_vwap(Technical_analysis.df, self.label_Volume_Weighted_2)
-        Indicators.calculate_and_display_vap(Technical_analysis.df, self.label_Volume_price_trend_3)
-        Indicators.calculate_and_display_vpt(Technical_analysis.df, self.label_Volume_price_trend_4)
-        Indicators.calculate_and_display_cmf(Technical_analysis.df, self.label_Chaikin_2)
-        Indicators.calculate_and_display_emv(Technical_analysis.df, self.label_Ease_of_Movement_2)
-        Indicators.calculate_and_display_ma_6(Technical_analysis.df, self.label_MA_7)
-        Indicators.calculate_and_display_ma_24(Technical_analysis.df, self.label_MA_25)
-        Indicators.calculate_and_display_ma_72(Technical_analysis.df, self.label_MA_73)
+        Indicators.calculate_and_display_macd(technical_analysis.df, self.label_MACD_2)
+        Indicators.calculate_and_display_supertrend(technical_analysis.df, self.label_Supertrend_2)
+        Indicators.calculate_and_display_rsi(technical_analysis.df, self.label_Rsi_2)
+        Indicators.calculate_and_display_parabolic_sar(technical_analysis.df, self.label_Parabolic_SAR_2)
+        Indicators.calculate_and_display_obv(technical_analysis.df, self.label_On_balance_ind_2)
+        Indicators.calculate_and_display_stoch(technical_analysis.df, self.label_Stochastic_2)
+        Indicators.calculate_and_display_enhanced_volume(technical_analysis.df, self.label_Traders_Lion_2)
+        Indicators.calculate_and_display_vwap(technical_analysis.df, self.label_Volume_Weighted_2)
+        Indicators.calculate_and_display_vap(technical_analysis.df, self.label_Volume_price_trend_3)
+        Indicators.calculate_and_display_vpt(technical_analysis.df, self.label_Volume_price_trend_2_1)
+        Indicators.calculate_and_display_cmf(technical_analysis.df, self.label_Chaikin_2)
+        Indicators.calculate_and_display_emv(technical_analysis.df, self.label_Ease_of_Movement_2)
+        Indicators.calculate_and_display_ma_6(technical_analysis.df, self.label_MA_6_2)
+        Indicators.calculate_and_display_ma_24(technical_analysis.df, self.label_MA_24_2)
+        Indicators.calculate_and_display_ma_72(technical_analysis.df, self.label_MA_72_2)
         Indicators.calculate_and_display_all_signals(self.label_Resume_Output)
+        Indicators.calculate_and_display_growth_days(technical_analysis.df, self.label_Grow_Duration)
+        Indicators.calculate_and_display_decline_days(technical_analysis.df, self.label_Decline_Duration_)
+        Calculate_Dist.calculate_open_to_open_probabilities(technical_analysis.df, self.label_Ranges_open_to_open)
+        Calculate_Dist.calculate_high_to_low_probabilities(technical_analysis.df, self.label_Ranges_hight_to_low)
+
+        histogram_open_to_open = Calculate_Dist.create_histogram_widget_open_to_open(technical_analysis.df)
+        scene_temp = QGraphicsScene()
+        scene_temp.addWidget(histogram_open_to_open)
+        self.graphicsView_open_to_open.setScene(scene_temp)
+
+        scene2_temp = QGraphicsScene()
+        histogram_high_to_low = Calculate_Dist.create_histogram_widget_hight_to_low(technical_analysis.df)
+        scene2_temp.addWidget(histogram_high_to_low)
+        self.graphicsView_hight_to_low.setScene( scene2_temp)
 
 
-# import res_rc
+
+
+        
+#import res_rc
 
 
 if __name__ == "__main__":
     import sys
-
     app = QtWidgets.QApplication(sys.argv)
     MainWindow = QtWidgets.QMainWindow()
     ui = Ui_MainWindow()
