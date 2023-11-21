@@ -2,13 +2,14 @@ import yfinance as yf
 import talib
 from PyQt5.QtWidgets import QLabel
 import pandas as pd
+#from interface import Ui_MainWindow.
 
 # Создание объекта для пары USD/JPY
-usd_jpy = yf.Ticker('SI=F')
+tempObj = yf.Ticker('SI=F')
 
 # Загрузка исторических данных
 
-df = usd_jpy.history(period='100y')  # Загружаем данные за последние 100 лет
+df = tempObj.history(period='100y')  # Загружаем данные за последние 100 лет
 
 
 # Периоды для ATR

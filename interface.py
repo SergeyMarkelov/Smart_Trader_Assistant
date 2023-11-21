@@ -10,10 +10,12 @@
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtGui import QPixmap
-from PyQt5.QtWidgets import QWidget, QVBoxLayout, QGraphicsScene
+from PyQt5.QtWidgets import QWidget, QVBoxLayout, QGraphicsScene, QListWidgetItem, QPushButton
 
+import watch_list
 from technical_analysis import *
 from accumulation_distribution import Calculate_Dist
+from watch_list import WatchListWidget
 
 
 
@@ -1506,10 +1508,14 @@ class Ui_MainWindow(object):
         scene2_temp.addWidget(histogram_high_to_low)
         self.graphicsView_hight_to_low.setScene( scene2_temp)
 
+        self.Find_asset_button_3.clicked.connect(lambda: watch_list.WatchListWidget.add_asset(self, self.Asset_input_window_2))
+        self.Find_asset_button.clicked.connect(self.Asset_input_window)
+
+        print(self.Asset_input_window)
+
+        # todo сделать поиск
 
 
-
-        
 #import res_rc
 
 
