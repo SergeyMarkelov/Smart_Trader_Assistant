@@ -28,14 +28,16 @@ class ATRCalculator:
 
     def print_atr_info(self, period):
         atr_value = self.df['ATR'].iloc[-1]
-        formatted_atr = round(atr_value, 5)  # 2 знака после запятой
+        price = self.df['Close'].iloc[-1]
+        previous_close = self.df['Close'].iloc[-2]  # Закрытие предыдущего дня
+
+        #price_change = price - previous_close  # Абсолютное изменение цены
+        normalized_atr = (atr_value / price) * 100  # Нормализация ATR к изменению цены
+        formatted_atr = round(normalized_atr, 4)
+        print(f"{formatted_atr} %")
         self.label.setText(f"{formatted_atr} %")
 
-
 class Indicators:
-    import talib
-
-    import talib
 
     def calculate_and_display_macd(df, label):
         close_prices = df['Close']

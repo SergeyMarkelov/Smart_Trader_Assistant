@@ -1,70 +1,50 @@
-from PyQt5.QtWidgets import QApplication, QWidget, QLabel, QVBoxLayout, QLineEdit, QPushButton, QHBoxLayout
+import yfinance as yf
+import talib
+from PyQt5.QtWidgets import QLabel
 
-class WatchListWidget(QWidget):
-    def __init__(self):
-        super().__init__()
+tempObj = yf.Ticker('^IXIC')
 
-        self.init_ui()
+df = tempObj.history(period='100y')  # Загружаем данные за последние 100 лет
 
-    def init_ui(self):
-        self.setWindowTitle('Watch List')
+class ATRCalculator:
+    def __init__(self, df, label):
+        self.df = df
+        self.label = label
 
-        # Создание виджетов
-        self.label_list = QVBoxLayout()
-        self.add_button = QPushButton('Add')
-        self.add_button.clicked.connect(self.show_input_form)
+    def calculate_atr(self, period):
+        atr = talib.ATR(self.df['High'], self.df['Low'], self.df['Close'], timeperiod=period)
+        self.df['ATR'] = atr
+        self.print_atr_info(period)
 
-        # Создание основного макета
-        main_layout = QVBoxLayout(self)
-        main_layout.addLayout(self.label_list)
-        #main_layout.addWidget(self.add_button)
+    def print_atr_info(self, period):
+        atr_value = self.df['ATR'].iloc[-1]
+        price = self.df['Close'].iloc[-1]
+        previous_close = self.df['Close'].iloc[-2]  # Закрытие предыдущего дня
 
-        # Создание формы ввода
-        self.input_label = QLabel('Asset:')
-        self.input_line_edit = QLineEdit()
-        self.add_input_button = QPushButton('Add')
-        self.add_input_button.clicked.connect(self.add_asset)
-        self.input_layout = QHBoxLayout()
-        self.input_layout.addWidget(self.input_label)
-        self.input_layout.addWidget(self.input_line_edit)
-        self.input_layout.addWidget(self.add_input_button)
-        self.input_layout.setContentsMargins(0, 0, 0, 0)
-        self.input_layout.setSpacing(0)
+        #price_change = price - previous_close  # Абсолютное изменение цены
+        normalized_atr = (atr_value / price) * 100  # Нормализация ATR к изменению цены
+        formatted_atr = round(normalized_atr, 4)
+        print(f"{formatted_atr} %")
 
-        # Показать форму ввода
-        self.show_input_form()
 
-    def show_input_form(self):
-        # Очистка предыдущих данных в форме ввода
-        self.input_line_edit.clear()
+# Создаем QLabel
+x = QLabel
 
-        # Показать форму ввода
-        self.label_list.addLayout(self.input_layout)
+# Создаем объект ATRCalculator и вызываем calculate_atr
+ATRCalculator(df, x).calculate_atr(6)
+""""
 
-    def add_asset(self):
-        # Получение данных из формы ввода
-        asset_name = self.input_line_edit.text()
+class ATRCalculator:
+    def __init__(self, df, label):
+        self.df = df
+        self.label = label
 
-        # Создание нового QLabel и QPushButton
-        label = QLabel(f'Asset: {asset_name}')
-        remove_button = QPushButton('Remove')
-        remove_button.clicked.connect(lambda: self.remove_label(label, remove_button))
+    def calculate_atr(self, period):
+        atr = talib.ATR(self.df['High'], self.df['Low'], self.df['Close'], timeperiod=period)
+        self.df['ATR'] = atr
+        self.print_atr_info(period)
 
-        # Создание горизонтального макета для QLabel и QPushButton
-        label_layout = QHBoxLayout()
-        label_layout.addWidget(label)
-        label_layout.addWidget(remove_button)
-
-        # Добавление в список горизонтальный макет
-        self.label_list.addLayout(label_layout)
-
-    def remove_label(self, label, remove_button):
-        # Удаление QLabel и QPushButton
-        label.deleteLater()
-        remove_button.deleteLater()
-
-if __name__ == '__main__':
-    app = QApplication([])
-    watch_list_widget = WatchListWidget()
-    watch_list_widget.show()
-    app.exec_()
+    def print_atr_info(self, period):
+        atr_value = self.df['ATR'].iloc[-1]
+        formatted_atr = round(atr_value, 5)  # 2 знака после запятой
+        self.label.setText(f"{formatted_atr} %")

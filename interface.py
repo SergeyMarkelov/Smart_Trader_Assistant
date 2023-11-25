@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 # Form implementation generated from reading ui file 'interface.ui'
 #
 # Created by: PyQt5 UI code generator 5.15.9
@@ -12,10 +11,13 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtGui import QPixmap
 from PyQt5.QtWidgets import QWidget, QVBoxLayout, QGraphicsScene, QListWidgetItem, QPushButton
 
+import technical_analysis
 import watch_list
+import data_taker
 from technical_analysis import *
 from accumulation_distribution import Calculate_Dist
 from watch_list import WatchListWidget
+
 
 
 
@@ -1453,30 +1455,84 @@ class Ui_MainWindow(object):
         self.pushButton_About.setText("About")
         self.pushButton_Contact.setText("Contact")
 
-        # ATR
+        # asset data
 
-        import technical_analysis
-        ATR_label1_calc = ATRCalculator(technical_analysis.df, self.label_ATR_1_week_3)
-        ATR_label1_calc.calculate_atr(6)
+        self.Find_asset_button_3.clicked.connect(lambda: watch_list.WatchListWidget.add_asset(self, self.Asset_input_window_2))
+        #qself.Find_asset_button.clicked.connect(self.Asset_input_window)
+        #gl_asset_data = "usdjpy=x"
 
-        ATR_label1_calc = ATRCalculator(technical_analysis.df, self.label_ATR_1_month_3)
-        ATR_label1_calc.calculate_atr(24)
 
-        ATR_label1_calc = ATRCalculator(technical_analysis.df, self.label_ATR_3_months_3)
-        ATR_label1_calc.calculate_atr(72)
+        def take_data():
+                print ("ok")
+                gl_asset_data = data_taker.FindAsset.add_asset(self, self.Asset_input_window)
+                if gl_asset_data is not None:
+                        # ATR
+                        ATR_label1_calc = ATRCalculator(gl_asset_data, self.label_ATR_1_week_3)
+                        ATR_label1_calc.calculate_atr(6)
 
-        ATR_label1_calc = ATRCalculator(technical_analysis.df, self.label_ATR_1_year_3)
-        ATR_label1_calc.calculate_atr(288)
+                        ATR_label1_calc = ATRCalculator(gl_asset_data, self.label_ATR_1_month_3)
+                        ATR_label1_calc.calculate_atr(24)
 
-        ATR_label1_calc = ATRCalculator(technical_analysis.df, self.label_ATR_2_years_3)
-        ATR_label1_calc.calculate_atr(576)
+                        ATR_label1_calc = ATRCalculator(gl_asset_data, self.label_ATR_3_months_3)
+                        ATR_label1_calc.calculate_atr(72)
 
-        ATR_label1_calc = ATRCalculator(technical_analysis.df, self.label_ATR_5_years_3)
-        ATR_label1_calc.calculate_atr(1440)
+                        ATR_label1_calc = ATRCalculator(gl_asset_data, self.label_ATR_1_year_3)
+                        ATR_label1_calc.calculate_atr(288)
 
-        ATR_label1_calc = ATRCalculator(technical_analysis.df, self.label_ATR_10_years_3)
-        ATR_label1_calc.calculate_atr(2880)
+                        ATR_label1_calc = ATRCalculator(gl_asset_data, self.label_ATR_2_years_3)
+                        ATR_label1_calc.calculate_atr(576)
 
+                        ATR_label1_calc = ATRCalculator(gl_asset_data, self.label_ATR_5_years_3)
+                        ATR_label1_calc.calculate_atr(1440)
+
+                        ATR_label1_calc = ATRCalculator(gl_asset_data, self.label_ATR_10_years_3)
+                        ATR_label1_calc.calculate_atr(2880)
+
+                        Indicators.calculate_and_display_macd(gl_asset_data, self.label_MACD_2)
+                        Indicators.calculate_and_display_supertrend(gl_asset_data, self.label_Supertrend_2)
+                        Indicators.calculate_and_display_rsi(gl_asset_data, self.label_Rsi_2)
+                        Indicators.calculate_and_display_parabolic_sar(gl_asset_data,
+                                                                       self.label_Parabolic_SAR_2)
+                        Indicators.calculate_and_display_obv(gl_asset_data, self.label_On_balance_ind_2)
+                        Indicators.calculate_and_display_stoch(gl_asset_data, self.label_Stochastic_2)
+                        Indicators.calculate_and_display_enhanced_volume(gl_asset_data,
+                                                                         self.label_Traders_Lion_2)
+                        Indicators.calculate_and_display_vwap(gl_asset_data, self.label_Volume_Weighted_2)
+                        Indicators.calculate_and_display_vap(gl_asset_data, self.label_Volume_price_trend_3)
+                        Indicators.calculate_and_display_vpt(gl_asset_data, self.label_Volume_price_trend_2_1)
+                        Indicators.calculate_and_display_cmf(gl_asset_data, self.label_Chaikin_2)
+                        Indicators.calculate_and_display_emv(gl_asset_data, self.label_Ease_of_Movement_2)
+                        Indicators.calculate_and_display_ma_6(gl_asset_data, self.label_MA_6_2)
+                        Indicators.calculate_and_display_ma_24(gl_asset_data, self.label_MA_24_2)
+                        Indicators.calculate_and_display_ma_72(gl_asset_data, self.label_MA_72_2)
+                        Indicators.calculate_and_display_all_signals(self.label_Resume_Output)
+                        Indicators.calculate_and_display_growth_days(gl_asset_data, self.label_Grow_Duration)
+                        Indicators.calculate_and_display_decline_days(gl_asset_data,
+                                                                      self.label_Decline_Duration_)
+                        Calculate_Dist.calculate_open_to_open_probabilities(gl_asset_data,
+                                                                            self.label_Ranges_open_to_open)
+                        Calculate_Dist.calculate_high_to_low_probabilities(gl_asset_data,
+                                                                           self.label_Ranges_hight_to_low)
+
+                        histogram_open_to_open = Calculate_Dist.create_histogram_widget_open_to_open(
+                                gl_asset_data)
+                        scene_temp = QGraphicsScene()
+                        scene_temp.addWidget(histogram_open_to_open)
+                        self.graphicsView_open_to_open.setScene(scene_temp)
+
+                        scene2_temp = QGraphicsScene()
+                        histogram_high_to_low = Calculate_Dist.create_histogram_widget_hight_to_low(
+                                gl_asset_data)
+                        scene2_temp.addWidget(histogram_high_to_low)
+                        self.graphicsView_hight_to_low.setScene(scene2_temp)
+
+
+
+        # running indicators
+        self.Find_asset_button.clicked.connect(take_data)
+
+
+""""
         Indicators.calculate_and_display_macd(technical_analysis.df, self.label_MACD_2)
         Indicators.calculate_and_display_supertrend(technical_analysis.df, self.label_Supertrend_2)
         Indicators.calculate_and_display_rsi(technical_analysis.df, self.label_Rsi_2)
@@ -1507,11 +1563,12 @@ class Ui_MainWindow(object):
         histogram_high_to_low = Calculate_Dist.create_histogram_widget_hight_to_low(technical_analysis.df)
         scene2_temp.addWidget(histogram_high_to_low)
         self.graphicsView_hight_to_low.setScene( scene2_temp)
+        
+        """
 
-        self.Find_asset_button_3.clicked.connect(lambda: watch_list.WatchListWidget.add_asset(self, self.Asset_input_window_2))
-        self.Find_asset_button.clicked.connect(self.Asset_input_window)
 
-        print(self.Asset_input_window)
+
+
 
         # todo сделать поиск
 
