@@ -5,11 +5,11 @@ import pandas as pd
 #from interface import Ui_MainWindow.
 
 # Создание объекта для пары USD/JPY
-tempObj = yf.Ticker('SI=F')
+#tempObj = yf.Ticker('SI=F')
 
 # Загрузка исторических данных
 
-df = tempObj.history(period='100y')  # Загружаем данные за последние 100 лет
+#df = tempObj.history(period='100y')  # Загружаем данные за последние 100 лет
 
 
 # Периоды для ATR
@@ -55,7 +55,7 @@ class Indicators:
             label.setText(signal)
             label.setStyleSheet("color: red; font-size: 10pt;")
         else:
-            signal = "None"
+            signal = "Neutral"
             label.setText(f"MACD Signal: {signal}")
             label.setStyleSheet("color: black; font-size: 10pt;")
 
@@ -128,7 +128,7 @@ class Indicators:
             label.setText(signal)
             label.setStyleSheet("color: red; font-size: 10pt;")
         else:
-            signal = "Hold"
+            signal = "Neutral"
             label.setText(signal)
             label.setStyleSheet("color: black; font-size: 10pt;")
 
@@ -151,7 +151,7 @@ class Indicators:
             label.setText(signal)
             label.setStyleSheet("color: red; font-size: 10pt;")
         else:
-            signal = "Hold"
+            signal = "Neutral"
             label.setText(signal)
             label.setStyleSheet("color: black; font-size: 10pt;")
 
@@ -181,7 +181,7 @@ class Indicators:
             label.setText(signal)
             label.setStyleSheet("color: green; font-size: 10pt;")
         else:
-            signal = "Hold"
+            signal = "Neutral"
             label.setText(signal)
             label.setStyleSheet("color: black; font-size: 10pt;")
 
@@ -202,7 +202,7 @@ class Indicators:
             label.setText(signal)
             label.setStyleSheet("color: black; font-size: 10pt;")
         else:
-            signal = "Hold"
+            signal = "Neutral"
             label.setText(signal)
             label.setStyleSheet("color: black; font-size: 10pt;")
 
@@ -223,7 +223,7 @@ class Indicators:
             label.setText(signal)
             label.setStyleSheet("color: red; font-size: 10pt;")
         else:
-            signal = "Hold"
+            signal = "Neutral"
             label.setText(signal)
             label.setStyleSheet("color: black; font-size: 10pt;")
 
@@ -245,7 +245,7 @@ class Indicators:
             label.setText(signal)
             label.setStyleSheet("color: red; font-size: 10pt;")
         else:
-            signal = "Hold"
+            signal = "Neutral"
             label.setText(signal)
             label.setStyleSheet("color: black; font-size: 10pt;")
 
@@ -272,7 +272,7 @@ class Indicators:
             label.setText(signal)
             label.setStyleSheet("color: red; font-size: 10pt;")
         else:
-            signal = "Hold"
+            signal = "Neutral"
             label.setText(signal)
             label.setStyleSheet("color: black; font-size: 10pt;")
 
@@ -301,7 +301,7 @@ class Indicators:
             label.setText(signal)
             label.setStyleSheet("color: red; font-size: 10pt;")
         else:
-            signal = "Hold"
+            signal = "Neutral"
             label.setText(signal)
             label.setStyleSheet("color: black; font-size: 10pt;")
 
@@ -333,7 +333,7 @@ class Indicators:
             label.setText(signal)
             label.setStyleSheet("color: red; font-size: 10pt;")
         else:
-            signal = "Hold"
+            signal = "Neutral"
             label.setText(signal)
             label.setStyleSheet("color: black; font-size: 10pt;")
 
@@ -397,7 +397,7 @@ class Indicators:
 
         return signal
 
-    def calculate_and_display_all_signals(label):
+    def calculate_and_display_all_signals(df, label):
         buy_count = 0
         sell_count = 0
 
@@ -421,23 +421,35 @@ class Indicators:
             signal = signal_func(df, label)
             if signal == "Buy":
                 buy_count += 1
-                #print ("Buy")
+                print ("Buy")
+
             elif signal == "Sell":
                 sell_count += 1
-                #print("Sell")
+                print("Sell")
+
+            elif signal == "Neutral":
+                print("Neutral")
+                None
+
             elif signal == "Oversold":
                 buy_count += 1
+
                 #print("Oversold")
             elif signal == "Overbought":
                 sell_count += 1
+
                 #print("Overbought")
             elif signal == "Below average":
                 buy_count += 1
+
                 #print("Below average")
             elif signal == "Above average":
                 sell_count += 1
+
                 #print("Above average")
 
+        print(buy_count)
+        print(sell_count)
         buy_signal = buy_count > sell_count
         sell_signal = sell_count > buy_count
 
@@ -452,11 +464,11 @@ class Indicators:
             label.setText(signal)
             label.setStyleSheet("color: green; font-family: MS Shell Dlg 2; font-size: 14pt;")
         else:
-            signal = "Hold"
+            signal = "Neutral"
             label.setText(signal)
             label.setStyleSheet("color: green; font-family: MS Shell Dlg 2; font-size: 14pt;")
 
-        return buy_signal, sell_signal, signal
+        return buy_signal, sell_signal, signal, buy_count, sell_count
 
     def calculate_and_display_growth_days(df, label):
         df['Price Change'] = df['Close'].pct_change()
@@ -485,7 +497,25 @@ class Indicators:
 
         label.setText(f"Days of Decline: {decline_days} ({decline_percentage:.2f}%)")
 
+    def quick_resume(df, label):
+        price = df['Close'].iloc[-1]
+        price = round(price, 2)
+        previous_close = df['Close'].iloc[-2]  # Закрытие предыдущего дня
 
+        price_change = price - previous_close  # Абсолютное изменение цены
+        percent_change = (price_change / previous_close) * 100  # Процентное изменение
+
+        temp1, temp2, signal, buy_count, sell_count = Indicators.calculate_and_display_all_signals(df, label)
+
+
+        label.setStyleSheet("color: white; font-size: 14px;")  # Устанавливаем белый цвет текста
+        label.setText(
+            f"Last closed price: {price}\n"
+            f"Price change: {price_change:.2f}\n"
+            f"Percent change: {percent_change:.2f}%\n"
+            f"Buy: {buy_count} indicators, Sell : {sell_count} indicators\n"
+            f"General recommendation: {signal}"
+        )
 
 
 

@@ -1,50 +1,41 @@
-import yfinance as yf
-import talib
-from PyQt5.QtWidgets import QLabel
+from PyQt5.QtWidgets import QWidget, QPushButton, QListWidgetItem, QVBoxLayout, QMessageBox
+class WatchListWidget(QWidget):
+    try:
+        def add_asset(self, Asset_input_window_2):
+            # Getting data from QLineEdit
+            get_asset_name = Asset_input_window_2.text()
+            print(get_asset_name)
+            if not get_asset_name:
+                QMessageBox.warning(None, "Warning", "The form must be filled out.")
+                return
+            else:
+                item = QListWidgetItem(get_asset_name)
+                print(item)
+                remove_button = QPushButton('Remove')
+                print(remove_button)
+                remove_button.clicked.connect(lambda: WatchListWidget.remove_item(self, item))
 
-tempObj = yf.Ticker('^IXIC')
+                widget = QWidget()
+                print(widget)
+                layout = QVBoxLayout(widget)
+                print((layout))
+                layout.addWidget(remove_button)
 
-df = tempObj.history(period='100y')  # Загружаем данные за последние 100 лет
+                # Installing a widget for a list item
+                item.setSizeHint(widget.sizeHint())
+                self.listWidget.addItem(item)
+                self.listWidget.setItemWidget(item, widget)
 
-class ATRCalculator:
-    def __init__(self, df, label):
-        self.df = df
-        self.label = label
-
-    def calculate_atr(self, period):
-        atr = talib.ATR(self.df['High'], self.df['Low'], self.df['Close'], timeperiod=period)
-        self.df['ATR'] = atr
-        self.print_atr_info(period)
-
-    def print_atr_info(self, period):
-        atr_value = self.df['ATR'].iloc[-1]
-        price = self.df['Close'].iloc[-1]
-        previous_close = self.df['Close'].iloc[-2]  # Закрытие предыдущего дня
-
-        #price_change = price - previous_close  # Абсолютное изменение цены
-        normalized_atr = (atr_value / price) * 100  # Нормализация ATR к изменению цены
-        formatted_atr = round(normalized_atr, 4)
-        print(f"{formatted_atr} %")
+                # Cleaning up QLineEdit after adding
+                self.Asset_input_window_2.clear()
 
 
-# Создаем QLabel
-x = QLabel
+        def remove_item(self, item):
+            # Removing an item from a ListWidget
+            row = self.listWidget.row(item)
+            self.listWidget.takeItem(row)
 
-# Создаем объект ATRCalculator и вызываем calculate_atr
-ATRCalculator(df, x).calculate_atr(6)
-""""
 
-class ATRCalculator:
-    def __init__(self, df, label):
-        self.df = df
-        self.label = label
+    except Exception as e:
+        print(f"An error occurred: {e}")
 
-    def calculate_atr(self, period):
-        atr = talib.ATR(self.df['High'], self.df['Low'], self.df['Close'], timeperiod=period)
-        self.df['ATR'] = atr
-        self.print_atr_info(period)
-
-    def print_atr_info(self, period):
-        atr_value = self.df['ATR'].iloc[-1]
-        formatted_atr = round(atr_value, 5)  # 2 знака после запятой
-        self.label.setText(f"{formatted_atr} %")
