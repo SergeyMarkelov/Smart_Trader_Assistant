@@ -1,19 +1,5 @@
-import yfinance as yf
 import talib
-from PyQt5.QtWidgets import QLabel
 import pandas as pd
-#from interface import Ui_MainWindow.
-
-# Создание объекта для пары USD/JPY
-#tempObj = yf.Ticker('SI=F')
-
-# Загрузка исторических данных
-
-#df = tempObj.history(period='100y')  # Загружаем данные за последние 100 лет
-
-
-# Периоды для ATR
-# periods = [6, 24, 72, 288, 576, 1440, 2880]
 
 
 class ATRCalculator:
@@ -29,10 +15,8 @@ class ATRCalculator:
     def print_atr_info(self, period):
         atr_value = self.df['ATR'].iloc[-1]
         price = self.df['Close'].iloc[-1]
-        previous_close = self.df['Close'].iloc[-2]  # Закрытие предыдущего дня
 
-        #price_change = price - previous_close  # Абсолютное изменение цены
-        normalized_atr = (atr_value / price) * 100  # Нормализация ATR к изменению цены
+        normalized_atr = (atr_value / price) * 100  # Normalize ATR to price changes
         formatted_atr = round(normalized_atr, 4)
         print(f"{formatted_atr} %")
         self.label.setText(f"{formatted_atr} %")
@@ -44,33 +28,33 @@ class Indicators:
 
         macd_line, signal_line, histogram = talib.MACD(close_prices, fastperiod=12, slowperiod=26, signalperiod=9)
 
-        # Сигнал Short, когда MACD меньше 0
-        # Сигнал Long, когда MACD больше 0
+        # Short signal when MACD is less than 0
+        # Long signal when MACD is greater than 0
         if macd_line.iloc[-1] > 0:
-            signal = "Buy"
+            signal = " Buy"
             label.setText(signal)
-            label.setStyleSheet("color: green; font-size: 10pt;")
+            label.setStyleSheet("color: #90E039; font-size: 10pt; background-color: rgba(200, 200, 255, 100);")
         elif macd_line.iloc[-1] < 0:
-            signal = "Sell"
+            signal = " Sell"
             label.setText(signal)
-            label.setStyleSheet("color: red; font-size: 10pt;")
+            label.setStyleSheet("color: #960000; font-size: 10pt; background-color: rgba(200, 200, 255, 100);")
         else:
-            signal = "Neutral"
+            signal = " Neutral"
             label.setText(f"MACD Signal: {signal}")
-            label.setStyleSheet("color: black; font-size: 10pt;")
+            label.setStyleSheet("color: white; font-size: 10pt; background-color: rgba(200, 200, 255, 100);")
 
         return signal
 
     def calculate_and_display_supertrend(df, label, period=7, multiplier=3.0):
 
-        # Рассчитываем ATR (Average True Range) с использованием библиотеки talib
+        # Calculate ATR (Average True Range) using the talib library
         atr = talib.ATR(df['High'], df['Low'], df['Close'], timeperiod=period)
 
-        # Рассчитываем базовую линию Supertrend
+        # Calculate the Supertrend baseline
         basic_upper = (df['High'] + df['Low']) / 2 + multiplier * atr
         basic_lower = (df['High'] + df['Low']) / 2 - multiplier * atr
 
-        # Инициализация Supertrend в зависимости от направления тренда
+        # Initialize Supertrend depending on trend direction
         is_up_trend = True
         supertrend_line = pd.Series(index=df.index)
         signal = "None"
@@ -80,110 +64,109 @@ class Indicators:
                 supertrend_line.iloc[i] = basic_upper.iloc[i]
                 if df['Close'].iloc[i] < basic_upper.iloc[i]:
                     is_up_trend = False
-                    signal = "Sell"
-                    label.setStyleSheet("color: red; font-size: 10pt;")
+                    signal = " Sell"
+                    label.setStyleSheet("color: #960000; font-size: 10pt; background-color: rgba(200, 200, 255, 100);")
                     label.setText(signal)
             else:
                 supertrend_line.iloc[i] = basic_lower.iloc[i]
                 if df['Close'].iloc[i] > basic_lower.iloc[i]:
                     is_up_trend = True
-                    signal = "Buy"
-                    label.setStyleSheet("color: green; font-size: 10pt;")
+                    signal = " Buy"
+                    label.setStyleSheet("color: #90E039; font-size: 10pt; background-color: rgba(200, 200, 255, 100);")
                     label.setText(signal)
 
         return signal
 
     def calculate_and_display_rsi(df, label, period=14, overbought=70, oversold=30):
 
-        # Рассчитываем RSI (Relative Strength Index) с использованием библиотеки talib
+        # Calculate RSI (Relative Strength Index) using the talib library
         rsi = talib.RSI(df['Close'], timeperiod=period)
 
-        # Вычисляем сигнал на основе уровней "перекупленности" и "перепроданности"
+        # Calculate the signal based on the “overbought” and “oversold” levels
         if rsi.iloc[-1] > overbought:
-            signal = "Overbought"
+            signal = " Overbought"
             label.setText(signal)
-            label.setStyleSheet("color: red; font-size: 10pt;")
+            label.setStyleSheet("color: #960000; font-size: 10pt; background-color: rgba(200, 200, 255, 100);")
         elif rsi.iloc[-1] < oversold:
-            signal = "Oversold"
+            signal = " Oversold"
             label.setText(signal)
-            label.setStyleSheet("color: green; font-size: 10pt;")
+            label.setStyleSheet("color: #90E039; font-size: 10pt; background-color: rgba(200, 200, 255, 100);")
         else:
-            signal = "Neutral"
+            signal = " Neutral"
             label.setText(signal)
-            label.setStyleSheet("color: black; font-size: 10pt;")
+            label.setStyleSheet("color: white; font-size: 10pt; background-color: rgba(200, 200, 255, 100);")
 
         return signal
 
     def calculate_and_display_parabolic_sar(df, label, acceleration=0.02, maximum=0.2):
 
-        # Рассчитываем Parabolic SAR с использованием библиотеки talib
+        # Calculate Parabolic SAR using the talib library
         parabolic_sar = talib.SAR(df['High'], df['Low'], acceleration=acceleration, maximum=maximum)
 
         if df['Close'].iloc[-1] > parabolic_sar.iloc[-1]:
-            signal = "Buy"
+            signal = " Buy"
             label.setText(signal)
-            label.setStyleSheet("color: green; font-size: 10pt;")
+            label.setStyleSheet("color: #90E039; font-size: 10pt; background-color: rgba(200, 200, 255, 100);")
         elif df['Close'].iloc[-1] < parabolic_sar.iloc[-1]:
-            signal = "Sell"
+            signal = " Sell"
             label.setText(signal)
-            label.setStyleSheet("color: red; font-size: 10pt;")
+            label.setStyleSheet("color: #960000; font-size: 10pt; background-color: rgba(200, 200, 255, 100);")
         else:
-            signal = "Neutral"
+            signal = " Neutral"
             label.setText(signal)
-            label.setStyleSheet("color: black; font-size: 10pt;")
+            label.setStyleSheet("color: white; font-size: 10pt; background-color: rgba(200, 200, 255, 100);")
 
         return signal
 
-    import talib
-    import pandas as pd
-
     def calculate_and_display_obv(df, label):
-        # Рассчитываем On-Balance Volume (OBV)
+
+        # Calculate On-Balance Volume (OBV)
         obv = talib.OBV(df['Close'], df['Volume'])
 
         signal = None
         if obv.iloc[-1] > obv.iloc[-2]:
-            signal = "Buy"
+            signal = " Buy"
             label.setText(signal)
-            label.setStyleSheet("color: green; font-size: 10pt;")
+            label.setStyleSheet("color: #90E039; font-size: 10pt; background-color: rgba(200, 200, 255, 100);")
         elif obv.iloc[-1] < obv.iloc[-2]:
-            signal = "Sell"
+            signal = " Sell"
             label.setText(signal)
-            label.setStyleSheet("color: red; font-size: 10pt;")
+            label.setStyleSheet("color: #960000; font-size: 10pt; background-color: rgba(200, 200, 255, 100);")
         else:
-            signal = "Neutral"
+            signal = " Neutral"
             label.setText(signal)
-            label.setStyleSheet("color: black; font-size: 10pt;")
+            label.setStyleSheet("color: white; font-size: 10pt; background-color: rgba(200, 200, 255, 100);")
 
         return signal
 
 
     def calculate_and_display_stoch(df, label, k_period=14, d_period=3, slowing=3):
-        # Рассчитываем Stochastic Oscillator (Stoch)
+
+        # Calculate Stochastic Oscillator (Stoch)
         slowk, slowd = talib.STOCH(df['High'], df['Low'], df['Close'], fastk_period=k_period, slowk_period=d_period,
                                    slowd_period=slowing)
 
         signal = None
         if slowk.iloc[-1] >= 50 and slowd.iloc[-1] >= 50:
-            signal = "Buy"
+            signal = " Buy"
             label.setText(signal)
-            label.setStyleSheet("color: green; font-size: 10pt;")
+            label.setStyleSheet("color: #90E039; font-size: 10pt; background-color: rgba(200, 200, 255, 100);")
         elif slowk.iloc[-1] < 50 and slowk.iloc[-1] <= 50:
-            signal = "Sell"
+            signal = " Sell"
             label.setText(signal)
-            label.setStyleSheet("color: red; font-size: 10pt;")
+            label.setStyleSheet("color: #960000; font-size: 10pt; background-color: rgba(200, 200, 255, 100);")
         elif slowk.iloc[-1] >= 80 and slowk.iloc[-1] >= 80:
-            signal = "Overbought"
+            signal = " Overbought"
             label.setText(signal)
-            label.setStyleSheet("color: red; font-size: 10pt;")
+            label.setStyleSheet("color: #960000; font-size: 10pt; background-color: rgba(200, 200, 255, 100);")
         elif slowk.iloc[-1] < 30 and slowk.iloc[-1] <= 30:
-            signal = "Oversold"
+            signal = " Oversold"
             label.setText(signal)
-            label.setStyleSheet("color: green; font-size: 10pt;")
+            label.setStyleSheet("color: #90E039; font-size: 10pt; background-color: rgba(200, 200, 255, 100);")
         else:
-            signal = "Neutral"
+            signal = " Neutral"
             label.setText(signal)
-            label.setStyleSheet("color: black; font-size: 10pt;")
+            label.setStyleSheet("color: white; font-size: 10pt; background-color: rgba(200, 200, 255, 100);")
 
         return signal
 
@@ -191,209 +174,209 @@ class Indicators:
 
         average_volume = df['Volume'].mean()
 
-        # Проверяем условие для Long
+        # Checking the condition for Long
         if df['Volume'].iloc[-1] > average_volume:
-            signal = "Above average"
+            signal = " Above average"
             label.setText(signal)
-            label.setStyleSheet("color: green; font-size: 10pt;")
-        # Проверяем условие для Short
+            label.setStyleSheet("color: #960000; font-size: 10pt; background-color: rgba(200, 200, 255, 100);")
+        # Checking the condition for Short
         elif df['Volume'].iloc[-1] < average_volume:
-            signal = "Below average"
+            signal = " Below average"
             label.setText(signal)
-            label.setStyleSheet("color: black; font-size: 10pt;")
+            label.setStyleSheet("color: #90E039; font-size: 10pt; background-color: rgba(200, 200, 255, 100);")
         else:
-            signal = "Neutral"
+            signal = " Neutral"
             label.setText(signal)
-            label.setStyleSheet("color: black; font-size: 10pt;")
+            label.setStyleSheet("color: white; font-size: 10pt; background-color: rgba(200, 200, 255, 100);")
 
         return signal
 
     def calculate_and_display_vwap(df, label):
-        # Рассчитываем Volume-Weighted Average Price (VWAP)
+        # Calculating Volume-Weighted Average Price (VWAP)
         df['VWAP'] = (df['Close'] * df['Volume']).cumsum() / df['Volume'].cumsum()
 
-        # Рекомендация на основе VWAP
+        #VWAP based recommendation
         signal = None
         if df['Close'].iloc[-1] > df['VWAP'].iloc[-1]:
-            signal = "Buy"
+            signal = " Buy"
             label.setText(signal)
-            label.setStyleSheet("color: green; font-size: 10pt;")
+            label.setStyleSheet("color: #90E039; font-size: 10pt; background-color: rgba(200, 200, 255, 100);")
         elif df['Close'].iloc[-1] < df['VWAP'].iloc[-1]:
-            signal = "Sell"
+            signal = " Sell"
             label.setText(signal)
-            label.setStyleSheet("color: red; font-size: 10pt;")
+            label.setStyleSheet("color: #960000; font-size: 10pt; background-color: rgba(200, 200, 255, 100);")
         else:
-            signal = "Neutral"
+            signal = " Neutral"
             label.setText(signal)
-            label.setStyleSheet("color: black; font-size: 10pt;")
+            label.setStyleSheet("color: white; font-size: 10pt; background-color: rgba(200, 200, 255, 100);")
 
         return signal
 
     def calculate_and_display_vap(df, label):
-        # Предполагаем, что в вашем DataFrame есть столбцы 'Price' и 'Volume'
-        # Рассчитываем общий объем для каждого уровня цены
+
+        # Calculate the total volume for each price level
         df['TotalVolumeAtPrice'] = df.groupby('Close')['Volume'].transform('sum')
 
-        # Рекомендация на основе VAP
+        # VAP based recommendation
         signal = None
         if df['Volume'].iloc[-1] > df['TotalVolumeAtPrice'].iloc[-1]:
-            signal = "Buy"
+            signal = " Buy"
             label.setText(signal)
-            label.setStyleSheet("color: green; font-size: 10pt;")
+            label.setStyleSheet("color: #90E039; font-size: 10pt; background-color: rgba(200, 200, 255, 100);")
         elif df['Volume'].iloc[-1] < df['TotalVolumeAtPrice'].iloc[-1]:
-            signal = "Sell"
+            signal = " Sell"
             label.setText(signal)
-            label.setStyleSheet("color: red; font-size: 10pt;")
+            label.setStyleSheet("color: #960000; font-size: 10pt; background-color: rgba(200, 200, 255, 100);")
         else:
-            signal = "Neutral"
+            signal = " Neutral"
             label.setText(signal)
-            label.setStyleSheet("color: black; font-size: 10pt;")
+            label.setStyleSheet("color: white; font-size: 10pt; background-color: rgba(200, 200, 255, 100);")
 
         return signal
 
     def calculate_and_display_vpt(df, label):
-        # Рассчитываем процентное изменение цены
+        # Calculate the percentage change in price
         df['Price Change'] = df['Close'].pct_change()
 
-        # Рассчитываем объем денег, перемещаемый с изменением цены
+        # Calculate the amount of money moved with price changes
         df['Money Flow'] = df['Volume'] * df['Price Change']
 
-        # Рассчитываем кумулятивную сумму объемов денег, чтобы получить индикатор Volume Price Trend (VPT)
+        # Calculate the cumulative sum of money volumes to get the Volume Price Trend (VPT) indicator
         df['VPT'] = df['Money Flow'].cumsum()
 
-        # Решаем, купить или продать
+        # buy or sell
         signal = None
         if df['VPT'].iloc[-1] > df['VPT'].iloc[-2]:
-            signal = "Buy"
+            signal = " Buy"
             label.setText(signal)
-            label.setStyleSheet("color: green; font-size: 10pt;")
+            label.setStyleSheet("color: #90E039; font-size: 10pt; background-color: rgba(200, 200, 255, 100);")
         elif df['VPT'].iloc[-1] < df['VPT'].iloc[-2]:
-            signal = "Sell"
+            signal = " Sell"
             label.setText(signal)
-            label.setStyleSheet("color: red; font-size: 10pt;")
+            label.setStyleSheet("color: #960000; font-size: 10pt; background-color: rgba(200, 200, 255, 100);")
         else:
-            signal = "Neutral"
+            signal = " Neutral"
             label.setText(signal)
-            label.setStyleSheet("color: black; font-size: 10pt;")
+            label.setStyleSheet("color: white; font-size: 10pt; background-color: rgba(200, 200, 255, 100);")
 
         return signal
 
     def calculate_and_display_cmf(df, label, period=20):
-        # Рассчитываем Multiplier
+        # Calculate Multiplier
         multiplier = ((df['Close'] - df['Low']) - (df['High'] - df['Close'])) / (df['High'] - df['Low'])
-        # Ограничиваем значения от 0 до 1
+        # Limit values from 0 to 1
         multiplier = multiplier.clip(lower=0, upper=1)
 
-        # Рассчитываем Money Flow Volume
+        # Calculating Money Flow Volume
         money_flow_volume = multiplier * df['Volume']
 
-        # Рассчитываем 20-периодное среднее Chaikin Money Flow
+        # Calculating the 20-period average of Chaikin Money Flow
         cmf = money_flow_volume.rolling(window=period).sum() / df['Volume'].rolling(window=period).sum()
 
-        # Решаем, купить или продать
+        # buy or sell
         signal = None
         if cmf.iloc[-1] > 0:
-            signal = "Buy"
+            signal = " Buy"
             label.setText(signal)
-            label.setStyleSheet("color: green; font-size: 10pt;")
+            label.setStyleSheet("color: #90E039; font-size: 10pt; background-color: rgba(200, 200, 255, 100);")
         elif cmf.iloc[-1] < 0:
-            signal = "Sell"
+            signal = " Sell"
             label.setText(signal)
-            label.setStyleSheet("color: red; font-size: 10pt;")
+            label.setStyleSheet("color: #960000; font-size: 10pt; background-color: rgba(200, 200, 255, 100);")
         else:
-            signal = "Neutral"
+            signal = " Neutral"
             label.setText(signal)
-            label.setStyleSheet("color: black; font-size: 10pt;")
+            label.setStyleSheet("color: white; font-size: 10pt; background-color: rgba(200, 200, 255, 100);")
 
-        # Возвращаем значения, если они нужны
         return signal
 
-    import pandas as pd
-
     def calculate_and_display_emv(df, label, period=14):
-        # Рассчитываем Midpoint Move (MM)
+        # Calculating Midpoint Move (MM)
         df['MM'] = ((df['High'] + df['Low']) / 2 - (df['High'].shift(1) + df['Low'].shift(1)) / 2) / 2
 
-        # Рассчитываем Box Ratio (BR)
+        # Calculating Box Ratio (BR)
         df['BR'] = df['Volume'] / (df['High'] - df['Low'])
 
-        # Рассчитываем Ease of Movement (EMV)
+        # Calculating Ease of Movement (EMV)
         df['EMV'] = df['MM'] / df['BR']
 
-        # Рассчитываем 14-периодное среднее EMV
+        # Calculate 14-period average EMV
         df['EMV_SMA'] = df['EMV'].rolling(window=period).mean()
 
         signal = None
         if df['EMV'].iloc[-1] > df['EMV_SMA'].iloc[-1]:
-            signal = "Buy"
+            signal = " Buy"
             label.setText(signal)
-            label.setStyleSheet("color: green; font-size: 10pt;")
+            label.setStyleSheet("color: #90E039; font-size: 10pt; background-color: rgba(200, 200, 255, 100);")
         elif df['EMV'].iloc[-1] < df['EMV_SMA'].iloc[-1]:
-            signal = "Sell"
+            signal = " Sell"
             label.setText(signal)
-            label.setStyleSheet("color: red; font-size: 10pt;")
+            label.setStyleSheet("color: #960000; font-size: 10pt; background-color: rgba(200, 200, 255, 100);")
         else:
-            signal = "Neutral"
+            signal = " Neutral"
             label.setText(signal)
-            label.setStyleSheet("color: black; font-size: 10pt;")
+            label.setStyleSheet("color: white; font-size: 10pt; background-color: rgba(200, 200, 255, 100);")
 
 
         return signal
 
     def calculate_and_display_ma_6(df, label):
+        #Simple MA
         ma_6 = talib.SMA(df['Close'], timeperiod=6)
 
         signal = None
         if df['Close'].iloc[-1] > ma_6.iloc[-1]:
-            signal = "Buy"
+            signal = " Buy"
             label.setText(signal)
-            label.setStyleSheet("color: green; font-size: 10pt;")
+            label.setStyleSheet("color: #90E039; font-size: 10pt; background-color: rgba(200, 200, 255, 100);")
         elif df['Close'].iloc[-1] < ma_6.iloc[-1]:
-            signal = "Sell"
+            signal = " Sell"
             label.setText(signal)
-            label.setStyleSheet("color: red; font-size: 10pt;")
+            label.setStyleSheet("color: #960000; font-size: 10pt; background-color: rgba(200, 200, 255, 100);")
         else:
-            signal = "No Trend"
+            signal = " No Trend"
             label.setText(signal)
-            label.setStyleSheet("color: black; font-size: 10pt;")
+            label.setStyleSheet("color: white; font-size: 10pt; background-color: rgba(200, 200, 255, 100);")
 
         return signal
 
     def calculate_and_display_ma_24(df, label):
+        # Simple MA
         ma_24 = talib.SMA(df['Close'], timeperiod=24)
 
         signal = None
         if df['Close'].iloc[-1] > ma_24.iloc[-1]:
-            signal = "Buy"
+            signal = " Buy"
             label.setText(signal)
-            label.setStyleSheet("color: green; font-size: 10pt;")
+            label.setStyleSheet("color: #90E039; font-size: 10pt; background-color: rgba(200, 200, 255, 100);")
         elif df['Close'].iloc[-1] < ma_24.iloc[-1]:
-            signal = "Sell"
+            signal = " Sell"
             label.setText(signal)
-            label.setStyleSheet("color: red; font-size: 10pt;")
+            label.setStyleSheet("color: #960000; font-size: 10pt; background-color: rgba(200, 200, 255, 100);")
         else:
-            signal = "No Trend"
+            signal = " No Trend"
             label.setText(signal)
-            label.setStyleSheet("color: black; font-size: 10pt;")
+            label.setStyleSheet("color: white; font-size: 10pt; background-color: rgba(200, 200, 255, 100);")
 
         return signal
 
     def calculate_and_display_ma_72(df, label):
+        # Simple MA
         ma_72 = talib.SMA(df['Close'], timeperiod=72)
 
         signal = None
         if df['Close'].iloc[-1] > ma_72.iloc[-1]:
-            signal = "Buy"
+            signal = " Buy"
             label.setText(signal)
-            label.setStyleSheet("color: green; font-size: 10pt;")
+            label.setStyleSheet("color: #90E039; font-size: 10pt; background-color: rgba(200, 200, 255, 100);")
         elif df['Close'].iloc[-1] < ma_72.iloc[-1]:
-            signal = "Sell"
+            signal = " Sell"
             label.setText(signal)
-            label.setStyleSheet("color: red; font-size: 10pt;")
+            label.setStyleSheet("color: #960000; font-size: 10pt; background-color: rgba(200, 200, 255, 100);")
         else:
-            signal = "No Trend"
+            signal = " No Trend"
             label.setText(signal)
-            label.setStyleSheet("color: black; font-size: 10pt;")
+            label.setStyleSheet("color: white; font-size: 10pt; background-color: rgba(200, 200, 255, 100);")
 
         return signal
 
@@ -416,61 +399,57 @@ class Indicators:
                                                      Indicators.calculate_and_display_ma_72]
 
 
-        # Проходимся по всем функциям и считаем сигналы
+        # take signals from all functions
         for signal_func in signal_funcs:
             signal = signal_func(df, label)
-            if signal == "Buy":
+            if signal == " Buy":
                 buy_count += 1
                 print ("Buy")
 
-            elif signal == "Sell":
+            elif signal == " Sell":
                 sell_count += 1
                 print("Sell")
 
-            elif signal == "Neutral":
+            elif signal == " Neutral":
                 print("Neutral")
                 None
 
-            elif signal == "Oversold":
+            elif signal == " Oversold":
                 buy_count += 1
 
-                #print("Oversold")
-            elif signal == "Overbought":
+            elif signal == " Overbought":
                 sell_count += 1
 
-                #print("Overbought")
-            elif signal == "Below average":
+            elif signal == " Below average":
                 buy_count += 1
 
-                #print("Below average")
-            elif signal == "Above average":
+            elif signal == " Above average":
                 sell_count += 1
-
-                #print("Above average")
 
         print(buy_count)
         print(sell_count)
         buy_signal = buy_count > sell_count
         sell_signal = sell_count > buy_count
 
-        # Принимаем решение на основе комбинированных сигналов
+        # make a decision based on our signals
         if buy_signal:
-            signal = "Buy"
+            signal = " Buy"
             label.setText(signal)
-            label.setStyleSheet("color: green; font-family: MS Shell Dlg 2; font-size: 14pt;")
+            label.setStyleSheet("color: #90E039; font-family: MS Shell Dlg 2; font-size: 14pt; background-color: rgba(200, 200, 255, 100);")
 
         elif sell_signal:
-            signal = "Sell"
+            signal = " Sell"
             label.setText(signal)
-            label.setStyleSheet("color: green; font-family: MS Shell Dlg 2; font-size: 14pt;")
+            label.setStyleSheet("color: #960000; font-family: MS Shell Dlg 2; font-size: 14pt; background-color: rgba(200, 200, 255, 100);")
         else:
-            signal = "Neutral"
+            signal = " Neutral"
             label.setText(signal)
-            label.setStyleSheet("color: green; font-family: MS Shell Dlg 2; font-size: 14pt;")
+            label.setStyleSheet("color: white; font-family: MS Shell Dlg 2; font-size: 14pt; background-color: rgba(200, 200, 255, 100);")
 
         return buy_signal, sell_signal, signal, buy_count, sell_count
 
     def calculate_and_display_growth_days(df, label):
+
         df['Price Change'] = df['Close'].pct_change()
         df['Direction'] = df['Price Change'].apply(lambda x: 'Up' if x > 0 else 'Down' if x < 0 else 'No Change')
         count_days = df.groupby('Direction').size().to_dict()
@@ -498,17 +477,18 @@ class Indicators:
         label.setText(f"Days of Decline: {decline_days} ({decline_percentage:.2f}%)")
 
     def quick_resume(df, label):
+
         price = df['Close'].iloc[-1]
         price = round(price, 2)
-        previous_close = df['Close'].iloc[-2]  # Закрытие предыдущего дня
+        previous_close = df['Close'].iloc[-2]
 
-        price_change = price - previous_close  # Абсолютное изменение цены
-        percent_change = (price_change / previous_close) * 100  # Процентное изменение
+        price_change = price - previous_close
+        percent_change = (price_change / previous_close) * 100
 
         temp1, temp2, signal, buy_count, sell_count = Indicators.calculate_and_display_all_signals(df, label)
 
 
-        label.setStyleSheet("color: white; font-size: 14px;")  # Устанавливаем белый цвет текста
+        label.setStyleSheet("color: white; font-size: 18px; background-color: #1e1f22;")
         label.setText(
             f"Last closed price: {price}\n"
             f"Price change: {price_change:.2f}\n"

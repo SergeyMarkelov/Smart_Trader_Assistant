@@ -1,5 +1,5 @@
 import yfinance as yf
-from interface import Ui_MainWindow
+from main import Ui_MainWindow
 from PyQt5.QtWidgets import QMessageBox
 
 class FindAsset:
@@ -12,7 +12,7 @@ class FindAsset:
             return None  # Return None to indicate no valid asset data
         else:
             ticker = yf.Ticker(get_asset_name)
-            df = ticker.history(period='100y')
+            df = ticker.history(period='100y') # 100 years
 
             if "Empty DataFrame" in df.to_string():
                 QMessageBox.warning(None, "Warning",
