@@ -68,7 +68,7 @@ class Calculate_Dist:
                                   'Probability': probabilities_formatted},
                                  index=range(len(category_ranges)))
 
-        # Форматируем DataFrame для красивого вывода
+        # Format the DataFrame for the nice output
         formatted_result = result_df.to_string(index=False)
 
         if label is not None:
