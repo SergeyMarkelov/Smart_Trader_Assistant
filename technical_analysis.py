@@ -170,20 +170,23 @@ class Indicators:
 
         return signal
 
-    def calculate_and_display_enhanced_volume(df, label):
-
-        average_volume = df['Volume'].mean()
+    def calculate_and_display_ad_indicator(df, label):
+        # Calculate the A/D indicator
+        df['High-Low'] = df['High'] - df['Low']
+        df['AD_Ratio'] = (df['Close'] - df['Low']) / df['High-Low']
+        df['AD'] = df['AD_Ratio'] * df['Volume']
+        df['Accum/Dist'] = df['AD'].cumsum()
 
         # Checking the condition for Long
-        if df['Volume'].iloc[-1] > average_volume:
-            signal = " Above average"
-            label.setText(signal)
-            label.setStyleSheet("color: #960000; font-size: 10pt; background-color: rgba(200, 200, 255, 100);")
-        # Checking the condition for Short
-        elif df['Volume'].iloc[-1] < average_volume:
-            signal = " Below average"
+        if df['Accum/Dist'].iloc[-1] > 0:
+            signal = " Buy"
             label.setText(signal)
             label.setStyleSheet("color: #90E039; font-size: 10pt; background-color: rgba(200, 200, 255, 100);")
+        # Checking the condition for Short
+        elif df['Accum/Dist'].iloc[-1] < 0:
+            signal = " Sell"
+            label.setText(signal)
+            label.setStyleSheet("color: #960000; font-size: 10pt; background-color: rgba(200, 200, 255, 100);")
         else:
             signal = " Neutral"
             label.setText(signal)
@@ -320,16 +323,16 @@ class Indicators:
 
         return signal
 
-    def calculate_and_display_ma_6(df, label):
+    def calculate_and_display_ma_5(df, label):
         #Simple MA
-        ma_6 = talib.SMA(df['Close'], timeperiod=6)
+        ma_5 = talib.SMA(df['Close'], timeperiod=6)
 
         signal = None
-        if df['Close'].iloc[-1] > ma_6.iloc[-1]:
+        if df['Close'].iloc[-1] > ma_5.iloc[-1]:
             signal = " Buy"
             label.setText(signal)
             label.setStyleSheet("color: #90E039; font-size: 10pt; background-color: rgba(200, 200, 255, 100);")
-        elif df['Close'].iloc[-1] < ma_6.iloc[-1]:
+        elif df['Close'].iloc[-1] < ma_5.iloc[-1]:
             signal = " Sell"
             label.setText(signal)
             label.setStyleSheet("color: #960000; font-size: 10pt; background-color: rgba(200, 200, 255, 100);")
@@ -340,16 +343,16 @@ class Indicators:
 
         return signal
 
-    def calculate_and_display_ma_24(df, label):
+    def calculate_and_display_ma_20(df, label):
         # Simple MA
-        ma_24 = talib.SMA(df['Close'], timeperiod=24)
+        ma_20 = talib.SMA(df['Close'], timeperiod=24)
 
         signal = None
-        if df['Close'].iloc[-1] > ma_24.iloc[-1]:
+        if df['Close'].iloc[-1] > ma_20.iloc[-1]:
             signal = " Buy"
             label.setText(signal)
             label.setStyleSheet("color: #90E039; font-size: 10pt; background-color: rgba(200, 200, 255, 100);")
-        elif df['Close'].iloc[-1] < ma_24.iloc[-1]:
+        elif df['Close'].iloc[-1] < ma_20.iloc[-1]:
             signal = " Sell"
             label.setText(signal)
             label.setStyleSheet("color: #960000; font-size: 10pt; background-color: rgba(200, 200, 255, 100);")
@@ -360,16 +363,16 @@ class Indicators:
 
         return signal
 
-    def calculate_and_display_ma_72(df, label):
+    def calculate_and_display_ma_60(df, label):
         # Simple MA
-        ma_72 = talib.SMA(df['Close'], timeperiod=72)
+        ma_60 = talib.SMA(df['Close'], timeperiod=72)
 
         signal = None
-        if df['Close'].iloc[-1] > ma_72.iloc[-1]:
+        if df['Close'].iloc[-1] > ma_60.iloc[-1]:
             signal = " Buy"
             label.setText(signal)
             label.setStyleSheet("color: #90E039; font-size: 10pt; background-color: rgba(200, 200, 255, 100);")
-        elif df['Close'].iloc[-1] < ma_72.iloc[-1]:
+        elif df['Close'].iloc[-1] < ma_60.iloc[-1]:
             signal = " Sell"
             label.setText(signal)
             label.setStyleSheet("color: #960000; font-size: 10pt; background-color: rgba(200, 200, 255, 100);")
@@ -388,15 +391,15 @@ class Indicators:
                                                      Indicators.calculate_and_display_rsi, Indicators.calculate_and_display_parabolic_sar,
                                                      Indicators.calculate_and_display_obv,
                                                      Indicators.calculate_and_display_stoch,
-                                                     Indicators.calculate_and_display_enhanced_volume,
+                                                     Indicators.calculate_and_display_ad_indicator,
                                                      Indicators.calculate_and_display_vwap,
                                                      Indicators.calculate_and_display_vap,
                                                      Indicators.calculate_and_display_vpt,
                                                      Indicators.calculate_and_display_cmf,
                                                      Indicators.calculate_and_display_emv,
-                                                     Indicators.calculate_and_display_ma_6,
-                                                     Indicators.calculate_and_display_ma_24,
-                                                     Indicators.calculate_and_display_ma_72]
+                                                     Indicators.calculate_and_display_ma_5,
+                                                     Indicators.calculate_and_display_ma_20,
+                                                     Indicators.calculate_and_display_ma_60]
 
 
         # take signals from all functions

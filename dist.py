@@ -170,6 +170,9 @@ class Calculate_Dist:
         # Set the color of tick labels on the x-axis
         ax.tick_params(axis='x', colors='red')
 
+        # Set title
+        ax.set_title("Open to open distribution", fontsize=10, color='blue')
+
         # Create a widget to contain the matplotlib figure
         widget = QWidget()
         layout = QVBoxLayout(widget)
@@ -210,6 +213,9 @@ class Calculate_Dist:
 
         # Set the color of tick labels on the y-axis
         ax.tick_params(axis='y', colors='red')
+
+        # Set title
+        ax.set_title("High to low distribution", fontsize=10, color='blue')
 
         # Set the color of tick labels on the x-axis
         ax.tick_params(axis='x', colors='red')

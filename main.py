@@ -5,7 +5,7 @@ from PyQt5.QtWidgets import QGraphicsScene
 
 import data_taker
 from technical_analysis import ATRCalculator, Indicators
-from accumulation_distribution import Calculate_Dist
+from dist import Calculate_Dist
 
 
 
@@ -1272,7 +1272,7 @@ class Ui_MainWindow(object):
 
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
-        MainWindow.setWindowTitle(_translate("MainWindow", "Smart trader Assistant"))
+        MainWindow.setWindowTitle(_translate("MainWindow", "Smart trader assistant"))
         self.Asset_windows_title.setText(_translate("MainWindow", "Asset selection window"))
         self.Choose_the_asset_label.setText(_translate("MainWindow", "Choose the asset"))
         self.Find_asset_button.setText(_translate("MainWindow", "Find"))
@@ -1284,19 +1284,19 @@ class Ui_MainWindow(object):
         self.label_Supertrend.setText(_translate("MainWindow", "Supertrend"))
         self.label_Rsi.setText(_translate("MainWindow", "Relative Strength Index (RSI)"))
         self.label_Parabolic_SAR.setText(_translate("MainWindow", "Parabolic SAR"))
-        self.label_On_balance_ind.setText(_translate("MainWindow", "On-Balance indicator"))
+        self.label_On_balance_ind.setText(_translate("MainWindow", "On-Balance Volume"))
         self.label_Stochastic.setText(_translate("MainWindow", "Stochastic"))
-        self.label_Traders_Lion.setText(_translate("MainWindow", "Trader\'s Lion Enhanced Volume"))
+        self.label_Traders_Lion.setText(_translate("MainWindow", "Accumulation/Distribution"))
         self.label_Volume_Weighted.setText(_translate("MainWindow", "Volume-Weighted Average Price"))
         self.label_Volume_price_trend_2.setText(_translate("MainWindow", "Volume at Price"))
-        self.label_Volume_price_trend.setText(_translate("MainWindow", "Volume Price Trend Indicator"))
-        self.label_Chaikin.setText(_translate("MainWindow", "Chaikin Money Flow Indicator"))
+        self.label_Volume_price_trend.setText(_translate("MainWindow", "Volume Price Trend"))
+        self.label_Chaikin.setText(_translate("MainWindow", "Chaikin Money Flow"))
         self.label_Ease_of_Movement.setText(_translate("MainWindow", "Ease of Movement"))
-        self.label_MA_6.setText(_translate("MainWindow", "Moving Average (6 days)"))
-        self.label_MA_24.setText(_translate("MainWindow", "Moving Average (24 days)"))
-        self.label_MA_72.setText(_translate("MainWindow", "Moving Average (72 days)"))
-        self.label_Trend_Perfomance_title.setText(_translate("MainWindow", "Performance Trend Summary:"))
-        self.label_ATR_title.setText(_translate("MainWindow", "Average Average Daily ATR:"))
+        self.label_MA_6.setText(_translate("MainWindow", "Moving Average (5 days)"))
+        self.label_MA_24.setText(_translate("MainWindow", "Moving Average (20 days)"))
+        self.label_MA_72.setText(_translate("MainWindow", "Moving Average (60 days)"))
+        self.label_Trend_Perfomance_title.setText(_translate("MainWindow", "Performance trend summary:"))
+        self.label_ATR_title.setText(_translate("MainWindow", "Average daily ATR:"))
         self.label_ATR_1_week_1.setText(_translate("MainWindow", "1 Week"))
         self.label_ATR_1_month_1.setText(_translate("MainWindow", "1 Month"))
         self.label_ATR_3_months_1.setText(_translate("MainWindow", "3 Months"))
@@ -1304,14 +1304,14 @@ class Ui_MainWindow(object):
         self.label_ATR_2_years_1.setText(_translate("MainWindow", "2 Years"))
         self.label_ATR_5_years_1.setText(_translate("MainWindow", "5 years"))
         self.label_ATR_10_years_1.setText(_translate("MainWindow", "10 years"))
-        self.label_ATR_1_week_2.setText(_translate("MainWindow", "6 days"))
-        self.label_ATR_1_month_2.setText(_translate("MainWindow", "24 days"))
-        self.label_ATR_3_months_2.setText(_translate("MainWindow", "72 days"))
-        self.label_ATR_1_year_2.setText(_translate("MainWindow", "288 days"))
-        self.label_ATR_2_years_2.setText(_translate("MainWindow", "576 days"))
-        self.label_ATR_5_years_2.setText(_translate("MainWindow", "1440 days"))
-        self.label_ATR_10_years_2.setText(_translate("MainWindow", "2880 days"))
-        self.TA_title_label_2.setText(_translate("MainWindow", "Accumulation/Distribution"))
+        self.label_ATR_1_week_2.setText(_translate("MainWindow", "5 days"))
+        self.label_ATR_1_month_2.setText(_translate("MainWindow", "20 days"))
+        self.label_ATR_3_months_2.setText(_translate("MainWindow", "60 days"))
+        self.label_ATR_1_year_2.setText(_translate("MainWindow", "240 days"))
+        self.label_ATR_2_years_2.setText(_translate("MainWindow", "480 days"))
+        self.label_ATR_5_years_2.setText(_translate("MainWindow", "1200 days"))
+        self.label_ATR_10_years_2.setText(_translate("MainWindow", "2400 days"))
+        self.TA_title_label_2.setText(_translate("MainWindow", "Probabilities distribution"))
         self.label_3.setText(_translate("MainWindow", "<html><head/>\n"
 "<body><p><br/>&quot;Smart Trader Assistant&quot; is an innovative application developed on the PyQt5 framework, aiming to provide investors</p>\n"
 " <p> and traders with advanced tools for asset analysis in international financial markets. This application not only offers </p>\n"
@@ -1333,7 +1333,7 @@ class Ui_MainWindow(object):
         self.label_4.setText(_translate("MainWindow", "<html><head/><body><p>The program was created as part of a graduation project for non-commercial use.</p><p>Email: sergey.markelov.gd@gmail.com</p><p>LinkedIn: https://www.linkedin.com/in/sergey-markelov-gd/ </p><p/><p/></body></html>"))
         self.pushButton_Asset.setText(_translate("MainWindow", " Asset "))
         self.pushButton_TechAnalysis.setText(_translate("MainWindow", "  Technical Analysis  "))
-        self.pushButton_A_D.setText(_translate("MainWindow", "A/D"))
+        self.pushButton_A_D.setText(_translate("MainWindow", "P/D"))
         self.pushButton_About.setText(_translate("MainWindow", "  About  "))
         self.pushButton_Contact.setText(_translate("MainWindow", "  Contact  "))
 
@@ -1349,7 +1349,7 @@ class Ui_MainWindow(object):
 
         self.pushButton_Asset.setText("Asset")
         self.pushButton_TechAnalysis.setText("Technical Analysis")
-        self.pushButton_A_D.setText("A/D")
+        self.pushButton_A_D.setText("P/D")
         self.pushButton_About.setText("About")
         self.pushButton_Contact.setText("Contact")
 
@@ -1367,25 +1367,25 @@ class Ui_MainWindow(object):
 
                                 # ATR
                                 ATR_label1_calc = ATRCalculator(gl_asset_data, self.label_ATR_1_week_3)
-                                ATR_label1_calc.calculate_atr(6)
+                                ATR_label1_calc.calculate_atr(5)
 
                                 ATR_label1_calc = ATRCalculator(gl_asset_data, self.label_ATR_1_month_3)
-                                ATR_label1_calc.calculate_atr(24)
+                                ATR_label1_calc.calculate_atr(20)
 
                                 ATR_label1_calc = ATRCalculator(gl_asset_data, self.label_ATR_3_months_3)
-                                ATR_label1_calc.calculate_atr(72)
+                                ATR_label1_calc.calculate_atr(60)
 
                                 ATR_label1_calc = ATRCalculator(gl_asset_data, self.label_ATR_1_year_3)
-                                ATR_label1_calc.calculate_atr(288)
+                                ATR_label1_calc.calculate_atr(240)
 
                                 ATR_label1_calc = ATRCalculator(gl_asset_data, self.label_ATR_2_years_3)
-                                ATR_label1_calc.calculate_atr(576)
+                                ATR_label1_calc.calculate_atr(480)
 
                                 ATR_label1_calc = ATRCalculator(gl_asset_data, self.label_ATR_5_years_3)
-                                ATR_label1_calc.calculate_atr(1440)
+                                ATR_label1_calc.calculate_atr(1200)
 
                                 ATR_label1_calc = ATRCalculator(gl_asset_data, self.label_ATR_10_years_3)
-                                ATR_label1_calc.calculate_atr(2880)
+                                ATR_label1_calc.calculate_atr(2400)
 
                                 # Indicators
 
@@ -1396,16 +1396,16 @@ class Ui_MainWindow(object):
                                                                                self.label_Parabolic_SAR_2)
                                 Indicators.calculate_and_display_obv(gl_asset_data, self.label_On_balance_ind_2)
                                 Indicators.calculate_and_display_stoch(gl_asset_data, self.label_Stochastic_2)
-                                Indicators.calculate_and_display_enhanced_volume(gl_asset_data,
+                                Indicators.calculate_and_display_ad_indicator(gl_asset_data,
                                                                                  self.label_Traders_Lion_2)
                                 Indicators.calculate_and_display_vwap(gl_asset_data, self.label_Volume_Weighted_2)
                                 Indicators.calculate_and_display_vap(gl_asset_data, self.label_Volume_price_trend_3)
                                 Indicators.calculate_and_display_vpt(gl_asset_data, self.label_Volume_price_trend_2_1)
                                 Indicators.calculate_and_display_cmf(gl_asset_data, self.label_Chaikin_2)
                                 Indicators.calculate_and_display_emv(gl_asset_data, self.label_Ease_of_Movement_2)
-                                Indicators.calculate_and_display_ma_6(gl_asset_data, self.label_MA_6_2)
-                                Indicators.calculate_and_display_ma_24(gl_asset_data, self.label_MA_24_2)
-                                Indicators.calculate_and_display_ma_72(gl_asset_data, self.label_MA_72_2)
+                                Indicators.calculate_and_display_ma_5(gl_asset_data, self.label_MA_6_2)
+                                Indicators.calculate_and_display_ma_20(gl_asset_data, self.label_MA_24_2)
+                                Indicators.calculate_and_display_ma_60(gl_asset_data, self.label_MA_72_2)
                                 Indicators.calculate_and_display_all_signals(gl_asset_data, self.label_Resume_Output)
                                 Indicators.calculate_and_display_growth_days(gl_asset_data, self.label_Grow_Duration)
                                 Indicators.calculate_and_display_decline_days(gl_asset_data,
